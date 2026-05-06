@@ -26,7 +26,7 @@
     <section class="text-center mb-10">
       <h2 class="text-3xl font-bold mb-2">Your One-Stop Shop for Digital Products</h2>
       <p class="text-gray-600">Affordable plans and Secure checkout with multiple payment methods!</p>
-      <p class="text-sm text-gray-500 mt-2">💱 Prices automatically adjust to your currency</p>
+      <p class="text-sm text-gray-500 mt-2">💱 Prices shown in your currency, paid in KES</p>
     </section>
 
     <!-- Currency & Country Selector -->
@@ -59,6 +59,7 @@
     let currentProduct = null;
     let userCurrency = 'KES';
     let userCountry = 'KE';
+    let displayCurrency = 'KES'; // Currency to show to user
     
     // Exchange rates - base price in KES
     let exchangeRates = {
@@ -76,19 +77,8 @@
       AUD: 0.012
     };
 
-    // Paystack supported currencies
-    const paystackCurrencies = {
-      KES: 'KES',
-      NGN: 'NGN',
-      GHS: 'GHS',
-      UGX: 'UGX',
-      TZS: 'TZS',
-      ZAR: 'ZAR',
-      USD: 'USD',
-      EUR: 'EUR',
-      GBP: 'GBP',
-      INR: 'INR'
-    };
+    // Paystack LIVE account only supports these currencies
+    const paystackSupportedCurrencies = ['KES', 'NGN', 'ZAR'];
 
     const currencyCountryMap = {
       KE: { currency: 'KES', name: 'Kenya', flag: '🇰🇪' },
@@ -168,16 +158,20 @@
         userCountry = data.country_code;
         
         if (currencyCountryMap[userCountry]) {
-          userCurrency = currencyCountryMap[userCountry].currency;
+          displayCurrency = currencyCountryMap[userCountry].currency;
         } else {
-          userCurrency = 'KES';
+          displayCurrency = 'KES';
         }
+        
+        // Use supported Paystack currency for actual payment
+        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'KES';
         
         updateLocationDisplay();
         initializePaymentMethods();
         renderProducts();
       } catch (error) {
         console.log('Location detection failed, using default KES');
+        displayCurrency = 'KES';
         userCurrency = 'KES';
         updateLocationDisplay();
         initializePaymentMethods();
@@ -186,8 +180,17 @@
     }
 
     function updateLocationDisplay() {
-      const locationData = currencyCountryMap[userCountry] || { name: 'Your Location', flag: '🌍', currency: userCurrency };
-      document.getElementById('location-display').innerHTML = `${locationData.flag} ${locationData.name} (${userCurrency})`;
+      const locationData = currencyCountryMap[userCountry] || { name: 'Your Location', flag: '🌍', currency: displayCurrency };
+      let displayText = `${locationData.flag} ${locationData.name}`;
+      
+      // Show if paying in different currency
+      if (displayCurrency !== userCurrency) {
+        displayText += ` (Showing ${displayCurrency}, paying in ${userCurrency})`;
+      } else {
+        displayText += ` (${userCurrency})`;
+      }
+      
+      document.getElementById('location-display').innerHTML = displayText;
     }
 
     function changeCurrency() {
@@ -196,7 +199,11 @@
       
       if (selectedIndex && selectedIndex > 0 && selectedIndex <= countries.length) {
         userCountry = countries[selectedIndex - 1];
-        userCurrency = currencyCountryMap[userCountry].currency;
+        displayCurrency = currencyCountryMap[userCountry].currency;
+        
+        // Map to supported Paystack currency
+        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'KES';
+        
         updateLocationDisplay();
         initializePaymentMethods();
         renderProducts();
@@ -204,7 +211,7 @@
     }
 
     function convertPrice(priceKES) {
-      const rate = exchangeRates[userCurrency] || 1;
+      const rate = exchangeRates[displayCurrency] || 1;
       return Math.round(priceKES * rate);
     }
 
@@ -233,22 +240,18 @@
       }
     }
 
-    // Convert to Paystack format (cents)
-    function convertToPaystackAmount(priceKES, currency) {
-      let amount = convertPrice(priceKES);
+    // Convert to Paystack format
+    function convertToPaystackAmount(priceKES) {
+      // Always convert to payment currency (userCurrency)
+      const rate = exchangeRates[userCurrency] || 1;
+      let amount = Math.round(priceKES * rate);
       
-      // Paystack uses the smallest unit (cents/kobo)
-      if (['USD', 'EUR', 'GBP', 'AUD', 'CAD'].includes(currency)) {
-        // These use 2 decimal places, so multiply by 100
-        return Math.round(amount * 100);
-      } else {
-        // African currencies typically use whole numbers
-        return Math.round(amount * 100);
-      }
+      // Paystack expects amount in cents
+      return Math.round(amount * 100);
     }
 
     function initializePaymentMethods() {
-      const methods = paymentMethods[userCurrency] || ['paystack'];
+      const methods = paymentMethods[displayCurrency] || ['paystack'];
       const container = document.getElementById('payment-methods');
       
       currentPaymentMethod = methods[0];
@@ -273,7 +276,7 @@
     function setPaymentMethod(method) {
       currentPaymentMethod = method;
       
-      const methods = paymentMethods[userCurrency];
+      const methods = paymentMethods[displayCurrency];
       methods.forEach(m => {
         const btn = document.getElementById(`btn-${m}`);
         if (btn) {
@@ -288,14 +291,14 @@
     }
 
     function createProductCard(product, index) {
-      const convertedPrice = convertPrice(product.priceKES);
-      const displayPrice = formatPrice(convertedPrice, userCurrency);
+      const displayPrice = convertPrice(product.priceKES);
+      const formattedPrice = formatPrice(displayPrice, displayCurrency);
       
       return `
         <div class="bg-white rounded-lg shadow-md p-4">
           <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
           <h3 class="text-lg font-semibold">${product.name}</h3>
-          <p class="text-sm text-gray-500 mb-2">${displayPrice}</p>
+          <p class="text-sm text-gray-500 mb-2">${formattedPrice}</p>
           <p class="text-sm mb-4">${product.description}</p>
           <button onclick="initPayment(${index})" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
             Buy Now
@@ -325,26 +328,29 @@
       const email = prompt('Please enter your email address:');
       if (!email) return;
 
-      const paystackAmount = convertToPaystackAmount(product.priceKES, userCurrency);
-      const paystackCurrency = paystackCurrencies[userCurrency] || 'KES';
+      const paystackAmount = convertToPaystackAmount(product.priceKES);
+      const displayPrice = formatPrice(convertPrice(product.priceKES), displayCurrency);
+      const paymentPrice = formatPrice(Math.round(paystackAmount / 100), userCurrency);
       
       console.log({
-        amount: paystackAmount,
-        currency: paystackCurrency,
-        displayAmount: convertPrice(product.priceKES)
+        displayCurrency: displayCurrency,
+        displayPrice: displayPrice,
+        paymentCurrency: userCurrency,
+        paystackAmount: paystackAmount,
+        paymentPrice: paymentPrice
       });
       
       const handler = PaystackPop.setup({
         key: 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae',
         email: email,
         amount: paystackAmount,
-        currency: paystackCurrency,
+        currency: userCurrency,
         ref: 'ref_' + Math.floor((Math.random() * 1000000000) + 1),
         onClose: function() {
           alert('Payment window closed.');
         },
         callback: function(response) {
-          alert(`Payment successful for ${product.name}! Reference: ${response.reference}`);
+          alert(`Payment successful for ${product.name}!\nShown as: ${displayPrice}\nPaid: ${paymentPrice}\nReference: ${response.reference}`);
         }
       });
       handler.openIframe();
@@ -359,15 +365,15 @@
       const email = prompt('Please enter your email address:');
       if (!email) return;
 
-      const convertedPrice = convertPrice(product.priceKES);
-      const displayPrice = formatPrice(convertedPrice, userCurrency);
+      const displayPrice = formatPrice(convertPrice(product.priceKES), displayCurrency);
+      const kesPrice = formatPrice(product.priceKES, 'KES');
 
-      alert(`M-Pesa payment initiated for ${product.name}!\n\nAmount: ${displayPrice}\nPhone: ${phone}\n\nYou will receive a prompt on your phone to confirm payment.`);
+      alert(`M-Pesa payment initiated for ${product.name}!\n\nDisplay Price: ${displayPrice}\nActual Amount (KES): ${kesPrice}\nPhone: ${phone}\n\nYou will receive a prompt on your phone to confirm payment.`);
       
       console.log({
         product: product.name,
-        amount: convertedPrice,
-        currency: userCurrency,
+        amount: product.priceKES,
+        currency: 'KES',
         phone: phone,
         email: email
       });
