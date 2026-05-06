@@ -3,117 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClearView TV</title>
+<title>ClearView TV Store</title>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #0f0f0f;
-    color: #fff;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
 }
 
-header {
-    background: #000;
+/* HEADER */
+.header {
+    background: #fff;
     padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-}
-
-.hero h1 {
-    font-size: 40px;
-}
-
-.hero p {
-    opacity: 0.7;
-}
-
-.btn {
-    background: #ff3d00;
-    padding: 15px 25px;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-    margin-top: 20px;
-}
-
-.pricing {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 50px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
 }
 
-.card {
-    background: #1c1c1c;
-    padding: 25px;
-    border-radius: 10px;
-    width: 250px;
-    text-align: center;
+.header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 
-.card h2 {
-    margin-bottom: 10px;
+.header h2 {
+    margin: 0;
 }
 
-.card p {
-    opacity: 0.6;
+.header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #666;
 }
 
-footer {
-    text-align: center;
+/* GRID */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
     padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGE */
+.card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+/* INFO */
+.card-content {
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 14px;
+    margin: 0;
+}
+
+.price {
+    color: #000;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* BUTTON */
+.buy-btn {
+    display: block;
+    text-align: center;
     background: #000;
+    color: #fff;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 13px;
 }
 </style>
+
 </head>
 
 <body>
 
-<header>ClearView TV</header>
+<!-- HEADER -->
+<div class="header">
+    <img src="https://via.placeholder.com/60" alt="logo">
+    <div>
+        <h2>ClearView TV</h2>
+        <p>Premium IPTV • Movies • Sports • Affordable instant setup</p>
+    </div>
+</div>
 
-<section class="hero">
-    <h1>Unlimited Movies & Live TV</h1>
-    <p>Stream anytime. Anywhere. No limits.</p>
-    <a href="#pricing" class="btn">Get Access</a>
-</section>
-
-<section id="pricing" class="pricing">
+<!-- PRODUCTS -->
+<div class="products">
 
 <div class="card">
-    <h2>Basic</h2>
-    <p>$5 / month</p>
-    <p>Mobile Access</p>
-    <a href="#" class="btn">Buy Now</a>
+    <img src="https://via.placeholder.com/300x200">
+    <div class="card-content">
+        <p class="card-title">IPTV Ultimate</p>
+        <p class="price">KSh 800</p>
+    </div>
+    <a href="#" class="buy-btn">Buy</a>
 </div>
 
 <div class="card">
-    <h2>Standard</h2>
-    <p>$10 / month</p>
-    <p>HD Streaming</p>
-    <a href="#" class="btn">Buy Now</a>
+    <img src="https://via.placeholder.com/300x200">
+    <div class="card-content">
+        <p class="card-title">Live Sports TV</p>
+        <p class="price">KSh 600</p>
+    </div>
+    <a href="#" class="buy-btn">Buy</a>
 </div>
 
 <div class="card">
-    <h2>Premium</h2>
-    <p>$15 / month</p>
-    <p>4K + Live Sports</p>
-    <a href="#" class="btn">Buy Now</a>
+    <img src="https://via.placeholder.com/300x200">
+    <div class="card-content">
+        <p class="card-title">Netflix Premium</p>
+        <p class="price">KSh 1000</p>
+    </div>
+    <a href="#" class="buy-btn">Buy</a>
 </div>
 
-</section>
+<div class="card">
+    <img src="https://via.placeholder.com/300x200">
+    <div class="card-content">
+        <p class="card-title">Family 4K Package</p>
+        <p class="price">KSh 2000</p>
+    </div>
+    <a href="#" class="buy-btn">Buy</a>
+</div>
 
-<footer>
-    © 2026 ClearView TV
-</footer>
+</div>
 
 </body>
 </html>
