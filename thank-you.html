@@ -3,31 +3,49 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thank You - MyDigitalHub</title>
+  <title>Thank You</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded shadow max-w-lg text-center">
-    <h1 class="text-2xl font-bold text-green-600 mb-4">Thank you for your purchase!</h1>
-    <p id="message" class="text-gray-700 mb-4"></p>
-    <p class="text-sm text-gray-500">A receipt has been or will be sent to the email you provided.</p>
-    <a href="index.html" class="inline-block mt-6 text-blue-500 underline">Back to Home</a>
-  </div>
 
-  <script>
-    function getQueryParam(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name) || '';
-    }
-    const product = getQueryParam('product');
-    const email = getQueryParam('email');
+<div class="bg-white p-8 rounded shadow text-center max-w-md">
+  <h1 class="text-2xl font-bold text-green-600 mb-3">
+    Payment Successful ✅
+  </h1>
 
-    const msgEl = document.getElementById('message');
-    if (product && email) {
-      msgEl.textContent = `You have successfully purchased "${product}" using: ${email}`;
-    } else {
-      msgEl.textContent = "Your payment appears successful. If you don't see details here, check your email for confirmation.";
-    }
-  </script>
+  <p id="msg" class="mb-4"></p>
+
+  <a id="whatsappBtn" target="_blank"
+     class="block bg-green-500 text-white py-2 rounded mb-3">
+     Get Access on WhatsApp
+  </a>
+
+  <a href="index.html" class="text-blue-500 underline">
+    Back to Home
+  </a>
+</div>
+
+<script>
+function getParam(name) {
+  return new URL(window.location.href).searchParams.get(name);
+}
+
+const product = getParam('product');
+const email = getParam('email');
+
+const msg = document.getElementById('msg');
+const btn = document.getElementById('whatsappBtn');
+
+if (product && email) {
+  msg.innerHTML = `You purchased <b>${product}</b><br>Check WhatsApp for delivery`;
+
+  btn.href = `https://wa.me/254757780414?text=Hello%20I%20paid%20for%20${product}%20using%20${email}`;
+} else {
+  msg.innerHTML = "Payment received. Contact support.";
+}
+</script>
+
 </body>
 </html>
