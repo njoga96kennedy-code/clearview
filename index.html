@@ -7,8 +7,8 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- PayPal -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AfqpacUeuOAbye2O9J9dNJU7hkwTXfTsay3_Yt1Yugr6LU8KEMGUCYXMhHq886CdIfGPA0F7UAl4RSIL&currency=USD&components=buttons&enable-funding=card"></script>
+  <!-- Paystack -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -46,6 +46,8 @@
 </footer>
 
 <script>
+const PAYSTACK_PUBLIC_KEY = "pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae"; // 🔴 REPLACE THIS
+
 const products = [
   {
     name: 'Premium Live TV Access',
@@ -67,6 +69,43 @@ const products = [
   }
 ];
 
+function payWithPaystack(product) {
+  let email = prompt("Enter your email:");
+  if (!email) return;
+
+  let handler = PaystackPop.setup({
+    key: PAYSTACK_PUBLIC_KEY,
+    email: email,
+
+    // Paystack uses kobo (multiply by 100)
+    amount: product.price * 100,
+    currency: "USD",
+
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Product",
+          variable_name: "product",
+          value: product.name
+        }
+      ]
+    },
+
+    callback: function(response) {
+      const productName = encodeURIComponent(product.name);
+      const userEmail = encodeURIComponent(email);
+
+      window.location.href = `thank-you.html?product=${productName}&email=${userEmail}`;
+    },
+
+    onClose: function() {
+      alert("Transaction cancelled");
+    }
+  });
+
+  handler.openIframe();
+}
+
 function createCard(p, i) {
   return `
     <div class="bg-white rounded-xl shadow p-4">
@@ -80,48 +119,23 @@ function createCard(p, i) {
       <p class="text-green-600 font-semibold">$${p.price}</p>
       <p class="text-sm text-gray-500 mb-2">${p.description}</p>
 
-      <p class="text-xs text-gray-400">✔ Instant Delivery</p>
+      <p class="text-xs text-gray-400 mb-3">✔ Instant Delivery</p>
 
-      <div id="paypal-${i}" class="mt-2"></div>
+      <button 
+        onclick="payWithPaystack(products[${i}])"
+        class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        Pay Now
+      </button>
     </div>
   `;
 }
 
 function render() {
   const container = document.getElementById('products');
-
   container.innerHTML = products.map((p, i) => createCard(p, i)).join('');
-
-  products.forEach((p, i) => {
-    paypal.Buttons({
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: p.price.toFixed(2) },
-            description: p.name
-          }]
-        });
-      },
-
-      onApprove: (data, actions) => {
-        return actions.order.capture().then(details => {
-          const product = encodeURIComponent(p.name);
-          const email = encodeURIComponent(details.payer.email_address);
-
-          window.location.href = `thank-you.html?product=${product}&email=${email}`;
-        });
-      },
-
-      onError: (err) => {
-        console.error(err);
-        alert("Payment failed. Try again.");
-      }
-
-    }).render(`#paypal-${i}`);
-  });
 }
 
-window.addEventListener('DOMContentLoaded', render);
+window.onload = render;
 </script>
 
 </body>
