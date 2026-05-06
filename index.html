@@ -59,17 +59,35 @@
     let currentProduct = null;
     let userCurrency = 'KES';
     let userCountry = 'KE';
+    
+    // Exchange rates - base price in KES
     let exchangeRates = {
       KES: 1,
-      NGN: 1500,
-      GHS: 10,
-      UGX: 3500,
-      TZS: 2500,
-      ZAR: 18,
+      NGN: 130,
+      GHS: 0.65,
+      UGX: 28.5,
+      TZS: 200,
+      ZAR: 1.1,
       USD: 0.0077,
-      EUR: 0.0071,
+      EUR: 0.0070,
       GBP: 0.0061,
-      INR: 0.64
+      INR: 0.64,
+      CAD: 0.011,
+      AUD: 0.012
+    };
+
+    // Paystack supported currencies
+    const paystackCurrencies = {
+      KES: 'KES',
+      NGN: 'NGN',
+      GHS: 'GHS',
+      UGX: 'UGX',
+      TZS: 'TZS',
+      ZAR: 'ZAR',
+      USD: 'USD',
+      EUR: 'EUR',
+      GBP: 'GBP',
+      INR: 'INR'
     };
 
     const currencyCountryMap = {
@@ -152,7 +170,7 @@
         if (currencyCountryMap[userCountry]) {
           userCurrency = currencyCountryMap[userCountry].currency;
         } else {
-          userCurrency = 'KES'; // Default fallback
+          userCurrency = 'KES';
         }
         
         updateLocationDisplay();
@@ -174,8 +192,6 @@
 
     function changeCurrency() {
       const countries = Object.keys(currencyCountryMap);
-      const options = countries.map(code => `${currencyCountryMap[code].flag} ${currencyCountryMap[code].name} (${currencyCountryMap[code].currency})`).join('\n');
-      
       const selectedIndex = prompt('Select your country/currency:\n\n' + countries.map((code, i) => `${i + 1}. ${currencyCountryMap[code].flag} ${currencyCountryMap[code].name} (${currencyCountryMap[code].currency})`).join('\n'));
       
       if (selectedIndex && selectedIndex > 0 && selectedIndex <= countries.length) {
@@ -217,11 +233,25 @@
       }
     }
 
+    // Convert to Paystack format (cents)
+    function convertToPaystackAmount(priceKES, currency) {
+      let amount = convertPrice(priceKES);
+      
+      // Paystack uses the smallest unit (cents/kobo)
+      if (['USD', 'EUR', 'GBP', 'AUD', 'CAD'].includes(currency)) {
+        // These use 2 decimal places, so multiply by 100
+        return Math.round(amount * 100);
+      } else {
+        // African currencies typically use whole numbers
+        return Math.round(amount * 100);
+      }
+    }
+
     function initializePaymentMethods() {
       const methods = paymentMethods[userCurrency] || ['paystack'];
       const container = document.getElementById('payment-methods');
       
-      currentPaymentMethod = methods[0]; // Set default to first available method
+      currentPaymentMethod = methods[0];
       
       container.innerHTML = methods.map(method => {
         const methodName = method === 'paystack' ? '🇰🇪 Paystack' : '📱 M-Pesa (Kenya)';
@@ -243,7 +273,6 @@
     function setPaymentMethod(method) {
       currentPaymentMethod = method;
       
-      // Update button styling
       const methods = paymentMethods[userCurrency];
       methods.forEach(m => {
         const btn = document.getElementById(`btn-${m}`);
@@ -296,13 +325,20 @@
       const email = prompt('Please enter your email address:');
       if (!email) return;
 
-      const convertedPrice = convertPrice(product.priceKES);
+      const paystackAmount = convertToPaystackAmount(product.priceKES, userCurrency);
+      const paystackCurrency = paystackCurrencies[userCurrency] || 'KES';
+      
+      console.log({
+        amount: paystackAmount,
+        currency: paystackCurrency,
+        displayAmount: convertPrice(product.priceKES)
+      });
       
       const handler = PaystackPop.setup({
         key: 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae',
         email: email,
-        amount: convertedPrice,
-        currency: userCurrency,
+        amount: paystackAmount,
+        currency: paystackCurrency,
         ref: 'ref_' + Math.floor((Math.random() * 1000000000) + 1),
         onClose: function() {
           alert('Payment window closed.');
