@@ -1,152 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyDigitalHub - Premium Access</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyDigitalHub</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Paystack -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
 
-<!-- HEADER -->
 <header class="bg-white shadow-md p-4 flex justify-between">
-  <h1 class="text-2xl font-bold text-blue-600">MyDigitalHub</h1>
-  <nav>
-    <a href="#" class="px-3">Home</a>
-    <a href="#products" class="px-3">Products</a>
-    <a href="#contact" class="px-3">Contact</a>
-  </nav>
+  <h1 class="text-xl font-bold text-blue-600">MyDigitalHub</h1>
 </header>
 
-<!-- HERO -->
-<section class="text-center py-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-  <h2 class="text-4xl font-bold mb-3">Unlimited Entertainment, One Click Away</h2>
-  <p class="mb-3">Instant access to streaming & sports</p>
-  <span class="bg-white text-blue-600 px-4 py-2 rounded-full font-semibold">
-    🔥 Pay Easily with M-Pesa
-  </span>
-</section>
+<main class="p-6">
 
-<!-- PRODUCTS -->
-<section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
+<h2 class="text-2xl font-bold text-center mb-6">
+Affordable Digital Subscriptions
+</h2>
 
-<!-- FOOTER -->
-<footer id="contact" class="bg-white p-6 text-center border-t">
-  <p>WhatsApp: 
-    <a href="https://wa.me/254757780414" class="text-blue-500 underline">
-      +254757780414
-    </a>
-  </p>
-  <p class="text-sm text-gray-400 mt-2">© 2025 MyDigitalHub</p>
-</footer>
+<div id="products" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+
+</main>
 
 <script>
-const PAYSTACK_PUBLIC_KEY = "sk_live_2f711a1fffb8e9eccc4609849a1e97dbbb270c94"; // 🔴 REPLACE
+
+const PAYSTACK_KEY = "YOUR_PUBLIC_KEY_HERE";
 
 const products = [
   {
-    name: 'Premium Live TV Access',
-    price: 600, // KES
-    description: 'Watch global live TV instantly.',
-    image: './assets/dstv.jpg'
+    name: "DSTV Stream",
+    price: 800,
+    image: "dstv.jpg"
   },
   {
-    name: 'Sports Streaming Package',
-    price: 850,
-    description: 'Enjoy football & live sports.',
-    image: './assets/sports.jpg'
+    name: "Startimes ON",
+    price: 1000,
+    image: "startimes.jpg"
   },
   {
-    name: 'Movies & Series Access',
+    name: "Sports TV",
     price: 900,
-    description: 'Unlimited trending movies.',
-    image: './assets/movies.jpg'
+    image: "sports.jpg"
+  },
+  {
+    name: "Movies Package",
+    price: 950,
+    image: "movies.jpg"
+  },
+  {
+    name: "YouTube Premium",
+    price: 700,
+    image: "youtube.jpg"
   }
 ];
 
-function payWithPaystack(product, index) {
-  const emailInput = document.getElementById(`email-${index}`);
-  const email = emailInput.value;
+function payWithPaystack(product) {
 
-  if (!email) {
-    alert("Please enter your email");
-    return;
-  }
+  let email = prompt("Enter your email:");
+  if(!email) return;
 
   let handler = PaystackPop.setup({
-    key: PAYSTACK_PUBLIC_KEY,
+    key: PAYSTACK_KEY,
     email: email,
-
-    amount: product.price * 100, // in cents
+    amount: product.price * 100,
     currency: "KES",
 
-    channels: ['mobile_money', 'card'], // ✅ enables M-Pesa
-
-    metadata: {
-      custom_fields: [
-        {
-          display_name: "Product",
-          variable_name: "product",
-          value: product.name
-        }
-      ]
-    },
-
     callback: function(response) {
-      const productName = encodeURIComponent(product.name);
-      const userEmail = encodeURIComponent(email);
-
-      window.location.href = `thank-you.html?product=${productName}&email=${userEmail}`;
+      window.location.href = 
+      `thank-you.html?product=${encodeURIComponent(product.name)}&email=${email}`;
     },
 
     onClose: function() {
-      alert("Transaction cancelled");
+      alert("Payment cancelled");
     }
   });
 
   handler.openIframe();
 }
 
-function createCard(p, i) {
-  return `
-    <div class="bg-white rounded-xl shadow p-4">
-      <img 
-        src="${p.image}" 
-        onerror="this.src='https://via.placeholder.com/300x200?text=Image+Missing'"
-        class="w-full h-40 object-cover rounded mb-3"
-      >
+function renderProducts() {
 
-      <h3 class="font-bold">${p.name}</h3>
-      <p class="text-green-600 font-semibold">KES ${p.price}</p>
-      <p class="text-sm text-gray-500 mb-2">${p.description}</p>
+  const container = document.getElementById("products");
 
-      <input 
-        type="email" 
-        id="email-${i}" 
-        placeholder="Enter your email"
-        class="w-full border p-2 rounded mb-2"
-      >
+  container.innerHTML = products.map(p => `
+    <div class="bg-white p-4 rounded shadow">
 
-      <button 
-        onclick="payWithPaystack(products[${i}], ${i})"
-        class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
-        Pay with M-Pesa
+      <img src="${p.image}" class="w-full h-40 object-cover mb-3 rounded">
+
+      <h3 class="font-bold text-lg">${p.name}</h3>
+      <p class="text-gray-600 mb-3">KES ${p.price}</p>
+
+      <button onclick='payWithPaystack(${JSON.stringify(p)})'
+      class="bg-blue-600 text-white px-4 py-2 rounded w-full">
+        Pay Now
       </button>
+
     </div>
-  `;
+  `).join("");
+
 }
 
-function render() {
-  const container = document.getElementById('products');
-  container.innerHTML = products.map((p, i) => createCard(p, i)).join('');
-}
+renderProducts();
 
-window.onload = render;
 </script>
 
 </body>
