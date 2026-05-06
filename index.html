@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyDigitalHub - Premium Digital Access</title>
+  <title>MyDigitalHub - Premium Access</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -28,7 +28,7 @@
   <h2 class="text-4xl font-bold mb-3">Unlimited Entertainment, One Click Away</h2>
   <p class="mb-3">Instant access to streaming & sports</p>
   <span class="bg-white text-blue-600 px-4 py-2 rounded-full font-semibold">
-    🔥 From $5 Only
+    🔥 Pay Easily with M-Pesa
   </span>
 </section>
 
@@ -46,40 +46,46 @@
 </footer>
 
 <script>
-const PAYSTACK_PUBLIC_KEY = "pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae"; // 🔴 REPLACE THIS
+const PAYSTACK_PUBLIC_KEY = "sk_live_2f711a1fffb8e9eccc4609849a1e97dbbb270c94"; // 🔴 REPLACE
 
 const products = [
   {
     name: 'Premium Live TV Access',
-    price: 6.00,
+    price: 600, // KES
     description: 'Watch global live TV instantly.',
     image: './assets/dstv.jpg'
   },
   {
     name: 'Sports Streaming Package',
-    price: 8.50,
+    price: 850,
     description: 'Enjoy football & live sports.',
     image: './assets/sports.jpg'
   },
   {
     name: 'Movies & Series Access',
-    price: 9.00,
+    price: 900,
     description: 'Unlimited trending movies.',
     image: './assets/movies.jpg'
   }
 ];
 
-function payWithPaystack(product) {
-  let email = prompt("Enter your email:");
-  if (!email) return;
+function payWithPaystack(product, index) {
+  const emailInput = document.getElementById(`email-${index}`);
+  const email = emailInput.value;
+
+  if (!email) {
+    alert("Please enter your email");
+    return;
+  }
 
   let handler = PaystackPop.setup({
     key: PAYSTACK_PUBLIC_KEY,
     email: email,
 
-    // Paystack uses kobo (multiply by 100)
-    amount: product.price * 100,
-    currency: 'mobile_money', 'card',
+    amount: product.price * 100, // in cents
+    currency: "KES",
+
+    channels: ['mobile_money', 'card'], // ✅ enables M-Pesa
 
     metadata: {
       custom_fields: [
@@ -116,15 +122,20 @@ function createCard(p, i) {
       >
 
       <h3 class="font-bold">${p.name}</h3>
-      <p class="text-green-600 font-semibold">$${p.price}</p>
+      <p class="text-green-600 font-semibold">KES ${p.price}</p>
       <p class="text-sm text-gray-500 mb-2">${p.description}</p>
 
-      <p class="text-xs text-gray-400 mb-3">✔ Instant Delivery</p>
+      <input 
+        type="email" 
+        id="email-${i}" 
+        placeholder="Enter your email"
+        class="w-full border p-2 rounded mb-2"
+      >
 
       <button 
-        onclick="payWithPaystack(products[${i}])"
-        class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-        Pay Now
+        onclick="payWithPaystack(products[${i}], ${i})"
+        class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+        Pay with M-Pesa
       </button>
     </div>
   `;
