@@ -35,19 +35,13 @@
 <!-- PRODUCTS -->
 <section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
 
-<!-- TESTIMONIALS -->
-<section class="p-6">
-  <h3 class="text-xl font-bold text-center mb-4">What Customers Say</h3>
-  <div class="grid md:grid-cols-3 gap-4">
-    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Fast delivery. Works perfectly!</div>
-    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Best deals online 🔥</div>
-    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Very reliable service</div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer id="contact" class="bg-white p-6 text-center border-t">
-  <p>WhatsApp: <a href="https://wa.me/254757780414" class="text-blue-500 underline">+254757780414</a></p>
+  <p>WhatsApp: 
+    <a href="https://wa.me/254757780414" class="text-blue-500 underline">
+      +254757780414
+    </a>
+  </p>
   <p class="text-sm text-gray-400 mt-2">© 2025 MyDigitalHub</p>
 </footer>
 
@@ -57,30 +51,37 @@ const products = [
     name: 'Premium Live TV Access',
     price: 6.00,
     description: 'Watch global live TV instantly.',
-    image: 'assets/dstv.jpg'
+    image: './assets/dstv.jpg'
   },
   {
     name: 'Sports Streaming Package',
     price: 8.50,
     description: 'Enjoy football & live sports.',
-    image: 'assets/sports.jpg'
+    image: './assets/sports.jpg'
   },
   {
     name: 'Movies & Series Access',
     price: 9.00,
     description: 'Unlimited trending movies.',
-    image: 'assets/movies.jpg'
+    image: './assets/movies.jpg'
   }
 ];
 
 function createCard(p, i) {
   return `
     <div class="bg-white rounded-xl shadow p-4">
-      <img src="${p.image}" class="w-full h-40 object-cover rounded mb-3">
+      <img 
+        src="${p.image}" 
+        onerror="this.src='https://via.placeholder.com/300x200?text=Image+Missing'"
+        class="w-full h-40 object-cover rounded mb-3"
+      >
+
       <h3 class="font-bold">${p.name}</h3>
-      <p class="text-green-600">$${p.price}</p>
+      <p class="text-green-600 font-semibold">$${p.price}</p>
       <p class="text-sm text-gray-500 mb-2">${p.description}</p>
+
       <p class="text-xs text-gray-400">✔ Instant Delivery</p>
+
       <div id="paypal-${i}" class="mt-2"></div>
     </div>
   `;
@@ -88,14 +89,15 @@ function createCard(p, i) {
 
 function render() {
   const container = document.getElementById('products');
-  container.innerHTML = products.map(createCard).join('');
+
+  container.innerHTML = products.map((p, i) => createCard(p, i)).join('');
 
   products.forEach((p, i) => {
     paypal.Buttons({
       createOrder: (data, actions) => {
         return actions.order.create({
           purchase_units: [{
-            amount: { value: p.price },
+            amount: { value: p.price.toFixed(2) },
             description: p.name
           }]
         });
@@ -108,12 +110,18 @@ function render() {
 
           window.location.href = `thank-you.html?product=${product}&email=${email}`;
         });
+      },
+
+      onError: (err) => {
+        console.error(err);
+        alert("Payment failed. Try again.");
       }
+
     }).render(`#paypal-${i}`);
   });
 }
 
-window.onload = render;
+window.addEventListener('DOMContentLoaded', render);
 </script>
 
 </body>
