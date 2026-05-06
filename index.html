@@ -3,131 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyDigitalHub - Digital Subscriptions</title>
+  <title>MyDigitalHub - Premium Digital Access</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- ✅ Live PayPal SDK with Card Buttons -->
+  <!-- PayPal -->
   <script src="https://www.paypal.com/sdk/js?client-id=AfqpacUeuOAbye2O9J9dNJU7hkwTXfTsay3_Yt1Yugr6LU8KEMGUCYXMhHq886CdIfGPA0F7UAl4RSIL&currency=USD&components=buttons&enable-funding=card"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-800">
 
-  <!-- Header -->
-  <header class="bg-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-blue-600">MyDigitalHub</h1>
-    <nav>
-      <a href="#" class="px-4 text-gray-700 hover:text-blue-500">Home</a>
-      <a href="#products" class="px-4 text-gray-700 hover:text-blue-500">Products</a>
-      <a href="#contact" class="px-4 text-gray-700 hover:text-blue-500">Contact</a>
-    </nav>
-  </header>
+<!-- HEADER -->
+<header class="bg-white shadow-md p-4 flex justify-between">
+  <h1 class="text-2xl font-bold text-blue-600">MyDigitalHub</h1>
+  <nav>
+    <a href="#" class="px-3">Home</a>
+    <a href="#products" class="px-3">Products</a>
+    <a href="#contact" class="px-3">Contact</a>
+  </nav>
+</header>
 
-  <!-- Hero Section -->
-  <main class="p-6">
-    <section class="text-center mb-10">
-      <h2 class="text-3xl font-bold mb-2">Your One-Stop Shop for Digital Subscriptions</h2>
-      <p class="text-gray-600">Affordable plans, PayPal secure checkout in USD!</p>
-    </section>
+<!-- HERO -->
+<section class="text-center py-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+  <h2 class="text-4xl font-bold mb-3">Unlimited Entertainment, One Click Away</h2>
+  <p class="mb-3">Instant access to streaming & sports</p>
+  <span class="bg-white text-blue-600 px-4 py-2 rounded-full font-semibold">
+    🔥 From $5 Only
+  </span>
+</section>
 
-    <!-- Product Grid -->
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
-  </main>
+<!-- PRODUCTS -->
+<section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
 
-  <!-- Footer -->
-  <footer id="contact" class="bg-white p-6 text-center mt-10 border-t">
-    <p class="text-gray-600">Contact us on WhatsApp: <a href="https://wa.me/254757780414" class="text-blue-500 underline">+254757780414</a></p>
-    <p class="text-sm text-gray-400 mt-2">&copy; 2025 MyDigitalHub</p>
-  </footer>
+<!-- TESTIMONIALS -->
+<section class="p-6">
+  <h3 class="text-xl font-bold text-center mb-4">What Customers Say</h3>
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Fast delivery. Works perfectly!</div>
+    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Best deals online 🔥</div>
+    <div class="bg-white p-4 rounded shadow">⭐⭐⭐⭐⭐<br>Very reliable service</div>
+  </div>
+</section>
 
-  <!-- JavaScript -->
-  <script>
-    const products = [
-      {
-        name: 'DSTV Stream',
-        price: 6.00,
-        description: 'Stream live DSTV channels for 1 month.',
-        image: 'assets/dstv.jpg'
+<!-- FOOTER -->
+<footer id="contact" class="bg-white p-6 text-center border-t">
+  <p>WhatsApp: <a href="https://wa.me/254757780414" class="text-blue-500 underline">+254757780414</a></p>
+  <p class="text-sm text-gray-400 mt-2">© 2025 MyDigitalHub</p>
+</footer>
+
+<script>
+const products = [
+  {
+    name: 'Premium Live TV Access',
+    price: 6.00,
+    description: 'Watch global live TV instantly.',
+    image: 'assets/dstv.jpg'
+  },
+  {
+    name: 'Sports Streaming Package',
+    price: 8.50,
+    description: 'Enjoy football & live sports.',
+    image: 'assets/sports.jpg'
+  },
+  {
+    name: 'Movies & Series Access',
+    price: 9.00,
+    description: 'Unlimited trending movies.',
+    image: 'assets/movies.jpg'
+  }
+];
+
+function createCard(p, i) {
+  return `
+    <div class="bg-white rounded-xl shadow p-4">
+      <img src="${p.image}" class="w-full h-40 object-cover rounded mb-3">
+      <h3 class="font-bold">${p.name}</h3>
+      <p class="text-green-600">$${p.price}</p>
+      <p class="text-sm text-gray-500 mb-2">${p.description}</p>
+      <p class="text-xs text-gray-400">✔ Instant Delivery</p>
+      <div id="paypal-${i}" class="mt-2"></div>
+    </div>
+  `;
+}
+
+function render() {
+  const container = document.getElementById('products');
+  container.innerHTML = products.map(createCard).join('');
+
+  products.forEach((p, i) => {
+    paypal.Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: p.price },
+            description: p.name
+          }]
+        });
       },
-      {
-        name: 'Startimes ON',
-        price: 9.80,
-        description: 'Watch live channels without monthly subscription.',
-        image: 'assets/startimes.jpg'
-      },
-      {
-        name: 'Sports TV',
-        price: 8.50,
-        description: 'Unlimited sports coverage including EPL, La Liga, and more.',
-        image: 'assets/sports.jpg'
-      },
-      {
-        name: 'Netflix TV',
-        price: 9.00,
-        description: 'Unlimited access to trending movies and TV series.',
-        image: 'assets/movies.jpg'
-      },
-      {
-        name: 'YouTube Premium',
-        price: 5.50,
-        description: 'Ad-free YouTube experience with offline viewing.',
-        image: 'assets/youtube.jpg'
-      },
-      {
-        name: 'TikTok 18+',
-        price: 4.00,
-        description: 'Exclusive access to 18+ content on TikTok.',
-        image: 'assets/tiktok.jpg'
+
+      onApprove: (data, actions) => {
+        return actions.order.capture().then(details => {
+          const product = encodeURIComponent(p.name);
+          const email = encodeURIComponent(details.payer.email_address);
+
+          window.location.href = `thank-you.html?product=${product}&email=${email}`;
+        });
       }
-    ];
+    }).render(`#paypal-${i}`);
+  });
+}
 
-    function createProductCard(product, index) {
-      return `
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
-          <h3 class="text-lg font-semibold">${product.name}</h3>
-          <p class="text-sm text-gray-500 mb-2">$${product.price.toFixed(2)}</p>
-          <p class="text-sm mb-4">${product.description}</p>
-          <div id="paypal-button-${index}" class="mt-2"></div>
-        </div>
-      `;
-    }
-
-    function renderProducts() {
-      const container = document.getElementById('products');
-      container.innerHTML = products.map((p, i) => createProductCard(p, i)).join('');
-
-      products.forEach((product, index) => {
-        paypal.Buttons({
-          style: {
-            layout: 'horizontal',
-            color: 'blue',
-            shape: 'pill',
-            label: 'pay'
-          },
-          createOrder: function(data, actions) {
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: product.price.toFixed(2)
-                },
-                description: product.name
-              }]
-            });
-          },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              alert(`Payment successful for ${product.name}! Buyer: ${details.payer.name.given_name}`);
-            });
-          },
-          onError: function(err) {
-            console.error(err);
-            alert('Payment could not be processed.');
-          }
-        }).render(`#paypal-button-${index}`);
-      });
-    }
-
-    window.addEventListener('DOMContentLoaded', renderProducts);
-  </script>
+window.onload = render;
+</script>
 
 </body>
 </html>
