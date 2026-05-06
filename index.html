@@ -8,9 +8,6 @@
 
   <!-- ✅ Paystack SDK -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
-  
-  <!-- ✅ Stripe SDK -->
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -38,9 +35,6 @@
         <button onclick="setPaymentMethod('paystack')" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition font-semibold ring-4 ring-yellow-400" id="btn-paystack">
           🇰🇪 Paystack (Africa)
         </button>
-        <button onclick="setPaymentMethod('stripe')" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-semibold" id="btn-stripe">
-          🌍 Stripe (Global)
-        </button>
         <button onclick="setPaymentMethod('mpesa')" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-semibold" id="btn-mpesa">
           📱 M-Pesa (Kenya)
         </button>
@@ -51,18 +45,6 @@
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
   </main>
 
-  <!-- Payment Modal for Stripe -->
-  <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-8 rounded-lg max-w-md w-full">
-      <h3 class="text-xl font-bold mb-4">Complete Payment</h3>
-      <div id="card-element" class="border border-gray-300 p-3 rounded-md mb-4"></div>
-      <div id="card-errors" class="text-red-500 mb-4"></div>
-      <input type="email" id="email-input" placeholder="Email address" class="w-full border border-gray-300 p-2 rounded-md mb-4">
-      <button id="pay-button" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Pay Now</button>
-      <button onclick="closePaymentModal()" class="w-full mt-2 bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition">Cancel</button>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer id="contact" class="bg-white p-6 text-center mt-10 border-t">
     <p class="text-gray-600">Contact us on WhatsApp: <a href="https://wa.me/254781052997" class="text-blue-500 underline">+254781052997</a></p>
@@ -71,9 +53,6 @@
 
   <!-- JavaScript -->
   <script>
-    let stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE'); // Replace with your actual Stripe public key
-    let elements = stripe.elements();
-    let cardElement = elements.create('card');
     let currentPaymentMethod = 'paystack';
     let currentProduct = null;
 
@@ -81,42 +60,36 @@
       {
         name: 'DSTV Stream',
         priceKES: 600,
-        priceUSD: 4.5,
         description: 'Stream live DSTV channels for 1 month.',
         image: 'assets/dstv.jpg'
       },
       {
         name: 'Startimes ON',
         priceKES: 900,
-        priceUSD: 7.0,
         description: 'Watch live channels without monthly subscription.',
         image: 'assets/startimes.jpg'
       },
       {
         name: 'Sports TV',
         priceKES: 800,
-        priceUSD: 6.0,
         description: 'Unlimited sports coverage including EPL, La Liga, and more.',
         image: 'assets/sports.jpg'
       },
       {
         name: 'Netflix TV',
         priceKES: 900,
-        priceUSD: 7.0,
         description: 'Unlimited access to trending movies and TV series.',
         image: 'assets/movies.jpg'
       },
       {
         name: 'YouTube Premium',
         priceKES: 550,
-        priceUSD: 4.0,
         description: 'Ad-free YouTube experience with offline viewing.',
         image: 'assets/youtube.jpg'
       },
       {
         name: 'TikTok 18+',
         priceKES: 400,
-        priceUSD: 3.0,
         description: 'Exclusive access to 18+ content on TikTok.',
         image: 'assets/tiktok.jpg'
       }
@@ -127,31 +100,24 @@
       
       // Update button styling
       document.getElementById('btn-paystack').classList.remove('ring-4', 'ring-yellow-400');
-      document.getElementById('btn-stripe').classList.remove('ring-4', 'ring-yellow-400');
       document.getElementById('btn-mpesa').classList.remove('ring-4', 'ring-yellow-400');
       
       if (method === 'paystack') {
         document.getElementById('btn-paystack').classList.add('ring-4', 'ring-yellow-400');
-      } else if (method === 'stripe') {
-        document.getElementById('btn-stripe').classList.add('ring-4', 'ring-yellow-400');
       } else if (method === 'mpesa') {
         document.getElementById('btn-mpesa').classList.add('ring-4', 'ring-yellow-400');
       }
 
-      // Re-render products to update prices
+      // Re-render products
       renderProducts();
     }
 
     function createProductCard(product, index) {
-      const displayPrice = currentPaymentMethod === 'stripe' 
-        ? `$${product.priceUSD.toFixed(2)}` 
-        : `KES ${(product.priceKES / 100).toFixed(2)}`;
-      
       return `
         <div class="bg-white rounded-lg shadow-md p-4">
           <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
           <h3 class="text-lg font-semibold">${product.name}</h3>
-          <p class="text-sm text-gray-500 mb-2">${displayPrice}</p>
+          <p class="text-sm text-gray-500 mb-2">KES ${(product.priceKES / 100).toFixed(2)}</p>
           <p class="text-sm mb-4">${product.description}</p>
           <button onclick="initPayment(${index})" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
             Buy Now
@@ -170,8 +136,6 @@
 
       if (currentPaymentMethod === 'paystack') {
         payWithPaystack(productIndex);
-      } else if (currentPaymentMethod === 'stripe') {
-        openPaymentModal();
       } else if (currentPaymentMethod === 'mpesa') {
         payWithMPesa(productIndex);
       }
@@ -184,7 +148,7 @@
       if (!email) return;
 
       const handler = PaystackPop.setup({
-        key: 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae', // Replace with your actual Paystack public key
+        key: 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae',
         email: email,
         amount: product.priceKES,
         currency: 'KES',
@@ -199,45 +163,6 @@
       });
       handler.openIframe();
     }
-
-    // ===== STRIPE INTEGRATION =====
-    function openPaymentModal() {
-      document.getElementById('paymentModal').classList.remove('hidden');
-      if (!cardElement._element) {
-        cardElement.mount('#card-element');
-      }
-    }
-
-    function closePaymentModal() {
-      document.getElementById('paymentModal').classList.add('hidden');
-    }
-
-    document.getElementById('pay-button').addEventListener('click', async function() {
-      const email = document.getElementById('email-input').value;
-      if (!email) {
-        alert('Please enter your email address');
-        return;
-      }
-
-      const { token } = await stripe.createToken(cardElement);
-      if (token) {
-        alert(`Payment successful with Stripe! Token: ${token.id}\nProduct: ${currentProduct.name}`);
-        closePaymentModal();
-        document.getElementById('email-input').value = '';
-        // Here you would send the token to your backend for processing
-      } else {
-        document.getElementById('card-errors').textContent = 'Error creating token';
-      }
-    });
-
-    cardElement.addEventListener('change', function(event) {
-      const displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
 
     // ===== M-PESA INTEGRATION =====
     function payWithMPesa(productIndex) {
