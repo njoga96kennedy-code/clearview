@@ -6,8 +6,8 @@
   <title>MyDigitalHub - Digital Subscriptions</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- ✅ Live PayPal SDK with Card Buttons -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AfqpacUeuOAbye2O9J9dNJU7hkwTXfTsay3_Yt1Yugr6LU8KEMGUCYXMhHq886CdIfGPA0F7UAl4RSIL&currency=USD&components=buttons&enable-funding=card"></script>
+  <!-- ✅ Paystack SDK -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -25,7 +25,7 @@
   <main class="p-6">
     <section class="text-center mb-10">
       <h2 class="text-3xl font-bold mb-2">Your One-Stop Shop for Digital Subscriptions</h2>
-      <p class="text-gray-600">Affordable plans, PayPal secure checkout in USD!</p>
+      <p class="text-gray-600">Affordable plans, Paystack secure checkout!</p>
     </section>
 
     <!-- Product Grid -->
@@ -43,37 +43,37 @@
     const products = [
       {
         name: 'DSTV Stream',
-        price: 6.00,
+        price: 600,
         description: 'Stream live DSTV channels for 1 month.',
         image: 'assets/dstv.jpg'
       },
       {
         name: 'Startimes ON',
-        price: 9.80,
+        price: 980,
         description: 'Watch live channels without monthly subscription.',
         image: 'assets/startimes.jpg'
       },
       {
         name: 'Sports TV',
-        price: 8.50,
+        price: 850,
         description: 'Unlimited sports coverage including EPL, La Liga, and more.',
         image: 'assets/sports.jpg'
       },
       {
         name: 'Netflix TV',
-        price: 9.00,
+        price: 900,
         description: 'Unlimited access to trending movies and TV series.',
         image: 'assets/movies.jpg'
       },
       {
         name: 'YouTube Premium',
-        price: 5.50,
+        price: 550,
         description: 'Ad-free YouTube experience with offline viewing.',
         image: 'assets/youtube.jpg'
       },
       {
         name: 'TikTok 18+',
-        price: 4.00,
+        price: 400,
         description: 'Exclusive access to 18+ content on TikTok.',
         image: 'assets/tiktok.jpg'
       }
@@ -84,46 +84,43 @@
         <div class="bg-white rounded-lg shadow-md p-4">
           <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
           <h3 class="text-lg font-semibold">${product.name}</h3>
-          <p class="text-sm text-gray-500 mb-2">$${product.price.toFixed(2)}</p>
+          <p class="text-sm text-gray-500 mb-2">KES ${(product.price / 100).toFixed(2)}</p>
           <p class="text-sm mb-4">${product.description}</p>
-          <div id="paypal-button-${index}" class="mt-2"></div>
+          <button onclick="payWithPaystack(${index})" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
+            Buy Now
+          </button>
         </div>
       `;
+    }
+
+    function payWithPaystack(productIndex) {
+      const product = products[productIndex];
+      
+      // Get user email (you may want to add a form for this)
+      const email = prompt('Please enter your email address:');
+      if (!email) return;
+
+      const handler = PaystackPop.setup({
+        key: 'pk_live_YOUR_PUBLIC_KEY_HERE', // Replace with your actual Paystack public key
+        email: email,
+        amount: product.price, // Amount in cents (kobo)
+        currency: 'KES',
+        ref: 'ref_' + Math.floor((Math.random() * 1000000000) + 1),
+        onClose: function() {
+          alert('Payment window closed.');
+        },
+        callback: function(response) {
+          alert(`Payment successful for ${product.name}! Reference: ${response.reference}`);
+          // Optionally redirect to thank you page
+          // window.location.href = `thank-you.html?product=${product.name}&email=${email}&ref=${response.reference}`;
+        }
+      });
+      handler.openIframe();
     }
 
     function renderProducts() {
       const container = document.getElementById('products');
       container.innerHTML = products.map((p, i) => createProductCard(p, i)).join('');
-
-      products.forEach((product, index) => {
-        paypal.Buttons({
-          style: {
-            layout: 'horizontal',
-            color: 'blue',
-            shape: 'pill',
-            label: 'pay'
-          },
-          createOrder: function(data, actions) {
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: product.price.toFixed(2)
-                },
-                description: product.name
-              }]
-            });
-          },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              alert(`Payment successful for ${product.name}! Buyer: ${details.payer.name.given_name}`);
-            });
-          },
-          onError: function(err) {
-            console.error(err);
-            alert('Payment could not be processed.');
-          }
-        }).render(`#paypal-button-${index}`);
-      });
     }
 
     window.addEventListener('DOMContentLoaded', renderProducts);
