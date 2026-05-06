@@ -79,7 +79,7 @@ function payWithPaystack(product) {
 
     // Paystack uses kobo (multiply by 100)
     amount: product.price * 100,
-    currency: "USD",
+    currency: 'mobile_money', 'card',
 
     metadata: {
       custom_fields: [
