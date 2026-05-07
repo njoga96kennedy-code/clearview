@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClearVieaw Store - Digital Subscriptions</title>
+  <title>ClearView Store - Digital Subscriptions</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- ✅ Paystack SDK -->
@@ -50,7 +50,7 @@
   <!-- Footer -->
   <footer id="contact" class="bg-white p-6 text-center mt-10 border-t">
     <p class="text-gray-600">Contact us on WhatsApp: <a href="https://wa.me/254781052997" class="text-blue-500 underline">+254781052997</a></p>
-    <p class="text-sm text-gray-400 mt-2">&copy; 2026 ClearVieaw Store</p>
+    <p class="text-sm text-gray-400 mt-2">&copy; 2026 ClearView Store</p>
   </footer>
 
   <!-- JavaScript -->
@@ -351,6 +351,10 @@
         },
         callback: function(response) {
           alert(`Payment successful for ${product.name}!\nShown as: ${displayPrice}\nPaid: ${paymentPrice}\nReference: ${response.reference}`);
+          // Redirect to thank you page after 2 seconds
+          setTimeout(() => {
+            window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`;
+          }, 2000);
         }
       });
       handler.openIframe();
@@ -368,7 +372,7 @@
       const displayPrice = formatPrice(convertPrice(product.priceKES), displayCurrency);
       const kesPrice = formatPrice(product.priceKES, 'KES');
 
-      alert(`M-Pesa payment initiated for ${product.name}!\n\nDisplay Price: ${displayPrice}\nActual Amount (KES): ${kesPrice}\nPhone: ${phone}\n\nYou will receive a prompt on your phone to confirm payment.`);
+      alert(`M-Pesa payment initiated for ${product.name}!\n\nDisplay Price: ${displayPrice}\nActual Amount (KES): ${kesPrice}\nPhone: ${phone}\n\nYou will receive a prompt on your phone to confirm payment. Please complete the transaction!`);
       
       console.log({
         product: product.name,
@@ -377,6 +381,11 @@
         phone: phone,
         email: email
       });
+
+      // Redirect to thank you page after 3 seconds
+      setTimeout(() => {
+        window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`;
+      }, 3000);
     }
 
     // Initialize on page load
