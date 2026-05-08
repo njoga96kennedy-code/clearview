@@ -3,32 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyDigitalHub | Global Subscriptions</title>
+  <title>MyDigitalHub | Africa's Digital Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <style>
     body { background-color: #020617; }
     .glass { @apply bg-slate-900/80 backdrop-blur-md border border-slate-800; }
-    .currency-pill { @apply px-3 py-1 rounded-full text-xs font-bold border border-slate-700 cursor-pointer transition; }
-    .currency-active { @apply bg-blue-600 border-blue-500 text-white; }
+    .currency-pill { @apply px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700 cursor-pointer transition hover:bg-slate-800 text-slate-400; }
+    .currency-active { @apply bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/40; }
   </style>
 </head>
 <body class="text-slate-200 antialiased">
 
-  <header class="glass sticky top-0 z-50 p-4 flex justify-between items-center border-b">
+  <header class="glass sticky top-0 z-50 p-4 flex flex-col md:flex-row justify-between items-center border-b gap-4">
     <h1 class="text-2xl font-black text-blue-500 tracking-tighter">MyDigitalHub</h1>
-    <div class="flex gap-2" id="currencySelector">
-        <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">USD</span>
-        <span onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">KES</span>
-        <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</span>
-        <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</span>
+    
+    <div class="flex flex-wrap justify-center gap-2" id="currencySelector">
+        <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">🇺🇸 USD</span>
+        <span onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">🇰🇪 KES</span>
+        <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">🇳🇬 NGN</span>
+        <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">🇬🇭 GHS</span>
+        <span onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">🇿🇦 ZAR</span>
+        <span onclick="setCurrency('EGP')" class="currency-pill" id="btn-EGP">🇪🇬 EGP</span>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-12">
-      <h2 class="text-4xl font-black text-white mb-4">Global Digital Access</h2>
-      <p class="text-slate-400">Select your preferred currency and pay securely via Paystack.</p>
+      <h2 class="text-4xl font-black text-white mb-4">Instant Digital Subscriptions</h2>
+      <p class="text-slate-400">Pay using M-Pesa, Bank Transfer, or Mobile Money in your local currency.</p>
     </section>
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
@@ -37,7 +40,7 @@
   <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_your_actual_key_here';
     let currentCurrency = 'USD';
-    let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.5 }; // Fallback rates
+    let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.5, EGP: 47.8 };
 
     const products = [
       { name: 'DSTV Stream', priceUSD: 6.00, cat: 'TV', image: 'assets/dstv.jpg', desc: '1 Month Premium Access' },
@@ -52,8 +55,8 @@
       try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        exchangeRates = data.rates;
-      } catch (e) { console.warn("Using fallback rates."); }
+        if(data.rates) exchangeRates = data.rates;
+      } catch (e) { console.warn("Live rates unavailable, using pre-set fallbacks."); }
     }
 
     function setCurrency(cur) {
@@ -64,20 +67,19 @@
     }
 
     function payWithPaystack(product) {
-      const userEmail = prompt("Enter your email for delivery:");
-      if (!userEmail) return;
+      const userEmail = prompt("Where should we send your subscription details?");
+      if (!userEmail || !userEmail.includes('@')) return;
 
-      // Calculate localized price
-      const convertedPrice = product.priceUSD * (exchangeRates[currentCurrency] || 1);
+      const convertedPrice = product.priceUSD * exchangeRates[currentCurrency];
       
       const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,
         email: userEmail,
-        // Paystack expects the smallest currency unit (cents/kobo/pesewas)
-        amount: Math.round(convertedPrice * 100), 
-        currency: currentCurrency, 
-        ref: 'GLOB-' + Date.now(),
+        amount: Math.round(convertedPrice * 100), // Convert to subunits
+        currency: currentCurrency,
+        ref: 'MDH-' + Date.now(),
         callback: function(response) {
+          // Redirect to existing thank-you page
           window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(userEmail)}&ref=${response.reference}`;
         }
       });
@@ -87,20 +89,21 @@
     function renderProducts() {
       const container = document.getElementById('products');
       container.innerHTML = products.map(p => {
-        const localPrice = (p.priceUSD * (exchangeRates[currentCurrency] || 1)).toLocaleString(undefined, {
+        const localPrice = (p.priceUSD * exchangeRates[currentCurrency]).toLocaleString(undefined, {
             style: 'currency',
-            currency: currentCurrency
+            currency: currentCurrency,
+            maximumFractionDigits: 0
         });
 
         return `
-          <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 p-6 shadow-2xl">
-            <img src="${p.image}" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80">
-            <h3 class="text-xl font-bold text-white">${p.name}</h3>
-            <p class="text-2xl font-black text-blue-400 my-2">${localPrice}</p>
-            <p class="text-sm text-slate-400 mb-6">${p.desc}</p>
+          <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 p-6 transition-all hover:border-blue-500/40 group shadow-2xl">
+            <img src="${p.image}" class="w-full h-44 object-cover rounded-2xl mb-4 opacity-70 group-hover:opacity-100 transition-opacity">
+            <h3 class="text-xl font-bold text-white tracking-tight">${p.name}</h3>
+            <p class="text-3xl font-black text-blue-500 my-3">${localPrice}</p>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed">${p.desc}</p>
             <button onclick='payWithPaystack(${JSON.stringify(p)})' 
-              class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition">
-              Purchase
+              class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 shadow-lg shadow-blue-900/20">
+              Buy Now
             </button>
           </div>
         `;
