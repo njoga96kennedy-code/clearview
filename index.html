@@ -26,7 +26,7 @@
     <section class="text-center mb-10">
       <h2 class="text-3xl font-bold mb-2">Your One-Stop Shop for Digital Products</h2>
       <p class="text-gray-600">Affordable plans and Secure checkout with multiple payment methods!</p>
-      <p class="text-sm text-gray-500 mt-2">💱 Prices shown in your currency, paid in KES</p>
+      <p class="text-sm text-gray-500 mt-2">💱 Prices shown in your currency</p>
     </section>
 
     <!-- Currency & Country Selector -->
@@ -59,9 +59,9 @@
     let currentProduct = null;
     let userCurrency = 'KES';
     let userCountry = 'KE';
-    let displayCurrency = 'KES'; // Currency to show to user
+    let displayCurrency = 'KES';
     
-    // Exchange rates - base price in KES
+    // Enhanced Exchange rates - base price in KES
     let exchangeRates = {
       KES: 1,
       NGN: 130,
@@ -74,11 +74,24 @@
       GBP: 0.0061,
       INR: 0.64,
       CAD: 0.011,
-      AUD: 0.012
+      AUD: 0.012,
+      ZWL: 2.5,
+      BWP: 0.010,
+      MUR: 0.035,
+      SCR: 0.11,
+      SOS: 4.5,
+      RWF: 8.2,
+      KMF: 3.4,
+      MAD: 0.075,
+      EGP: 0.24,
+      XOF: 4.6,
+      XAF: 4.6,
+      LRD: 1.2,
+      GMD: 0.42
     };
 
-    // Paystack LIVE account only supports these currencies
-    const paystackSupportedCurrencies = ['KES', 'NGN', 'ZAR'];
+    // Paystack supported currencies (LIVE account)
+    const paystackSupportedCurrencies = ['KES', 'NGN', 'ZAR', 'USD', 'GHS'];
 
     const currencyCountryMap = {
       KE: { currency: 'KES', name: 'Kenya', flag: '🇰🇪' },
@@ -90,10 +103,25 @@
       US: { currency: 'USD', name: 'United States', flag: '🇺🇸' },
       GB: { currency: 'GBP', name: 'United Kingdom', flag: '🇬🇧' },
       DE: { currency: 'EUR', name: 'Germany', flag: '🇩🇪' },
-      IN: { currency: 'INR', name: 'India', flag: '🇮🇳' },
       FR: { currency: 'EUR', name: 'France', flag: '🇫🇷' },
+      IT: { currency: 'EUR', name: 'Italy', flag: '🇮🇹' },
+      IN: { currency: 'INR', name: 'India', flag: '🇮🇳' },
       CA: { currency: 'CAD', name: 'Canada', flag: '🇨🇦' },
-      AU: { currency: 'AUD', name: 'Australia', flag: '🇦🇺' }
+      AU: { currency: 'AUD', name: 'Australia', flag: '🇦🇺' },
+      ZW: { currency: 'ZWL', name: 'Zimbabwe', flag: '🇿🇼' },
+      BW: { currency: 'BWP', name: 'Botswana', flag: '🇧🇼' },
+      MU: { currency: 'MUR', name: 'Mauritius', flag: '🇲🇺' },
+      SC: { currency: 'SCR', name: 'Seychelles', flag: '🇸🇨' },
+      SO: { currency: 'SOS', name: 'Somalia', flag: '🇸🇴' },
+      RW: { currency: 'RWF', name: 'Rwanda', flag: '🇷🇼' },
+      KM: { currency: 'KMF', name: 'Comoros', flag: '🇰🇲' },
+      MA: { currency: 'MAD', name: 'Morocco', flag: '🇲🇦' },
+      EG: { currency: 'EGP', name: 'Egypt', flag: '🇪🇬' },
+      CI: { currency: 'XOF', name: 'Côte d\'Ivoire', flag: '🇨🇮' },
+      SN: { currency: 'XOF', name: 'Senegal', flag: '🇸🇳' },
+      CM: { currency: 'XAF', name: 'Cameroon', flag: '🇨🇲' },
+      LR: { currency: 'LRD', name: 'Liberia', flag: '🇱🇷' },
+      GM: { currency: 'GMD', name: 'Gambia', flag: '🇬🇲' }
     };
 
     const paymentMethods = {
@@ -108,7 +136,20 @@
       GBP: ['paystack'],
       INR: ['paystack'],
       CAD: ['paystack'],
-      AUD: ['paystack']
+      AUD: ['paystack'],
+      ZWL: ['paystack'],
+      BWP: ['paystack'],
+      MUR: ['paystack'],
+      SCR: ['paystack'],
+      SOS: ['paystack'],
+      RWF: ['paystack'],
+      KMF: ['paystack'],
+      MAD: ['paystack'],
+      EGP: ['paystack'],
+      XOF: ['paystack'],
+      XAF: ['paystack'],
+      LRD: ['paystack'],
+      GMD: ['paystack']
     };
 
     const products = [
@@ -160,19 +201,19 @@
         if (currencyCountryMap[userCountry]) {
           displayCurrency = currencyCountryMap[userCountry].currency;
         } else {
-          displayCurrency = 'KES';
+          displayCurrency = 'USD';
         }
         
         // Use supported Paystack currency for actual payment
-        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'KES';
+        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'USD';
         
         updateLocationDisplay();
         initializePaymentMethods();
         renderProducts();
       } catch (error) {
-        console.log('Location detection failed, using default KES');
-        displayCurrency = 'KES';
-        userCurrency = 'KES';
+        console.log('Location detection failed, using default USD');
+        displayCurrency = 'USD';
+        userCurrency = 'USD';
         updateLocationDisplay();
         initializePaymentMethods();
         renderProducts();
@@ -194,15 +235,17 @@
     }
 
     function changeCurrency() {
-      const countries = Object.keys(currencyCountryMap);
-      const selectedIndex = prompt('Select your country/currency:\n\n' + countries.map((code, i) => `${i + 1}. ${currencyCountryMap[code].flag} ${currencyCountryMap[code].name} (${currencyCountryMap[code].currency})`).join('\n'));
+      const countries = Object.keys(currencyCountryMap).sort();
+      const countryList = countries.map((code, i) => `${i + 1}. ${currencyCountryMap[code].flag} ${currencyCountryMap[code].name} (${currencyCountryMap[code].currency})`).join('\n');
+      
+      const selectedIndex = prompt('Select your country/currency:\n\n' + countryList);
       
       if (selectedIndex && selectedIndex > 0 && selectedIndex <= countries.length) {
         userCountry = countries[selectedIndex - 1];
         displayCurrency = currencyCountryMap[userCountry].currency;
         
         // Map to supported Paystack currency
-        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'KES';
+        userCurrency = paystackSupportedCurrencies.includes(displayCurrency) ? displayCurrency : 'USD';
         
         updateLocationDisplay();
         initializePaymentMethods();
@@ -228,12 +271,25 @@
         GBP: '£',
         INR: '₹',
         CAD: 'C$',
-        AUD: 'A$'
+        AUD: 'A$',
+        ZWL: 'Z$',
+        BWP: 'P',
+        MUR: '₨',
+        SCR: '₨',
+        SOS: 'Sh',
+        RWF: 'FRw',
+        KMF: 'CF',
+        MAD: 'د.م.',
+        EGP: '£',
+        XOF: 'CFA',
+        XAF: 'CFA',
+        LRD: 'L$',
+        GMD: 'D'
       };
       
       const symbol = symbols[currency] || currency;
       
-      if (['KES', 'NGN', 'UGX', 'TZS', 'GHS', 'ZAR'].includes(currency)) {
+      if (['KES', 'NGN', 'UGX', 'TZS', 'GHS', 'ZAR', 'ZWL', 'BWP', 'MUR', 'SCR', 'SOS', 'RWF', 'KMF', 'MAD', 'EGP', 'XOF', 'XAF', 'LRD', 'GMD'].includes(currency)) {
         return `${symbol} ${amount.toLocaleString()}`;
       } else {
         return `${symbol} ${(amount / 100).toFixed(2)}`;
@@ -242,11 +298,11 @@
 
     // Convert to Paystack format
     function convertToPaystackAmount(priceKES) {
-      // Always convert to payment currency (userCurrency)
+      // Convert to payment currency
       const rate = exchangeRates[userCurrency] || 1;
       let amount = Math.round(priceKES * rate);
       
-      // Paystack expects amount in cents
+      // Paystack expects amount in cents/kobo
       return Math.round(amount * 100);
     }
 
@@ -257,7 +313,7 @@
       currentPaymentMethod = methods[0];
       
       container.innerHTML = methods.map(method => {
-        const methodName = method === 'paystack' ? '🇰🇪 Paystack' : '📱 M-Pesa (Kenya)';
+        const methodName = method === 'paystack' ? '💳 Paystack' : '📱 M-Pesa (Kenya)';
         const isDefault = method === methods[0];
         const ringClass = isDefault ? 'ring-4 ring-yellow-400' : '';
         const bgColor = method === 'paystack' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700';
@@ -296,7 +352,7 @@
       
       return `
         <div class="bg-white rounded-lg shadow-md p-4">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
+          <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2 bg-gray-200">
           <h3 class="text-lg font-semibold">${product.name}</h3>
           <p class="text-sm text-gray-500 mb-2">${formattedPrice}</p>
           <p class="text-sm mb-4">${product.description}</p>
@@ -353,7 +409,7 @@
           alert(`Payment successful for ${product.name}!\nShown as: ${displayPrice}\nPaid: ${paymentPrice}\nReference: ${response.reference}`);
           // Redirect to thank you page after 2 seconds
           setTimeout(() => {
-            window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`;
+            window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&currency=${encodeURIComponent(userCurrency)}&amount=${encodeURIComponent(paymentPrice)}`;
           }, 2000);
         }
       });
@@ -384,7 +440,7 @@
 
       // Redirect to thank you page after 3 seconds
       setTimeout(() => {
-        window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`;
+        window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&currency=KES&amount=${encodeURIComponent(kesPrice)}`;
       }, 3000);
     }
 
