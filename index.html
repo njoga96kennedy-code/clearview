@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyDigitalHub | Pay with Paystack</title>
+  <meta name="description" content="Premium Digital Subscriptions - MyDigitalHub. Pay securely via M-Pesa or Card.">
+  <title>MyDigitalHub | Fast & Secure Payments</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -12,6 +13,7 @@
     .badge { @apply absolute top-3 right-3 px-3 py-1 text-xs font-bold text-white rounded-full shadow-lg z-10; }
     body { background-color: #020617; }
     .glass { @apply bg-slate-900/80 backdrop-blur-md border border-slate-800; }
+    input::placeholder { color: #64748b; }
   </style>
 </head>
 <body class="text-slate-200 antialiased">
@@ -21,83 +23,123 @@
     <nav class="hidden md:flex items-center gap-6">
       <a href="#" class="font-medium hover:text-blue-400 transition">Home</a>
       <a href="#products" class="font-medium hover:text-blue-400 transition">Shop</a>
-      <a href="https://wa.me/254757780414" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition">WhatsApp Help</a>
+      <a href="https://wa.me/254757780414" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition">WhatsApp Support</a>
     </nav>
   </header>
 
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
-      <h2 class="text-5xl font-black mb-6 text-white tracking-tight">Fast, Secure Checkout</h2>
-      <p class="text-lg text-slate-400 mb-10">Pay via M-Pesa or Card. Instant activation.</p>
+      <h2 class="text-5xl md:text-6xl font-black mb-6 text-white tracking-tight">Instant Digital Access.</h2>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Select a plan and pay securely with M-Pesa or Card via Paystack.</p>
+      
+      <div class="flex flex-col md:flex-row gap-4 justify-center items-center bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-2xl">
+        <input type="text" id="searchInput" placeholder="Search subscriptions..." class="w-full md:w-80 p-3 bg-slate-800 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-white">
+        <select id="categoryFilter" class="w-full md:w-auto p-3 bg-slate-800 border border-slate-700 rounded-xl text-white outline-none">
+            <option value="All">All Categories</option>
+            <option value="TV">Live TV</option>
+            <option value="Movies">Movies & Shows</option>
+            <option value="IPTV">IPTV Special</option>
+        </select>
+      </div>
     </section>
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
   </main>
 
+  <footer id="contact" class="bg-slate-900 p-12 text-center mt-20 border-t border-slate-800">
+    <p class="text-sm text-slate-500 mb-4">Official Payment Partner: Paystack</p>
+    <p class="text-xs text-slate-600">&copy; 2026 MyDigitalHub. All rights reserved.</p>
+  </footer>
+
   <script>
-    // ⚠️ REPLACE THIS with your actual Paystack Public Key from your dashboard
+    // ⚠️ TODO: Replace with your LIVE Paystack Key
     const PAYSTACK_PUBLIC_KEY = 'pk_live_your_actual_key_here';
-    const KES_RATE = 132.50; // Current estimate for display
+    const KES_RATE = 132.50; // Current rate for display
 
     const products = [
       { name: 'DSTV Stream', priceUSD: 6.00, cat: 'TV', image: 'assets/dstv.jpg', tag: 'Hot', desc: '1 Month Premium Access' },
-      { name: 'IPTV Unlocked', priceUSD: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Best Value', desc: 'Global 12,000+ Channels' },
-      { name: 'Sports TV Pro', priceUSD: 8.50, cat: 'TV', image: 'assets/sports.jpg', desc: 'All Major Leagues Live' }
+      { name: 'IPTV Unlocked', priceUSD: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Top Rated', desc: 'Global 12,000+ Channels' },
+      { name: 'Sports TV Pro', priceUSD: 8.50, cat: 'TV', image: 'assets/sports.jpg', tag: 'Sports', desc: 'All Major Leagues Live' },
+      { name: 'Movies & Series', priceUSD: 5.00, cat: 'Movies', image: 'assets/movies.jpg', desc: '4K Ultra HD Library' },
+      { name: 'Startimes Combo', priceUSD: 9.80, cat: 'TV', image: 'assets/startimes.jpg', desc: 'Local & Global Content' },
+      { name: 'Standard IPTV', priceUSD: 5.50, cat: 'IPTV', image: 'assets/iptvsub.jpg', desc: 'Reliable SD/HD streams' }
     ];
 
     function payWithPaystack(product) {
-      // Paystack amount is in Kobo/Cents (Multiply by 100)
-      // Since your prices are USD, we convert to KES for Paystack (or use USD if your account supports it)
+      const userEmail = prompt("Where should we send your login details? (Enter Email):");
+      
+      if (!userEmail || !userEmail.includes('@')) {
+        alert("A valid email is required to receive your subscription.");
+        return;
+      }
+
       const amountInKes = Math.round(product.priceUSD * KES_RATE);
 
       const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,
-        email: prompt("Please enter your email for the receipt:"), // Simple way to get user email
-        amount: amountInKes * 100, 
-        currency: 'KES', 
-        ref: 'MDH-' + Math.floor((Math.random() * 1000000000) + 1), // Generate random ref
+        email: userEmail,
+        amount: amountInKes * 100, // Amount in cents/kobo
+        currency: 'KES',
+        ref: 'MDH-' + Math.floor((Math.random() * 1000000000) + 1),
         metadata: {
           custom_fields: [
-            { display_name: "Product", variable_name: "product", value: product.name }
+            { display_name: "Service", variable_name: "service", value: product.name }
           ]
         },
-        callback: function(response){
-          // On success redirect to thank-you page
-          window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&reference=${response.reference}`;
+        callback: function(response) {
+          // Success redirect to thank-you page
+          window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(userEmail)}&ref=${response.reference}`;
         },
-        onClose: function(){
-          alert('Transaction cancelled.');
+        onClose: function() {
+          console.log('User closed payment window.');
         }
       });
       handler.openIframe();
     }
 
-    function renderProducts() {
+    function renderProducts(filter = 'All', search = '') {
       const container = document.getElementById('products');
-      container.innerHTML = products.map((product, i) => {
-        const estKes = (product.priceUSD * KES_RATE).toLocaleString();
-        return `
-          <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 transition-all hover:border-blue-500/30 relative group shadow-2xl">
-            ${product.tag ? `<span class="badge bg-blue-600">${product.tag}</span>` : ''}
-            <img src="${product.image}" class="w-full h-52 object-cover opacity-80" loading="lazy">
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-white">${product.name}</h3>
-              <div class="flex items-baseline gap-2 mb-4">
-                  <span class="text-3xl font-black text-white">$${product.priceUSD.toFixed(2)}</span>
-                  <span class="text-xs text-slate-500 italic">~ KES ${estKes}</span>
-              </div>
-              <p class="text-sm text-slate-400 mb-6 leading-relaxed">${product.desc}</p>
-              <button onclick='payWithPaystack(${JSON.stringify(product)})' 
-                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition duration-300">
-                Buy Now
-              </button>
+      container.innerHTML = '';
+
+      const filtered = products.filter(p => {
+        const matchesCat = filter === 'All' || p.cat === filter;
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach((product) => {
+        const estKes = (product.priceUSD * KES_RATE).toLocaleString(undefined, {maximumFractionDigits: 0});
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 transition-all hover:scale-[1.02] hover:border-blue-500/30 relative group shadow-2xl";
+        
+        card.innerHTML = `
+          ${product.tag ? `<span class="badge bg-blue-600">${product.tag}</span>` : ''}
+          <div class="relative h-52 overflow-hidden">
+            <img src="${product.image}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white mb-1">${product.name}</h3>
+            <div class="flex items-baseline gap-2 mb-4">
+                <span class="text-3xl font-black text-white">$${product.priceUSD.toFixed(2)}</span>
+                <span class="text-xs text-slate-500 italic">~ KES ${estKes}</span>
             </div>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed min-h-[40px]">${product.desc}</p>
+            <button onclick='payWithPaystack(${JSON.stringify(product)})' 
+              class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
+              Get Started
+            </button>
           </div>
         `;
-      }).join('');
+        container.appendChild(card);
+      });
     }
 
-    window.addEventListener('DOMContentLoaded', renderProducts);
+    // Event Listeners
+    document.getElementById('searchInput').addEventListener('input', (e) => renderProducts(document.getElementById('categoryFilter').value, e.target.value));
+    document.getElementById('categoryFilter').addEventListener('change', (e) => renderProducts(e.target.value, document.getElementById('searchInput').value));
+
+    window.addEventListener('DOMContentLoaded', () => renderProducts());
   </script>
 </body>
 </html>
