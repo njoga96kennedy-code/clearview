@@ -3,21 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Affordable DSTV, Startimes, and IPTV subscriptions at MyDigitalHub. Secure PayPal checkout and instant delivery.">
-  <title>MyDigitalHub | Premium Digital Subscriptions</title>
+  <title>MyDigitalHub | Pay with Paystack</title>
   
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Store",
-      "name": "MyDigitalHub",
-      "description": "Digital subscription provider for IPTV and Streaming services.",
-      "url": "https://mydigitalhub.com"
-    }
-  </script>
-
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=AfqpacUeuOAbye2O9J9dNJU7hkwTXfTsay3_Yt1Yugr6LU8KEMGUCYXMhHq886CdIfGPA0F7UAl4RSIL&currency=USD&components=buttons&enable-funding=card"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   
   <style>
     .badge { @apply absolute top-3 right-3 px-3 py-1 text-xs font-bold text-white rounded-full shadow-lg z-10; }
@@ -38,126 +27,77 @@
 
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
-      <div class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-widest text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20">
-        New: 12-Month Plans Available
-      </div>
-      <h2 class="text-5xl md:text-6xl font-black mb-6 text-white tracking-tight">Stream Without Limits.</h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Get instant access to your favorite digital subscriptions. Secure USD payments with local Kenyan support.</p>
-      
-      <div class="flex flex-col md:flex-row gap-4 justify-center items-center bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-2xl">
-        <input type="text" id="searchInput" placeholder="Search for DSTV, IPTV..." class="w-full md:w-80 p-3 bg-slate-800 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-white">
-        <select id="categoryFilter" class="w-full md:w-auto p-3 bg-slate-800 border border-slate-700 rounded-xl text-white outline-none">
-            <option value="All">All Categories</option>
-            <option value="TV">Live TV</option>
-            <option value="Movies">Movies & Shows</option>
-            <option value="IPTV">IPTV Special</option>
-        </select>
-      </div>
+      <h2 class="text-5xl font-black mb-6 text-white tracking-tight">Fast, Secure Checkout</h2>
+      <p class="text-lg text-slate-400 mb-10">Pay via M-Pesa or Card. Instant activation.</p>
     </section>
-
-    <div class="flex flex-wrap justify-center gap-8 mb-16 text-xs font-bold uppercase tracking-widest text-slate-500 border-y border-slate-800/50 py-6">
-        <span class="flex items-center gap-2">✅ Instant Delivery</span>
-        <span class="flex items-center gap-2">✅ PayPal Protected</span>
-        <span class="flex items-center gap-2">✅ 100% Satisfaction</span>
-    </div>
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
   </main>
 
-  <footer id="contact" class="bg-slate-900 p-12 text-center mt-20 border-t border-slate-800">
-    <div class="max-w-4xl mx-auto">
-      <h3 class="text-white text-xl font-bold mb-4">Subscribe to our Updates</h3>
-      <div class="flex max-w-md mx-auto mb-8">
-        <input type="email" placeholder="your@email.com" class="flex-1 p-3 bg-slate-800 border border-slate-700 rounded-l-xl outline-none">
-        <button class="bg-blue-600 px-6 rounded-r-xl font-bold hover:bg-blue-500 transition">Join</button>
-      </div>
-      <p class="text-xs text-slate-500">&copy; 2026 MyDigitalHub. All rights reserved.</p>
-    </div>
-  </footer>
-
   <script>
-    let kesRate = 132.50; // Default fallback rate
-
-    // Fetch Live Exchange Rate [New Suggestion]
-    async function fetchRate() {
-      try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await res.json();
-        if(data.rates.KES) kesRate = data.rates.KES;
-      } catch (err) { console.error("Rate fetch failed, using fallback."); }
-    }
+    // ⚠️ REPLACE THIS with your actual Paystack Public Key from your dashboard
+    const PAYSTACK_PUBLIC_KEY = 'pk_live_your_actual_key_here';
+    const KES_RATE = 132.50; // Current estimate for display
 
     const products = [
-      { name: 'DSTV Stream', price: 6.00, cat: 'TV', image: 'assets/dstv.jpg', tag: 'Hot', desc: '1 Month Premium Access' },
-      { name: 'IPTV Unlocked', price: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Best Value', desc: 'Global 12,000+ Channels' },
-      { name: 'Sports TV Pro', price: 8.50, cat: 'TV', image: 'assets/sports.jpg', desc: 'All Major Leagues Live' },
-      { name: 'Movies & Series', price: 5.00, cat: 'Movies', image: 'assets/movies.jpg', desc: '4K Ultra HD Streaming' },
-      { name: 'Startimes Combo', price: 9.80, cat: 'TV', image: 'assets/startimes.jpg', desc: 'Local & Global Content' },
-      { name: 'Standard IPTV', price: 5.50, cat: 'IPTV', image: 'assets/iptvsub.jpg', desc: 'Reliable SD/HD streams' }
+      { name: 'DSTV Stream', priceUSD: 6.00, cat: 'TV', image: 'assets/dstv.jpg', tag: 'Hot', desc: '1 Month Premium Access' },
+      { name: 'IPTV Unlocked', priceUSD: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Best Value', desc: 'Global 12,000+ Channels' },
+      { name: 'Sports TV Pro', priceUSD: 8.50, cat: 'TV', image: 'assets/sports.jpg', desc: 'All Major Leagues Live' }
     ];
 
-    function renderProducts(filter = 'All', search = '') {
-      const container = document.getElementById('products');
-      container.innerHTML = '';
+    function payWithPaystack(product) {
+      // Paystack amount is in Kobo/Cents (Multiply by 100)
+      // Since your prices are USD, we convert to KES for Paystack (or use USD if your account supports it)
+      const amountInKes = Math.round(product.priceUSD * KES_RATE);
 
-      const filtered = products.filter(p => {
-        const matchesCat = filter === 'All' || p.cat === filter;
-        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        return matchesCat && matchesSearch;
+      const handler = PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: prompt("Please enter your email for the receipt:"), // Simple way to get user email
+        amount: amountInKes * 100, 
+        currency: 'KES', 
+        ref: 'MDH-' + Math.floor((Math.random() * 1000000000) + 1), // Generate random ref
+        metadata: {
+          custom_fields: [
+            { display_name: "Product", variable_name: "product", value: product.name }
+          ]
+        },
+        callback: function(response){
+          // On success redirect to thank-you page
+          window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&reference=${response.reference}`;
+        },
+        onClose: function(){
+          alert('Transaction cancelled.');
+        }
       });
-
-      filtered.forEach((product, i) => {
-        const card = document.createElement('div');
-        card.className = "bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 transition-all hover:scale-[1.02] hover:border-blue-500/30 relative group shadow-2xl";
-        
-        const badge = product.tag ? `<span class="badge bg-blue-600">${product.tag}</span>` : '';
-        const estKes = (product.price * kesRate).toLocaleString(undefined, {maximumFractionDigits: 0});
-
-        card.innerHTML = `
-          ${badge}
-          <div class="relative h-52 overflow-hidden">
-            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-          </div>
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-2">
-              <h3 class="text-xl font-bold text-white">${product.name}</h3>
-              <span class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700 uppercase font-black text-slate-400">${product.cat}</span>
-            </div>
-            <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-white">$${product.price.toFixed(2)}</span>
-                <span class="text-xs text-slate-500 font-medium italic">~ KES ${estKes}</span>
-            </div>
-            <p class="text-sm text-slate-400 mb-6 leading-relaxed min-h-[40px]">${product.desc}</p>
-            <div id="paypal-button-${i}"></div>
-          </div>
-        `;
-        container.appendChild(card);
-
-        paypal.Buttons({
-          style: { layout: 'horizontal', color: 'blue', shape: 'pill', label: 'pay' },
-          createOrder: (data, actions) => {
-            return actions.order.create({
-              purchase_units: [{ amount: { value: product.price.toFixed(2) }, description: product.name }]
-            });
-          },
-          onApprove: (data, actions) => {
-            return actions.order.capture().then(details => {
-              window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(details.payer.email_address)}`;
-            });
-          }
-        }).render(`#paypal-button-${i}`);
-      });
+      handler.openIframe();
     }
 
-    document.getElementById('searchInput').addEventListener('input', (e) => renderProducts(document.getElementById('categoryFilter').value, e.target.value));
-    document.getElementById('categoryFilter').addEventListener('change', (e) => renderProducts(e.target.value, document.getElementById('searchInput').value));
+    function renderProducts() {
+      const container = document.getElementById('products');
+      container.innerHTML = products.map((product, i) => {
+        const estKes = (product.priceUSD * KES_RATE).toLocaleString();
+        return `
+          <div class="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 transition-all hover:border-blue-500/30 relative group shadow-2xl">
+            ${product.tag ? `<span class="badge bg-blue-600">${product.tag}</span>` : ''}
+            <img src="${product.image}" class="w-full h-52 object-cover opacity-80" loading="lazy">
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-white">${product.name}</h3>
+              <div class="flex items-baseline gap-2 mb-4">
+                  <span class="text-3xl font-black text-white">$${product.priceUSD.toFixed(2)}</span>
+                  <span class="text-xs text-slate-500 italic">~ KES ${estKes}</span>
+              </div>
+              <p class="text-sm text-slate-400 mb-6 leading-relaxed">${product.desc}</p>
+              <button onclick='payWithPaystack(${JSON.stringify(product)})' 
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition duration-300">
+                Buy Now
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
-    // Initialize
-    window.addEventListener('DOMContentLoaded', async () => {
-      await fetchRate();
-      renderProducts();
-    });
+    window.addEventListener('DOMContentLoaded', renderProducts);
   </script>
 </body>
 </html>
