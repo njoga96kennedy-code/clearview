@@ -3,13 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="ClearView Store - Premium Digital Subscriptions. Pay securely via M-Pesa, Card, or Bank Transfer.">
-  
-  <meta property="og:title" content="ClearView Store | Africa's #1 Digital Hub">
-  <meta property="og:description" content="Instant access to DSTV, IPTV, and Movies. Secure local payments.">
-  <meta property="og:image" content="assets/preview-banner.jpg">
-  
-  <title>ClearView Store | Africa's Digital Store</title>
+  <meta name="description" content="ClearView Store - Africa's premier digital subscription hub. Fast delivery, secure payments.">
+  <title>ClearView Store | Crystal Clear Access</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -23,13 +18,23 @@
     .logo-3d {
       background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
-      transform: perspective(500px) rotateX(10deg);
+    }
+
+    /* Skeleton Loading Animation */
+    .skeleton {
+      background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 </head>
-<body class="text-slate-200 antialiased">
+<body class="text-slate-200 antialiased font-sans">
 
-  <a href="https://wa.me/254757780414" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl z-[100] hover:scale-110 transition-all">
+  <a href="https://wa.me/254757780414" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl z-[100] hover:scale-110 transition-all flex items-center justify-center">
     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.406c0 6.555-5.332 11.887-11.887 11.887-2.01 0-3.991-.51-5.757-1.478l-6.228 1.702zm6.312-3.677c1.54.963 3.536 1.47 5.515 1.47 5.511 0 10.001-4.49 10.001-10.001 0-5.511-4.49-10.001-10.001-10.001-2.67 0-5.18 1.041-7.07 2.93s-2.93 4.401-2.93 7.071c0 2.115.574 4.15 1.66 5.926l-1.008 3.681 3.833-.976z"/></svg>
   </a>
 
@@ -44,39 +49,61 @@
         <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</span>
         <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</span>
         <span onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">ZAR</span>
-        <span onclick="setCurrency('EGP')" class="currency-pill" id="btn-EGP">EGP</span>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
-      <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight">Crystal Clear <span class="text-blue-500">Access.</span></h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant digital delivery across the continent.</p>
+      <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight leading-none">Crystal Clear <span class="text-blue-500 text-shadow-xl">Access.</span></h2>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant digital delivery across Africa. Select your currency and start streaming.</p>
     </section>
 
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="skeleton h-80 rounded-[2rem]"></div>
+        <div class="skeleton h-80 rounded-[2rem]"></div>
+        <div class="skeleton h-80 rounded-[2rem]"></div>
+    </section>
+
+    <section class="mt-24 max-w-3xl mx-auto">
+        <h3 class="text-3xl font-black text-white text-center mb-8">Frequently Asked <span class="text-blue-500">Questions</span></h3>
+        <div class="space-y-4">
+            <div class="glass p-6 rounded-2xl">
+                <h4 class="font-bold text-blue-400 mb-2">How long does delivery take?</h4>
+                <p class="text-sm text-slate-400">Credentials are sent to your email within 5-15 minutes of a successful payment.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <h4 class="font-bold text-blue-400 mb-2">Which payment methods are supported?</h4>
+                <p class="text-sm text-slate-400">We support M-Pesa, Mobile Money (MTN/Airtel), Bank Transfers, and all major Credit/Debit cards.</p>
+            </div>
+        </div>
+    </section>
   </main>
+
+  <footer class="bg-slate-950 p-16 text-center mt-20 border-t border-slate-900">
+    <p class="text-[10px] text-slate-700 font-bold tracking-widest uppercase">&copy; 2026 ClearView Store. Powered by Paystack Secure.</p>
+  </footer>
 
   <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_your_actual_key_here';
     let currentCurrency = 'USD';
-    let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4, EGP: 47.5 };
+    let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
 
     const products = [
-      { name: 'DSTV Stream', priceUSD: 6.00, cat: 'TV', image: 'assets/dstv.jpg', tag: 'Trending', desc: '1 Month Premium Access.' },
-      { name: 'IPTV Unlocked', priceUSD: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Best Seller', desc: 'Global 12,000+ Channels.' },
-      { name: 'Sports TV Pro', priceUSD: 8.50, cat: 'TV', image: 'assets/sports.jpg', tag: 'Sports', desc: 'All Major Leagues Live.' },
-      { name: 'Movies & Series', priceUSD: 5.00, cat: 'Movies', image: 'assets/movies.jpg', desc: '4K Ultra HD Library.' },
-      { name: 'Startimes Combo', priceUSD: 9.80, cat: 'TV', image: 'assets/startimes.jpg', desc: 'Local & Global Content.' },
-      { name: 'Standard IPTV', priceUSD: 5.50, cat: 'IPTV', image: 'assets/iptvsub.jpg', desc: 'Reliable SD/HD streams.' }
+      { name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', desc: '1 Month Premium Access. Live TV & Sports.' },
+      { name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', desc: 'Global 12,000+ Channels. 4K Streaming.' },
+      { name: 'Sports TV Pro', priceUSD: 8.50, image: 'assets/sports.jpg', desc: 'All Major Leagues Live. Ultra HD.' },
+      { name: 'Movies & Series', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest Hollywood releases.' },
+      { name: 'Startimes Combo', priceUSD: 9.80, image: 'assets/startimes.jpg', desc: 'Family bundle. Local channels included.' },
+      { name: 'Standard IPTV', priceUSD: 5.50, image: 'assets/iptvsub.jpg', desc: 'Reliable HD streams for all devices.' }
     ];
 
-    async function fetchLiveRates() {
+    async function initialize() {
       try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
         if(data.rates) exchangeRates = data.rates;
-      } catch (e) { console.warn("Using fallbacks."); }
+      } catch (e) { console.warn("Rates fallback active."); }
+      renderProducts();
     }
 
     function setCurrency(cur) {
@@ -88,7 +115,7 @@
 
     function payWithPaystack(product, btnId) {
       const btn = document.getElementById(btnId);
-      const userEmail = prompt("Enter delivery email:");
+      const userEmail = prompt("Enter email for delivery:");
       if (!userEmail || !userEmail.includes('@')) return;
 
       btn.innerText = "Connecting...";
@@ -104,8 +131,8 @@
         ref: 'CV-' + Date.now(),
         metadata: {
           custom_fields: [
-            { display_name: "Service", variable_name: "service", value: product.name },
-            { display_name: "Delivery Email", variable_name: "email", value: userEmail }
+            { display_name: "Service", value: product.name },
+            { display_name: "Customer Email", value: userEmail }
           ]
         },
         callback: function(response) {
@@ -129,17 +156,17 @@
         });
 
         return `
-          <div class="bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 relative group">
-            <div class="relative h-56 overflow-hidden">
-              <img src="${p.image}" class="w-full h-full object-cover opacity-60 transition-all duration-700 group-hover:scale-110" loading="lazy">
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
+          <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 relative group">
+            <div class="relative h-52 overflow-hidden">
+              <img src="${p.image}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-all duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
             </div>
-            <div class="p-8 -mt-12 relative z-10">
+            <div class="p-8 -mt-10 relative z-10">
               <h3 class="text-2xl font-black text-white mb-1">${p.name}</h3>
-              <p class="text-3xl font-black text-white mb-4">${localPrice}</p>
-              <p class="text-sm text-slate-500 mb-8 min-h-[48px]">${p.desc}</p>
+              <p class="text-3xl font-black text-blue-500 mb-4">${localPrice}</p>
+              <p class="text-sm text-slate-500 mb-8 min-h-[40px]">${p.desc}</p>
               <button id="btn-pay-${i}" onclick='payWithPaystack(${JSON.stringify(p)}, "btn-pay-${i}")' 
-                class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 uppercase tracking-widest text-xs">
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">
                 Instant Access
               </button>
             </div>
@@ -148,10 +175,7 @@
       }).join('');
     }
 
-    window.addEventListener('DOMContentLoaded', async () => {
-      await fetchLiveRates();
-      renderProducts();
-    });
+    window.addEventListener('DOMContentLoaded', initialize);
   </script>
 </body>
 </html>
