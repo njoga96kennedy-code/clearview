@@ -3,131 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Affordable DSTV, Startimes, and IPTV subscriptions at MyDigitalHub. Secure PayPal checkout.">
   <title>MyDigitalHub - Digital Subscriptions</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- ✅ Live PayPal SDK with Card Buttons -->
   <script src="https://www.paypal.com/sdk/js?client-id=AfqpacUeuOAbye2O9J9dNJU7hkwTXfTsay3_Yt1Yugr6LU8KEMGUCYXMhHq886CdIfGPA0F7UAl4RSIL&currency=USD&components=buttons&enable-funding=card"></script>
+  <style>
+    .badge { @apply absolute top-2 right-2 px-2 py-1 text-xs font-bold text-white rounded; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
-  <!-- Header -->
-  <header class="bg-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-blue-600">MyDigitalHub</h1>
-    <nav>
-      <a href="#" class="px-4 text-gray-700 hover:text-blue-500">Home</a>
-      <a href="#products" class="px-4 text-gray-700 hover:text-blue-500">Products</a>
-      <a href="#contact" class="px-4 text-gray-700 hover:text-blue-500">Contact</a>
+  <header class="bg-white shadow-sm sticky top-0 z-50 p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-black text-blue-600 tracking-tight">MyDigitalHub</h1>
+    <nav class="hidden md:block">
+      <a href="#" class="px-4 font-medium hover:text-blue-500 transition">Home</a>
+      <a href="#products" class="px-4 font-medium hover:text-blue-500 transition">Products</a>
+      <a href="https://wa.me/254757780414" class="px-4 font-medium text-green-600">Support</a>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <main class="p-6">
-    <section class="text-center mb-10">
-      <h2 class="text-3xl font-bold mb-2">Your One-Stop Shop for Digital Subscriptions</h2>
-      <p class="text-gray-600">Affordable plans, PayPal secure checkout in USD!</p>
+  <main class="max-w-6xl mx-auto p-6">
+    <section class="text-center py-12">
+      <h2 class="text-4xl font-extrabold mb-4 text-gray-900">Premium Digital Access, Instantly.</h2>
+      <p class="text-lg text-gray-600 mb-8">Secure PayPal checkout in USD. Trusted by users across Kenya.</p>
+      
+      <div class="flex flex-col md:flex-row gap-4 justify-center items-center bg-white p-4 rounded-xl shadow-sm border">
+        <input type="text" id="searchInput" placeholder="Search for a service..." class="w-full md:w-80 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+        <select id="categoryFilter" class="p-2 border rounded-lg bg-white outline-none">
+            <option value="All">All Categories</option>
+            <option value="TV">Live TV</option>
+            <option value="Movies">Movies & Shows</option>
+            <option value="IPTV">IPTV Special</option>
+        </select>
+      </div>
     </section>
 
-    <!-- Product Grid -->
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6"></section>
+    <div class="grid grid-cols-3 gap-4 mb-12 text-center text-sm font-semibold text-gray-500">
+        <div>🚀 Instant Delivery</div>
+        <div>🔒 Secure Checkout</div>
+        <div>💬 24/7 WhatsApp Support</div>
+    </div>
+
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
   </main>
 
-  <!-- Footer -->
-  <footer id="contact" class="bg-white p-6 text-center mt-10 border-t">
-    <p class="text-gray-600">Contact us on WhatsApp: <a href="https://wa.me/254757780414" class="text-blue-500 underline">+254757780414</a></p>
-    <p class="text-sm text-gray-400 mt-2">&copy; 2025 MyDigitalHub</p>
+  <footer id="contact" class="bg-white p-10 text-center mt-20 border-t">
+    <p class="text-gray-700 font-bold mb-2">Need Help? Chat with us</p>
+    <a href="https://wa.me/254757780414?text=Hi%20MyDigitalHub,%20I%20need%20help%20with%20a%20subscription" 
+       class="inline-block bg-green-500 text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition">
+       WhatsApp: +254 757 780414
+    </a>
+    <p class="text-sm text-gray-400 mt-6">&copy; 2026 MyDigitalHub. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript -->
   <script>
+    // Configuration
+    const KES_RATE = 130.00; // Manual exchange rate estimate
     const products = [
-      {
-        name: 'DSTV Stream',
-        price: 6.00,
-        description: 'Stream live DSTV channels for 1 month.',
-        image: 'assets/dstv.jpg'
-      },
-      {
-        name: 'Startimes ON',
-        price: 9.80,
-        description: 'Watch live channels without monthly subscription.',
-        image: 'assets/startimes.jpg'
-      },
-      {
-        name: 'Sports TV',
-        price: 8.50,
-        description: 'Unlimited sports coverage including EPL, La Liga, and more.',
-        image: 'assets/sports.jpg'
-      },
-      {
-        name: 'Movies & TV Shows',
-        price: 5.00,
-        description: 'Unlimited access to trending movies and TV series.',
-        image: 'assets/movies.jpg'
-      },
-      {
-        name: 'IPTV Subscription',
-        price: 5.50,
-        description: 'Iptv subscription for 1,3,6 & 12 months.',
-        image: 'assets/iptvsub.jpg'
-      },
-      {
-        name: 'IPTV Unlocked',
-        price: 7.00,
-        description: 'Exclusive access to global content for free.',
-        image: 'assets/iptv.jpg'
-      }
+      { name: 'DSTV Stream', price: 6.00, cat: 'TV', image: 'assets/dstv.jpg', tag: 'Popular', desc: '1 Month Live Streaming' },
+      { name: 'Startimes ON', price: 9.80, cat: 'TV', image: 'assets/startimes.jpg', desc: 'Premium Live Access' },
+      { name: 'Sports TV', price: 8.50, cat: 'TV', image: 'assets/sports.jpg', tag: 'Best for Sports', desc: 'EPL & Champions League' },
+      { name: 'Movies & TV Shows', price: 5.00, cat: 'Movies', image: 'assets/movies.jpg', desc: 'Trending VOD Library' },
+      { name: 'IPTV Subscription', price: 5.50, cat: 'IPTV', image: 'assets/iptvsub.jpg', desc: 'Multi-device support' },
+      { name: 'IPTV Unlocked', price: 7.00, cat: 'IPTV', image: 'assets/iptv.jpg', tag: 'Limited Offer', desc: 'Global Unlocked Content' }
     ];
 
-    function createProductCard(product, index) {
-      return `
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-2">
-          <h3 class="text-lg font-semibold">${product.name}</h3>
-          <p class="text-sm text-gray-500 mb-2">$${product.price.toFixed(2)}</p>
-          <p class="text-sm mb-4">${product.description}</p>
-          <div id="paypal-button-${index}" class="mt-2"></div>
-        </div>
-      `;
-    }
-
-    function renderProducts() {
+    function renderProducts(filter = 'All', search = '') {
       const container = document.getElementById('products');
-      container.innerHTML = products.map((p, i) => createProductCard(p, i)).join('');
+      container.innerHTML = '';
 
-      products.forEach((product, index) => {
+      const filtered = products.filter(p => {
+        const matchesCat = filter === 'All' || p.cat === filter;
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach((product, i) => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 transition hover:shadow-xl relative";
+        
+        const badge = product.tag ? `<span class="badge bg-blue-600">${product.tag}</span>` : '';
+        const kesPrice = (product.price * KES_RATE).toLocaleString();
+
+        card.innerHTML = `
+          ${badge}
+          <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+          <div class="p-5">
+            <h3 class="text-xl font-bold">${product.name}</h3>
+            <div class="flex justify-between items-center my-2">
+                <span class="text-2xl font-black text-gray-900">$${product.price.toFixed(2)}</span>
+                <span class="text-xs font-medium text-gray-400">~ KES ${kesPrice}</span>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">${product.desc}</p>
+            <div id="paypal-button-${i}"></div>
+          </div>
+        `;
+        container.appendChild(card);
+
         paypal.Buttons({
-          style: {
-            layout: 'horizontal',
-            color: 'blue',
-            shape: 'pill',
-            label: 'pay'
-          },
-          createOrder: function(data, actions) {
+          style: { layout: 'horizontal', color: 'blue', shape: 'rect', label: 'pay' },
+          createOrder: (data, actions) => {
             return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: product.price.toFixed(2)
-                },
-                description: product.name
-              }]
+              purchase_units: [{ amount: { value: product.price.toFixed(2) }, description: product.name }]
             });
           },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              alert(`Payment successful for ${product.name}! Buyer: ${details.payer.name.given_name}`);
+          onApprove: (data, actions) => {
+            return actions.order.capture().then(details => {
+              // Redirect to thank-you.html
+              const name = encodeURIComponent(product.name);
+              const email = encodeURIComponent(details.payer.email_address);
+              window.location.href = `thank-you.html?product=${name}&email=${email}`;
             });
-          },
-          onError: function(err) {
-            console.error(err);
-            alert('Payment could not be processed.');
           }
-        }).render(`#paypal-button-${index}`);
+        }).render(`#paypal-button-${i}`);
       });
     }
 
-    window.addEventListener('DOMContentLoaded', renderProducts);
-  </script>
+    // Event Listeners for search and filter
+    document.getElementById('searchInput').addEventListener('input', (e) => renderProducts(document.getElementById('categoryFilter').value, e.target.value));
+    document.getElementById('categoryFilter').addEventListener('change', (e) => renderProducts(e.target.value, document.getElementById('searchInput').value));
 
+    window.addEventListener('DOMContentLoaded', () => renderProducts());
+  </script>
 </body>
 </html>
