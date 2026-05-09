@@ -20,19 +20,50 @@
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
     }
 
+    /* WhatsApp Float */
     .whatsapp-float {
         position: fixed;
         bottom: 30px;
         right: 30px;
         z-index: 100;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+    /* Toast Notifications */
+    #toastContainer {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+    }
+    .toast {
+        @apply glass text-white text-[11px] font-bold px-5 py-3 rounded-2xl border-l-4 border-blue-500 shadow-2xl;
+        pointer-events: auto;
+        animation: slideIn 0.4s ease forwards;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(-100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-fade-out {
+        animation: slideOut 0.4s ease forwards;
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(-100%); opacity: 0; }
+    }
   </style>
 </head>
 <body class="text-slate-200 antialiased font-sans">
 
-  <a href="https://wa.me/254700000000" target="_blank" class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border-2 border-white/20">
+  <div id="toastContainer"></div>
+
+  <a href="https://wa.me/254700000000" target="_blank" class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border-2 border-white/10">
     <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
@@ -55,53 +86,51 @@
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
       <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight leading-none">Crystal Clear <span class="text-blue-500 text-shadow-xl">Access.</span></h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Fast, reliable digital delivery within minutes.</p>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant premium digital accounts delivered globally.</p>
     </section>
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         </section>
 
-    <section class="mt-24 max-w-5xl mx-auto">
-        <div class="flex justify-center mb-12">
-            <div class="glass px-8 py-3 rounded-full border-blue-500/50 flex items-center gap-4">
-                <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
-                <span class="text-sm font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
-            </div>
+    <section class="mt-24 flex justify-center">
+        <div class="glass px-8 py-3 rounded-full border-blue-500/50 flex items-center gap-4">
+            <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+            <span class="text-sm font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
         </div>
+    </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"Got my Spotify Pro in minutes. No more ads while I'm producing beats!"</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Brian O.</p>
-            </div>
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"The IPTV service is incredible. Finally reliable HD sports in Kenya."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Sarah M.</p>
-            </div>
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"Fast delivery for DSTV Stream. Best digital store I've used."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— David K.</p>
-            </div>
+    <section class="mt-20 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-3xl">
+            <p class="text-sm italic text-slate-300">"Got my Spotify Pro in minutes. No more ads!"</p>
+            <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Brian O.</p>
         </div>
+        <div class="glass p-8 rounded-3xl">
+            <p class="text-sm italic text-slate-300">"IPTV connection is flawless. Best service yet."</p>
+            <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Sarah M.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl">
+            <p class="text-sm italic text-slate-300">"Reliable DSTV Stream delivery. Highly recommend."</p>
+            <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— David K.</p>
+        </div>
+    </section>
 
-        <div class="max-w-3xl mx-auto mb-20">
-            <h3 class="text-3xl font-black text-white text-center mb-10 uppercase tracking-tighter">FAQ</h3>
-            <div class="space-y-6">
-                <div class="glass p-8 rounded-3xl">
-                    <h4 class="font-bold text-blue-400 mb-2">How long does delivery take?</h4>
-                    <p class="text-sm text-slate-400">Credentials are sent via email within 5-15 minutes of payment.</p>
-                </div>
-                <div class="glass p-8 rounded-3xl">
-                    <h4 class="font-bold text-blue-400 mb-2">Are payments secure?</h4>
-                    <p class="text-sm text-slate-400">Yes, we use Paystack to process all card and Mobile Money payments securely.</p>
-                </div>
+    <section class="mt-32 max-w-3xl mx-auto mb-20">
+        <h3 class="text-3xl font-black text-white text-center mb-10 uppercase">FAQ</h3>
+        <div class="space-y-6">
+            <div class="glass p-8 rounded-3xl">
+                <h4 class="font-bold text-blue-400 mb-2">How long does delivery take?</h4>
+                <p class="text-sm text-slate-400">Within 5-15 minutes of payment.</p>
+            </div>
+            <div class="glass p-8 rounded-3xl">
+                <h4 class="font-bold text-blue-400 mb-2">Which methods are supported?</h4>
+                <p class="text-sm text-slate-400">Cards, M-Pesa, and Mobile Money via Paystack.</p>
             </div>
         </div>
     </section>
   </main>
 
   <footer class="bg-slate-950 p-12 text-center border-t border-slate-900">
-    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. Powered by Paystack.</p>
+    <p class="text-[10px] text-slate-700 font-bold uppercase">&copy; 2026 ClearView Store.</p>
   </footer>
 
   <script>
@@ -120,12 +149,24 @@
       { id: 7, name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg' }
     ];
 
+    function showToast(message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast-fade-out');
+            setTimeout(() => toast.remove(), 400);
+        }, 3000);
+    }
+
     async function initialize() {
       try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
         if(data.rates) exchangeRates = data.rates;
-      } catch (e) { console.warn("Fallback rates used."); }
+      } catch (e) { console.warn("Fallbacks active."); }
       renderProducts();
     }
 
@@ -134,6 +175,7 @@
       document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
       document.getElementById(`btn-${cur}`).classList.add('currency-active');
       renderProducts();
+      showToast(`Switched to ${cur}`);
     }
 
     function handlePayment(index) {
@@ -147,10 +189,14 @@
             finalPriceUSD = (tier === 'premium') ? product.premiumPriceUSD : product.priceUSD;
         }
 
-        if (!email || !email.includes('@')) return alert("Enter a valid email.");
+        if (!email || !email.includes('@')) {
+            showToast("Error: Valid email required.");
+            return;
+        }
 
-        btn.innerText = "Connecting...";
+        btn.innerText = "Processing...";
         btn.disabled = true;
+        showToast(`Initializing payment for ${product.name}...`);
 
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
@@ -158,7 +204,11 @@
             amount: Math.floor(finalPriceUSD * exchangeRates[currentCurrency] * 100),
             currency: currentCurrency,
             callback: (res) => window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`,
-            onClose: () => { btn.innerText = "Instant Access"; btn.disabled = false; }
+            onClose: () => { 
+                btn.innerText = "Instant Access"; 
+                btn.disabled = false; 
+                showToast("Transaction cancelled.");
+            }
         });
         handler.openIframe();
     }
@@ -174,7 +224,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
           </div>
           <div class="p-6 -mt-8 relative z-10">
-            <h3 class="text-xl font-black text-white mb-1">${p.name}</h3>
+            <h3 class="text-xl font-black text-white mb-1 uppercase tracking-tight">${p.name}</h3>
             <p class="text-2xl font-black text-blue-500 mb-4">${localPrice}</p>
             
             ${p.hasTiers ? `
@@ -189,7 +239,7 @@
                 </label>
             </div>` : ''}
 
-            <input type="email" id="email-${i}" placeholder="Email Address" 
+            <input type="email" id="email-${i}" placeholder="Delivery Email" 
                    class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-[11px] text-white mb-3 focus:outline-none focus:border-blue-500">
             
             <button id="pay-btn-${i}" onclick="handlePayment(${i})" 
