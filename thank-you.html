@@ -17,9 +17,15 @@
     </div>
     <h1 class="text-3xl font-black text-white mb-4 tracking-tighter">Order Complete!</h1>
     <p id="message" class="text-slate-400 mb-8 leading-relaxed"></p>
-    <div class="bg-slate-950/50 p-4 rounded-2xl mb-8 border border-slate-800">
-        <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Estimated Delivery</p>
-        <p class="text-sm text-slate-300">5 - 15 Minutes</p>
+    <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Status</p>
+            <p class="text-xs text-blue-400 font-bold">Confirmed</p>
+        </div>
+        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Ref</p>
+            <p id="refText" class="text-[10px] text-slate-400 truncate font-mono">---</p>
+        </div>
     </div>
     <a href="index.html" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">Return to Store</a>
   </div>
@@ -28,6 +34,9 @@
     const url = new URL(window.location.href);
     const product = url.searchParams.get('product');
     const email = url.searchParams.get('email');
+    const ref = url.searchParams.get('ref');
+    
+    document.getElementById('refText').innerText = ref || "N/A";
     document.getElementById('message').innerHTML = product && email ? 
         `Thank you for purchasing <span class="text-blue-400 font-bold">${product}</span>. Access details are being sent to <span class="text-white">${email}</span>.` : 
         "Your payment was successful. Please check your email for confirmation.";
