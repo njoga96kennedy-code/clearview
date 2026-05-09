@@ -20,13 +20,6 @@
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
     }
 
-    .skeleton {
-      background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
-    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
     #checkoutModal[open] { animation: show 0.3s ease-out forwards; }
     @keyframes show {
       from { opacity: 0; transform: scale(0.9) translateY(10px); }
@@ -66,12 +59,12 @@
 
         <div>
             <label class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-2">Delivery Email</label>
-            <input type="email" id="customerEmail" placeholder="name@example.com" 
+            <input type="email" id="customerEmail" placeholder="name@example.com" required
                 class="w-full bg-slate-950 border border-slate-800 p-4 rounded-2xl text-white focus:outline-none focus:border-blue-500 transition-colors">
         </div>
         <button id="payButton" onclick="processPayment()" 
             class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">
-            Complete Purchase
+            Proceed to Payment
         </button>
     </div>
   </dialog>
@@ -93,60 +86,32 @@
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
       <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight leading-none">Crystal Clear <span class="text-blue-500 text-shadow-xl">Access.</span></h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant digital delivery across the Globe.</p>
     </section>
 
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="skeleton h-80 rounded-[2rem]"></div>
-        <div class="skeleton h-80 rounded-[2rem]"></div>
-        <div class="skeleton h-80 rounded-[2rem]"></div>
-    </section>
-
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
+    
     <section class="mt-24 max-w-5xl mx-auto">
         <div class="flex justify-center mb-12">
             <div class="glass px-6 py-2 rounded-full border-blue-500/50 flex items-center gap-3">
-                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
                 <span class="text-xs font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
             </div>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             <div class="glass p-6 rounded-2xl border-slate-800/50">
-                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
-                <p class="text-sm italic text-slate-300">"Got my Spotify Pro in minutes. No more ads while I'm producing beats!"</p>
+                <p class="text-sm italic text-slate-300">"Got my Spotify Pro in minutes. No more ads!"</p>
                 <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— Brian O.</p>
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
-                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
-                <p class="text-sm italic text-slate-300">"The IPTV service is incredible. Finally a reliable way to watch sports."</p>
+                <p class="text-sm italic text-slate-300">"Reliable and crystal clear IPTV."</p>
                 <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
-                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
-                <p class="text-sm italic text-slate-300">"Fast delivery for DSTV Stream. Best store for Kenyans!"</p>
+                <p class="text-sm italic text-slate-300">"Best digital shop for East Africa."</p>
                 <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— David K.</p>
-            </div>
-        </div>
-
-        <div class="max-w-3xl mx-auto mb-20">
-            <h3 class="text-3xl font-black text-white text-center mb-8 uppercase tracking-tighter">Frequently Asked <span class="text-blue-500">Questions</span></h3>
-            <div class="space-y-4">
-                <div class="glass p-6 rounded-2xl">
-                    <h4 class="font-bold text-blue-400 mb-2">How long does delivery take?</h4>
-                    <p class="text-sm text-slate-400">Credentials are sent to your email within 5-15 minutes of a successful payment.</p>
-                </div>
-                <div class="glass p-6 rounded-2xl">
-                    <h4 class="font-bold text-blue-400 mb-2">Which payment methods are supported?</h4>
-                    <p class="text-sm text-slate-400">We support M-Pesa, Mobile Money, and all major cards via Paystack.</p>
-                </div>
             </div>
         </div>
     </section>
   </main>
-
-  <footer class="bg-slate-950 p-16 text-center border-t border-slate-900">
-    <p class="text-[10px] text-slate-700 font-bold tracking-widest uppercase">&copy; 2026 ClearView Store. Powered by Paystack Secure.</p>
-  </footer>
 
   <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
@@ -158,12 +123,12 @@
     const products = [
       { name: 'Standard IPTV', priceUSD: 6.00, premiumPriceUSD: 10.00, image: 'assets/iptvsub.jpg', desc: '12k+ Global channels. 4K Streaming.', hasTiers: true },
       { name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', desc: 'Global 12,000+ Channels. 4K Streaming.' },
-      { name: 'Spotify Pro', priceUSD: 4.00, image: 'assets/spotify.jpg', desc: 'Ad-free music. Offline play. High quality audio.' },
+      { name: 'Spotify Pro', priceUSD: 4.00, image: 'assets/spotify.jpg', desc: 'Ad-free music. Offline play.' },
       { name: 'CapCut Pro', priceUSD: 5.00, image: 'assets/capcut.jpg', desc: 'Full Premium Features. No Watermark.' },
-      { name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', desc: '1 Month Premium Access. Live TV & Sports.' },
+      { name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', desc: '1 Month Premium Access. Live TV.' },
       { name: 'Sports TV Pro', priceUSD: 8.50, image: 'assets/sports.jpg', desc: 'All Major Leagues Live. Ultra HD.' },
       { name: 'Startimes Combo', priceUSD: 9.80, image: 'assets/startimes.jpg', desc: 'Family bundle. Local channels included.' },
-      { name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest Hollywood releases.' }
+      { name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest releases.' }
     ];
 
     async function initialize() {
@@ -171,7 +136,7 @@
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
         if(data.rates) exchangeRates = data.rates;
-      } catch (e) { console.warn("Rates fallback active."); }
+      } catch (e) { console.warn("Fallback rates in use."); }
       renderProducts();
     }
 
@@ -215,36 +180,47 @@
 
     function processPayment() {
         const email = document.getElementById('customerEmail').value;
-        const btn = document.getElementById('payButton');
-        if (!email || !email.includes('@')) return alert("Enter a valid email.");
-        
-        btn.innerText = "Connecting...";
-        btn.disabled = true;
+        const payBtn = document.getElementById('payButton');
 
-        PaystackPop.setup({
+        if (!email || !email.includes('@')) {
+            alert("Please enter a valid email address for delivery.");
+            return;
+        }
+
+        payBtn.innerText = "Connecting...";
+        payBtn.disabled = true;
+
+        const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
             email: email,
-            amount: Math.round(activeTierPrice * exchangeRates[currentCurrency] * 100),
+            amount: Math.floor(activeTierPrice * exchangeRates[currentCurrency] * 100),
             currency: currentCurrency,
-            callback: (res) => window.location.href = `thank-you.html?product=${encodeURIComponent(selectedProduct.name)}&email=${encodeURIComponent(email)}`,
-            onClose: () => { btn.innerText = "Complete Purchase"; btn.disabled = false; }
-        }).openIframe();
+            callback: function(response) {
+                window.location.href = `thank-you.html?product=${encodeURIComponent(selectedProduct.name)}&email=${encodeURIComponent(email)}`;
+            },
+            onClose: function() {
+                payBtn.innerText = "Proceed to Payment";
+                payBtn.disabled = false;
+            }
+        });
+        
+        handler.openIframe();
     }
 
     function renderProducts() {
       document.getElementById('products').innerHTML = products.map((p, i) => {
         const localPrice = (p.priceUSD * exchangeRates[currentCurrency]).toLocaleString(undefined, { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
         return `
-            <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 relative group">
-              <div class="relative h-52 overflow-hidden">
-                <img src="${p.image}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-all duration-700">
+            <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 group">
+              <div class="relative h-52">
+                <img src="${p.image}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
               </div>
               <div class="p-8 -mt-10 relative z-10">
                 <h3 class="text-2xl font-black text-white mb-1">${p.name}</h3>
                 <p class="text-3xl font-black text-blue-500 mb-4">${localPrice}</p>
                 <p class="text-sm text-slate-500 mb-8 min-h-[40px]">${p.desc}</p>
-                <button onclick="openModal(${i})" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">Instant Access</button>
+                <button onclick="openModal(${i})" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl transition-all uppercase tracking-widest text-xs">Instant Access</button>
               </div>
             </div>
         `;
