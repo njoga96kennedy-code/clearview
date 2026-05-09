@@ -47,7 +47,7 @@
         animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
     .toast-system { border-color: #3b82f6; }
-    .toast-social { border-color: #10b981; } /* Green for social proof */
+    .toast-social { border-color: #10b981; }
     
     @keyframes slideIn {
         from { transform: translateX(-120%); opacity: 0; }
@@ -89,39 +89,56 @@
   <main class="max-w-6xl mx-auto p-6">
     <section class="text-center py-16">
       <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight leading-none">Crystal Clear <span class="text-blue-500 text-shadow-xl">Access.</span></h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Fast, reliable digital delivery across Africa.</p>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant digital delivery across the globe.</p>
     </section>
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         </section>
 
-    <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-20">
-        <div class="flex justify-center mb-12">
-            <div class="glass px-8 py-3 rounded-full border-blue-500/50 flex items-center gap-4">
-                <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
-                <span class="text-sm font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
+    <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
+        <div class="flex flex-col items-center mb-16">
+            <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 animate-pulse shadow-lg shadow-blue-900/20">
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"Got my Spotify Pro in minutes. Highly recommended!"</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Brian O.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+                <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"Instant delivery! Got my Spotify premium account in less than 5 minutes."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Brian O.</p>
             </div>
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"The IPTV service is flawless. Finally HD sports in Kenya."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— Sarah M.</p>
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+                <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"The IPTV quality is amazing. Best streaming service I've used so far."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
             </div>
-            <div class="glass p-8 rounded-3xl">
-                <p class="text-sm italic text-slate-300">"Best digital store I've used this year."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase">— David K.</p>
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+                <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"Very reliable. Customer support helped me set up my DSTV stream immediately."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— David K.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto mb-32">
+        <h3 class="text-3xl font-black text-white text-center mb-12 uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
+        <div class="space-y-4">
+            <div class="glass p-6 rounded-2xl">
+                <h4 class="font-bold text-blue-400 mb-2">How do I receive my order?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are sent directly to the email address you provide during checkout.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <h4 class="font-bold text-blue-400 mb-2">Are the accounts shared?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">No. We provide private, high-quality premium accounts unless specifically stated otherwise.</p>
             </div>
         </div>
     </section>
   </main>
 
   <footer class="bg-slate-950 p-12 text-center border-t border-slate-900">
-    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. All Rights Reserved.</p>
+    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. Powered by Paystack Secure.</p>
   </footer>
 
   <script>
@@ -140,34 +157,28 @@
       { id: 7, name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg' }
     ];
 
-    const kenyanTowns = ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Thika", "Machakos", "Kitengela", "Gilgil", "Naivasha"];
+    const locations = ["Nairobi", "Mombasa", "Lagos", "Accra", "Johannesburg", "Eldoret", "Nakuru", "Abuja", "Kisumu", "Kumasi"];
 
     function showToast(message, type = 'system') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         toast.className = `toast ${type === 'system' ? 'toast-system' : 'toast-social'}`;
         toast.innerText = message;
-        
         container.appendChild(toast);
-        
         setTimeout(() => {
             toast.classList.add('toast-fade-out');
             setTimeout(() => toast.remove(), 500);
         }, 5000);
     }
 
-    // SOCIAL PROOF LOOP
     function startSocialProof() {
         const trigger = () => {
-            const randomTown = kenyanTowns[Math.floor(Math.random() * kenyanTowns.length)];
-            const randomProduct = products[Math.floor(Math.random() * products.length)].name;
-            showToast(`🔥 Someone in ${randomTown} just purchased ${randomProduct}!`, 'social');
-            
-            // Re-trigger in 15-40 seconds
-            const nextTime = Math.floor(Math.random() * (40000 - 15000) + 15000);
-            setTimeout(trigger, nextTime);
+            const randomLoc = locations[Math.floor(Math.random() * locations.length)];
+            const randomProd = products[Math.floor(Math.random() * products.length)].name;
+            showToast(`🔥 Someone in ${randomLoc} just purchased ${randomProd}!`, 'social');
+            setTimeout(trigger, Math.random() * (45000 - 20000) + 20000);
         };
-        setTimeout(trigger, 8000); // Start first one after 8s
+        setTimeout(trigger, 5000);
     }
 
     async function initialize() {
@@ -199,14 +210,11 @@
             finalPriceUSD = (tier === 'premium') ? product.premiumPriceUSD : product.priceUSD;
         }
 
-        if (!email || !email.includes('@')) {
-            showToast("⚠️ Please enter a valid delivery email.");
-            return;
-        }
+        if (!email || !email.includes('@')) return showToast("⚠️ Valid email required.");
 
         btn.innerText = "Connecting...";
         btn.disabled = true;
-        showToast(`Processing payment for ${product.name}...`);
+        showToast(`Processing ${product.name}...`);
 
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
@@ -217,7 +225,7 @@
             onClose: () => { 
                 btn.innerText = "Instant Access"; 
                 btn.disabled = false; 
-                showToast("Payment cancelled.");
+                showToast("Payment closed.");
             }
         });
         handler.openIframe();
@@ -249,7 +257,7 @@
                 </label>
             </div>` : ''}
 
-            <input type="email" id="email-${i}" placeholder="Email Address" 
+            <input type="email" id="email-${i}" placeholder="Delivery Email" 
                    class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-[11px] text-white mb-3 focus:outline-none focus:border-blue-500">
             
             <button id="pay-btn-${i}" onclick="handlePayment(${i})" 
