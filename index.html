@@ -137,12 +137,12 @@
     let selectedProduct = null;
 
     const products = [
+      { name: 'Standard IPTV', priceUSD: 6.00, image: 'assets/iptvsub.jpg', desc: 'Reliable HD streams. 12k+ Global channels.' },
       { name: 'CapCut Pro', priceUSD: 5.00, image: 'assets/capcut.jpg', desc: 'Full Premium Features. No Watermark. 4K Export.' },
       { name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', desc: '1 Month Premium Access. Live TV & Sports.' },
       { name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', desc: 'Global 12,000+ Channels. 4K Streaming.' },
       { name: 'Sports TV Pro', priceUSD: 8.50, image: 'assets/sports.jpg', desc: 'All Major Leagues Live. Ultra HD.' },
-      { name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest Hollywood releases.' },
-      { name: 'Startimes Combo', priceUSD: 9.80, image: 'assets/startimes.jpg', desc: 'Family bundle. Local channels included.' }
+      { name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest Hollywood releases.' }
     ];
 
     const purchaseData = [
@@ -160,14 +160,13 @@
         if(data.rates) exchangeRates = data.rates;
       } catch (e) { console.warn("Rates fallback active."); }
       renderProducts();
-      setInterval(showToast, 20000); // Show toast every 20 seconds
-      setTimeout(showToast, 5000);   // Show first toast after 5 seconds
+      setInterval(showToast, 20000);
+      setTimeout(showToast, 5000);
     }
 
     function showToast() {
         const container = document.getElementById('toastContainer');
         const data = purchaseData[Math.floor(Math.random() * purchaseData.length)];
-        
         const toast = document.createElement('div');
         toast.className = "glass p-4 rounded-2xl shadow-2xl border-l-4 border-l-blue-500 toast-entry flex items-center gap-4 min-w-[280px]";
         toast.innerHTML = `
@@ -178,7 +177,6 @@
                 <p class="text-[9px] text-slate-600 uppercase mt-1">Verified Purchase</p>
             </div>
         `;
-        
         container.appendChild(toast);
         setTimeout(() => {
             toast.classList.add('toast-exit');
