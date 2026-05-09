@@ -101,7 +101,52 @@
         <div class="skeleton h-80 rounded-[2rem]"></div>
         <div class="skeleton h-80 rounded-[2rem]"></div>
     </section>
+
+    <section class="mt-24 max-w-5xl mx-auto">
+        <div class="flex justify-center mb-12">
+            <div class="glass px-6 py-2 rounded-full border-blue-500/50 flex items-center gap-3 animate-pulse">
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <span class="text-xs font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
+                <p class="text-sm italic text-slate-300">"Got my CapCut Pro login in literally 5 minutes. Best service in Kenya so far!"</p>
+                <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— Brian O.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
+                <p class="text-sm italic text-slate-300">"Super easy to pay with M-Pesa. The IPTV stream is crystal clear."</p>
+                <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <div class="flex text-yellow-500 mb-2 text-xs">★★★★★</div>
+                <p class="text-sm italic text-slate-300">"Reliable and fast. Using DSTV Stream without any glitches. Highly recommend."</p>
+                <p class="text-xs font-bold mt-4 text-blue-500 uppercase tracking-widest">— David K.</p>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto">
+            <h3 class="text-3xl font-black text-white text-center mb-8 uppercase tracking-tighter">Frequently Asked <span class="text-blue-500">Questions</span></h3>
+            <div class="space-y-4">
+                <div class="glass p-6 rounded-2xl">
+                    <h4 class="font-bold text-blue-400 mb-2">How long does delivery take?</h4>
+                    <p class="text-sm text-slate-400">Credentials are sent to your email within 5-15 minutes of a successful payment.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl">
+                    <h4 class="font-bold text-blue-400 mb-2">Which payment methods are supported?</h4>
+                    <p class="text-sm text-slate-400">We support M-Pesa, Mobile Money, and all major Credit/Debit cards via Paystack.</p>
+                </div>
+            </div>
+        </div>
+    </section>
   </main>
+
+  <footer class="bg-slate-950 p-16 text-center mt-20 border-t border-slate-900">
+    <p class="text-[10px] text-slate-700 font-bold tracking-widest uppercase">&copy; 2026 ClearView Store. Powered by Paystack Secure.</p>
+  </footer>
 
   <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
@@ -115,8 +160,14 @@
       { name: 'Startimes Combo', priceUSD: 9.80, image: 'assets/startimes.jpg', desc: 'Family bundle. Local channels included.' },
       { name: 'CapCut Pro', priceUSD: 5.00, image: 'assets/capcut.jpg', desc: 'Full Premium Features. No Watermark.' },
       { name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', desc: '1 Month Premium Access. Live TV & Sports.' },
-      { name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', desc: 'Global 12,000+ Channels. 4K Streaming.' },
+      { name: 'Sports TV Pro', priceUSD: 8.50, image: 'assets/sports.jpg', desc: 'All Major Leagues Live. Ultra HD.' },
       { name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', desc: 'VOD Library. Latest Hollywood releases.' }
+    ];
+
+    const purchaseData = [
+        { name: "Kevin", location: "Nairobi", product: "IPTV Unlocked" },
+        { name: "Amara", location: "Lagos", product: "CapCut Pro" },
+        { name: "John", location: "Accra", product: "DSTV Stream" }
     ];
 
     async function initialize() {
@@ -126,6 +177,27 @@
         if(data.rates) exchangeRates = data.rates;
       } catch (e) { console.warn("Rates fallback active."); }
       renderProducts();
+      setInterval(showToast, 20000);
+      setTimeout(showToast, 5000);
+    }
+
+    function showToast() {
+        const container = document.getElementById('toastContainer');
+        const data = purchaseData[Math.floor(Math.random() * purchaseData.length)];
+        const toast = document.createElement('div');
+        toast.className = "glass p-4 rounded-2xl shadow-2xl border-l-4 border-l-blue-500 toast-entry flex items-center gap-4 min-w-[280px]";
+        toast.innerHTML = `
+            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white">${data.name[0]}</div>
+            <div>
+                <p class="text-xs font-bold text-white">${data.name} from ${data.location}</p>
+                <p class="text-[10px] text-slate-400">Just purchased <span class="text-blue-400">${data.product}</span></p>
+            </div>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast-exit');
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
     }
 
     function setCurrency(cur) {
@@ -154,17 +226,8 @@
 
     function setTier(tier) {
         activeTierPrice = (tier === 'premium') ? selectedProduct.premiumPriceUSD : selectedProduct.priceUSD;
-        
-        const basicBtn = document.getElementById('tier-basic');
-        const premBtn = document.getElementById('tier-premium');
-        
-        if(tier === 'premium') {
-            premBtn.className = "p-3 rounded-xl border border-blue-600 bg-blue-600/20 text-xs font-bold text-white";
-            basicBtn.className = "p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-400";
-        } else {
-            basicBtn.className = "p-3 rounded-xl border border-blue-600 bg-blue-600/20 text-xs font-bold text-white";
-            premBtn.className = "p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-400";
-        }
+        document.getElementById('tier-basic').className = (tier === 'basic') ? "p-3 rounded-xl border border-blue-600 bg-blue-600/20 text-xs font-bold text-white" : "p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-400";
+        document.getElementById('tier-premium').className = (tier === 'premium') ? "p-3 rounded-xl border border-blue-600 bg-blue-600/20 text-xs font-bold text-white" : "p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs font-bold text-slate-400";
         updateModalPrice(activeTierPrice);
     }
 
