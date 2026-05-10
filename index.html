@@ -20,7 +20,6 @@
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
     }
 
-    /* WhatsApp Float */
     .whatsapp-float {
         position: fixed;
         bottom: 30px;
@@ -30,7 +29,6 @@
     }
     .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
 
-    /* Toast Notifications */
     #toastContainer {
         position: fixed;
         bottom: 24px;
@@ -92,17 +90,9 @@
       <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Instant digital delivery across the globe.</p>
     </section>
 
-    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        </section>
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
 
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
-        <div class="flex flex-col items-center mb-16">
-            <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 animate-pulse shadow-lg shadow-blue-900/20">
-                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
-                <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
-            </div>
-        </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
             <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
                 <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
@@ -118,20 +108,6 @@
                 <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
                 <p class="text-sm italic text-slate-300 leading-relaxed">"Very reliable. Customer support helped me set up my DSTV stream immediately."</p>
                 <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— David K.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="max-w-3xl mx-auto mb-32">
-        <h3 class="text-3xl font-black text-white text-center mb-12 uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
-        <div class="space-y-4">
-            <div class="glass p-6 rounded-2xl">
-                <h4 class="font-bold text-blue-400 mb-2">How do I receive my order?</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are sent directly to the email address you provide during checkout.</p>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <h4 class="font-bold text-blue-400 mb-2">Are the accounts shared?</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">No. We provide private, high-quality premium accounts unless specifically stated otherwise.</p>
             </div>
         </div>
     </section>
@@ -171,26 +147,6 @@
         }, 5000);
     }
 
-    function startSocialProof() {
-        const trigger = () => {
-            const randomLoc = locations[Math.floor(Math.random() * locations.length)];
-            const randomProd = products[Math.floor(Math.random() * products.length)].name;
-            showToast(`🔥 Someone in ${randomLoc} just purchased ${randomProd}!`, 'social');
-            setTimeout(trigger, Math.random() * (45000 - 20000) + 20000);
-        };
-        setTimeout(trigger, 5000);
-    }
-
-    async function initialize() {
-      try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await res.json();
-        if(data.rates) exchangeRates = data.rates;
-      } catch (e) { console.warn("Fallbacks used."); }
-      renderProducts();
-      startSocialProof();
-    }
-
     function setCurrency(cur) {
       currentCurrency = cur;
       document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
@@ -204,24 +160,20 @@
         const email = document.getElementById(`email-${index}`).value;
         const btn = document.getElementById(`pay-btn-${index}`);
         
-        let finalPriceUSD = product.priceUSD;
-        if (product.hasTiers) {
-            const tier = document.querySelector(`input[name="tier-${index}"]:checked`).value;
-            finalPriceUSD = (tier === 'premium') ? product.premiumPriceUSD : product.priceUSD;
-        }
-
         if (!email || !email.includes('@')) return showToast("⚠️ Valid email required.");
 
         btn.innerText = "Connecting...";
         btn.disabled = true;
-        showToast(`Processing ${product.name}...`);
 
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
             email: email,
-            amount: Math.floor(finalPriceUSD * exchangeRates[currentCurrency] * 100),
+            amount: Math.floor(product.priceUSD * exchangeRates[currentCurrency] * 100),
             currency: currentCurrency,
-            callback: (res) => window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}`,
+            callback: (res) => { 
+                // Capture the actual transaction reference from Paystack
+                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&ref=${res.reference}`;
+            },
             onClose: () => { 
                 btn.innerText = "Instant Access"; 
                 btn.disabled = false; 
@@ -244,22 +196,8 @@
           <div class="p-6 -mt-8 relative z-10">
             <h3 class="text-xl font-black text-white mb-1 uppercase tracking-tight">${p.name}</h3>
             <p class="text-2xl font-black text-blue-500 mb-4">${localPrice}</p>
-            
-            ${p.hasTiers ? `
-            <div class="flex gap-2 mb-3">
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="tier-${i}" value="basic" checked class="hidden peer">
-                    <div class="text-[9px] font-bold py-2 text-center rounded-xl border border-slate-800 bg-slate-950 peer-checked:bg-blue-600/20 peer-checked:border-blue-500 text-slate-500">BASIC</div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="tier-${i}" value="premium" class="hidden peer">
-                    <div class="text-[9px] font-bold py-2 text-center rounded-xl border border-slate-800 bg-slate-950 peer-checked:bg-blue-600/20 peer-checked:border-blue-500 text-slate-500">PREMIUM</div>
-                </label>
-            </div>` : ''}
-
             <input type="email" id="email-${i}" placeholder="Delivery Email" 
                    class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-[11px] text-white mb-3 focus:outline-none focus:border-blue-500">
-            
             <button id="pay-btn-${i}" onclick="handlePayment(${i})" 
                     class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl transition-all uppercase text-[10px]">
                 Instant Access
@@ -267,6 +205,15 @@
           </div>
         </div>
       `}).join('');
+    }
+
+    async function initialize() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+        if(data.rates) exchangeRates = data.rates;
+      } catch (e) { console.warn("Fallbacks used."); }
+      renderProducts();
     }
     window.addEventListener('DOMContentLoaded', initialize);
   </script>
