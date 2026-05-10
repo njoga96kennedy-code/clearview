@@ -20,15 +20,7 @@
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
     }
 
-    .whatsapp-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 100;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
-
+    /* Toast Styles */
     #toastContainer {
         position: fixed;
         bottom: 24px;
@@ -43,10 +35,8 @@
         @apply glass text-white text-[11px] font-bold px-5 py-3 rounded-2xl border-l-4 shadow-2xl;
         pointer-events: auto;
         animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        border-color: #10b981; /* Success Green */
     }
-    .toast-system { border-color: #3b82f6; }
-    .toast-social { border-color: #10b981; }
-    
     @keyframes slideIn {
         from { transform: translateX(-120%); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -63,12 +53,6 @@
 <body class="text-slate-200 antialiased font-sans">
 
   <div id="toastContainer"></div>
-
-  <a href="https://wa.me/254781052997" target="_blank" class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border-2 border-white/10">
-    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-    </svg>
-  </a>
 
   <header class="glass sticky top-0 z-50 p-4 flex flex-col lg:flex-row justify-between items-center border-b border-slate-800 gap-4">
     <div class="flex items-center gap-3">
@@ -93,29 +77,42 @@
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
 
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
+        <div class="flex flex-col items-center mb-16">
+            <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 animate-pulse shadow-lg shadow-blue-900/20">
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
-            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
                 <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
                 <p class="text-sm italic text-slate-300 leading-relaxed">"Instant delivery! Got my Spotify premium account in less than 5 minutes."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Brian O.</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Brian O. (Nairobi)</p>
             </div>
-            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
                 <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
-                <p class="text-sm italic text-slate-300 leading-relaxed">"The IPTV quality is amazing. Best streaming service I've used so far."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"The IPTV quality is amazing. Smooth payment via Paystack."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Sarah M. (Lagos)</p>
             </div>
-            <div class="glass p-8 rounded-[2rem] border-slate-800/50 hover:border-blue-500/30 transition-colors">
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
                 <div class="flex text-yellow-500 mb-4 text-[10px]">★★★★★</div>
                 <p class="text-sm italic text-slate-300 leading-relaxed">"Very reliable. Customer support helped me set up my DSTV stream immediately."</p>
-                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— David K.</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— David K. (Accra)</p>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto mb-32">
+            <h3 class="text-3xl font-black text-white text-center mb-12 uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
+            <div class="space-y-4">
+                <div class="glass p-6 rounded-2xl">
+                    <h4 class="font-bold text-blue-400 mb-2">How do I receive my order?</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are sent directly to the email address you provide during checkout instantly after payment confirmation.</p>
+                </div>
             </div>
         </div>
     </section>
   </main>
-
-  <footer class="bg-slate-950 p-12 text-center border-t border-slate-900">
-    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. Powered by Paystack Secure.</p>
-  </footer>
 
   <script>
     const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
@@ -133,10 +130,12 @@
       { id: 7, name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg' }
     ];
 
-    function showToast(message, type = 'system') {
+    const locations = ["Nairobi", "Mombasa", "Lagos", "Accra", "Johannesburg", "Eldoret", "Abuja", "Kisumu", "Kumasi", "Entebbe"];
+
+    function showSocialToast(message) {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        toast.className = `toast ${type === 'system' ? 'toast-system' : 'toast-social'}`;
+        toast.className = 'toast';
         toast.innerText = message;
         container.appendChild(toast);
         setTimeout(() => {
@@ -145,12 +144,21 @@
         }, 5000);
     }
 
+    function startSocialProof() {
+        const trigger = () => {
+            const randomLoc = locations[Math.floor(Math.random() * locations.length)];
+            const randomProd = products[Math.floor(Math.random() * products.length)].name;
+            showSocialToast(`🔥 Someone in ${randomLoc} just purchased ${randomProd}!`);
+            setTimeout(trigger, Math.random() * (45000 - 20000) + 20000);
+        };
+        setTimeout(trigger, 8000); // Start after 8 seconds
+    }
+
     function setCurrency(cur) {
       currentCurrency = cur;
       document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
       document.getElementById(`btn-${cur}`).classList.add('currency-active');
       renderProducts();
-      showToast(`Switched to ${cur}`);
     }
 
     function handlePayment(index) {
@@ -158,7 +166,7 @@
         const email = document.getElementById(`email-${index}`).value;
         const btn = document.getElementById(`pay-btn-${index}`);
         
-        if (!email || !email.includes('@')) return showToast("⚠️ Valid email required.");
+        if (!email || !email.includes('@')) return alert("Valid email required.");
 
         btn.innerText = "Connecting...";
         btn.disabled = true;
@@ -174,7 +182,6 @@
             onClose: () => { 
                 btn.innerText = "Instant Access"; 
                 btn.disabled = false; 
-                showToast("Payment closed.");
             }
         });
         handler.openIframe();
@@ -211,6 +218,7 @@
         if(data.rates) exchangeRates = data.rates;
       } catch (e) { console.warn("Fallbacks used."); }
       renderProducts();
+      startSocialProof();
     }
     window.addEventListener('DOMContentLoaded', initialize);
   </script>
