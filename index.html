@@ -7,75 +7,7 @@
   <title>ClearView Store | Crystal Clear Access</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://js.payst<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Success | ClearView Store</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #020617; }
-    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(30, 41, 59, 1); }
-  </style>
-</head>
-<body class="text-slate-200 antialiased flex items-center justify-center min-h-screen p-6">
-  <div class="glass p-12 rounded-[2.5rem] max-w-lg w-full text-center shadow-2xl">
-    <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-blue-900/50">
-        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-        </svg>
-    </div>
-    <h1 class="text-3xl font-black text-white mb-4 tracking-tighter">Order Complete!</h1>
-    <p id="message" class="text-slate-400 mb-8 leading-relaxed"></p>
-    
-    <div id="downloadSection" class="hidden mb-8">
-        <a id="downloadBtn" href="#" target="_blank" class="block bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-2xl transition-all shadow-lg shadow-blue-900/30 uppercase tracking-widest text-xs">
-            Access My Product
-        </a>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mb-8">
-        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Status</p>
-            <p class="text-xs text-blue-400 font-bold">Confirmed</p>
-        </div>
-        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Ref</p>
-            <p id="refText" class="text-[10px] text-slate-400 truncate font-mono">---</p>
-        </div>
-    </div>
-    <a href="index.html" class="inline-block bg-slate-800 hover:bg-slate-700 text-white font-black px-8 py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">Return to Store</a>
-  </div>
-
-  <script>
-    const url = new URL(window.location.href);
-    const product = url.searchParams.get('product');
-    const email = url.searchParams.get('email');
-    const ref = url.searchParams.get('ref');
-    const downloadLink = url.searchParams.get('dl');
-    
-    document.getElementById('refText').innerText = ref || "---";
-
-    // Download Logic
-    if (downloadLink) {
-        const dlSection = document.getElementById('downloadSection');
-        const dlBtn = document.getElementById('downloadBtn');
-        dlSection.classList.remove('hidden');
-        dlBtn.href = downloadLink;
-        
-        if (downloadLink.includes('wa.me')) {
-            dlBtn.innerText = "Chat to Activate Subscription";
-            dlBtn.classList.replace('bg-blue-600', 'bg-green-600');
-        }
-    }
-
-    document.getElementById('message').innerHTML = product && email ? 
-        `Thank you for purchasing <span class="text-blue-400 font-bold">${product}</span>. Access details are being sent to <span class="text-white">${email}</span>.` : 
-        "Your payment was successful. Please check your email for confirmation.";
-  </script>
-</body>
-</html>ack.co/v1/inline.js"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   
   <style>
     body { background-color: #020617; }
@@ -169,6 +101,7 @@
 
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
 
+    <!-- TRUST SECTION -->
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
         <div class="flex flex-col items-center mb-16 text-center">
             <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 shadow-lg shadow-blue-900/20 animate-pulse">
@@ -196,6 +129,25 @@
             </div>
         </div>
     </section>
+
+    <!-- FAQ SECTION (Restored) -->
+    <section class="max-w-3xl mx-auto mb-32">
+        <h3 class="text-3xl font-black text-white text-center mb-12 uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
+        <div class="space-y-4">
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">How do I receive my order?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are delivered instantly to your screen and the email address you provide during checkout.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">Are the accounts shared or private?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">We provide high-quality, stable accounts. Specific details are provided with your purchase instructions.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">What if I have trouble setting up?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Our support team is available via the WhatsApp button at the bottom of the screen to guide you through activation.</p>
+            </div>
+        </div>
+    </section>
   </main>
 
   <footer class="bg-slate-950 p-12 text-center border-t border-slate-900">
@@ -203,75 +155,7 @@
   </footer>
 
   <script>
-    const PAYSTACK_PUBLIC_KEY = '<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Success | ClearView Store</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #020617; }
-    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(30, 41, 59, 1); }
-  </style>
-</head>
-<body class="text-slate-200 antialiased flex items-center justify-center min-h-screen p-6">
-  <div class="glass p-12 rounded-[2.5rem] max-w-lg w-full text-center shadow-2xl">
-    <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-blue-900/50">
-        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-        </svg>
-    </div>
-    <h1 class="text-3xl font-black text-white mb-4 tracking-tighter">Order Complete!</h1>
-    <p id="message" class="text-slate-400 mb-8 leading-relaxed"></p>
-    
-    <div id="downloadSection" class="hidden mb-8">
-        <a id="downloadBtn" href="#" target="_blank" class="block bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-2xl transition-all shadow-lg shadow-blue-900/30 uppercase tracking-widest text-xs">
-            Access My Product
-        </a>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mb-8">
-        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Status</p>
-            <p class="text-xs text-blue-400 font-bold">Confirmed</p>
-        </div>
-        <div class="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Ref</p>
-            <p id="refText" class="text-[10px] text-slate-400 truncate font-mono">---</p>
-        </div>
-    </div>
-    <a href="index.html" class="inline-block bg-slate-800 hover:bg-slate-700 text-white font-black px-8 py-4 rounded-2xl transition-all active:scale-95 uppercase tracking-widest text-xs">Return to Store</a>
-  </div>
-
-  <script>
-    const url = new URL(window.location.href);
-    const product = url.searchParams.get('product');
-    const email = url.searchParams.get('email');
-    const ref = url.searchParams.get('ref');
-    const downloadLink = url.searchParams.get('dl');
-    
-    document.getElementById('refText').innerText = ref || "---";
-
-    // Download Logic
-    if (downloadLink) {
-        const dlSection = document.getElementById('downloadSection');
-        const dlBtn = document.getElementById('downloadBtn');
-        dlSection.classList.remove('hidden');
-        dlBtn.href = downloadLink;
-        
-        if (downloadLink.includes('wa.me')) {
-            dlBtn.innerText = "Chat to Activate Subscription";
-            dlBtn.classList.replace('bg-blue-600', 'bg-green-600');
-        }
-    }
-
-    document.getElementById('message').innerHTML = product && email ? 
-        `Thank you for purchasing <span class="text-blue-400 font-bold">${product}</span>. Access details are being sent to <span class="text-white">${email}</span>.` : 
-        "Your payment was successful. Please check your email for confirmation.";
-  </script>
-</body>
-</html>';
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_d5f4919f90a0a0c0c68a293b2ced992559e797e7';
     let currentCurrency = 'USD';
     let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
 
