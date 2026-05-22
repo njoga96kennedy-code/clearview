@@ -1,0 +1,49 @@
+const url = new URL(window.location.href);
+const product = url.searchParams.get('product');
+const email = url.searchParams.get('email');
+const ref = url.searchParams.get('ref');
+const downloadLink = url.searchParams.get('dl');
+
+// Fail-safe redirect if accessed directly
+if (!ref) {
+    window.location.href = 'index.html';
+} else {
+    document.getElementById('refText').innerText = ref;
+
+    if (downloadLink) {
+        const dlSection = document.getElementById('downloadSection');
+        const dlBtn = document.getElementById('downloadBtn');
+        dlSection.classList.remove('hidden');
+        dlBtn.href = downloadLink;
+        
+        if (downloadLink.includes('wa.me')) {
+            dlBtn.innerText = "Chat with Support to Activate";
+            dlBtn.classList.replace('bg-blue-600', 'bg-green-600');
+        }
+    }
+
+    // Safe injection preventing DOM vulnerabilities
+    const messageNode = document.getElementById('message');
+    if (product && email) {
+        messageNode.textContent = "Thank you for purchasing ";
+        
+        const prodSpan = document.createElement('span');
+        prodSpan.className = "text-blue-400 font-bold";
+        prodSpan.textContent = product;
+        
+        const midText = document.createTextNode(". Access details are being sent to ");
+        
+        const emailSpan = document.createElement('span');
+        emailSpan.className = "text-white";
+        emailSpan.textContent = email;
+        
+        const endText = document.createTextNode(".");
+        
+        messageNode.appendChild(prodSpan);
+        messageNode.appendChild(midText);
+        messageNode.appendChild(emailSpan);
+        messageNode.appendChild(endText);
+    } else {
+        messageNode.textContent = "Your payment was successful. Please check your email for confirmation.";
+    }
+}
