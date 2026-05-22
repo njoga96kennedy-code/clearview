@@ -99,11 +99,6 @@
       <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto uppercase tracking-widest text-[10px] font-bold">Premium Digital Subscriptions Delivered Instantly</p>
     </section>
 
-    <section class="max-w-md mx-auto mb-12 glass p-5 rounded-[2rem] border-slate-800 shadow-xl relative z-20">
-      <label class="block text-[10px] uppercase font-black tracking-[0.2em] text-blue-400 mb-2.5 text-center">Delivery Email Address</label>
-      <input type="email" id="globalCustomerEmail" placeholder="Enter email where your products will be sent" class="w-full text-center bg-slate-950 border border-slate-800 p-3.5 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500 font-medium tracking-wide transition-all placeholder:text-slate-600">
-    </section>
-
     <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
 
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
@@ -239,14 +234,17 @@
 
     function handlePayment(index) {
         const product = products[index];
-        const emailInput = document.getElementById('globalCustomerEmail');
-        const email = emailInput.value.trim();
         const btn = document.getElementById(`pay-btn-${index}`);
         
-        if (!email || !email.includes('@')) {
-            alert("Please enter a valid email address for delivery in the input box at the top of the products.");
-            emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            emailInput.focus();
+        // Dynamic programmatic popup prompt
+        const email = prompt(`Where should we send your ${product.name} credentials?\nPlease enter your delivery email address:`);
+        
+        // Handle cancellations smoothly
+        if (email === null) return; 
+        
+        // Standard email validation check
+        if (!email.trim() || !email.includes('@')) {
+            alert("A valid email is required to complete delivery. Please try again.");
             return;
         }
 
@@ -255,11 +253,11 @@
 
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
-            email: email,
+            email: email.trim(),
             amount: Math.floor(product.priceUSD * exchangeRates[currentCurrency] * 100),
             currency: currentCurrency,
             callback: (res) => {
-                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&dl=${encodeURIComponent(product.dl)}&ref=${res.reference}`;
+                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email.trim())&dl=${encodeURIComponent(product.dl)}&ref=${res.reference}`;
             },
             onClose: () => { 
                 btn.innerText = "Instant Access"; 
@@ -269,6 +267,7 @@
         handler.openIframe();
     }
 
+    // Dynamic UI card builder without explicit element inputs
     function renderProducts() {
       document.getElementById('products').innerHTML = products.map((p, i) => {
         const localPrice = (p.priceUSD * exchangeRates[currentCurrency]).toLocaleString(undefined, { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
