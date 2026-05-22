@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="ClearView Store - Africa's premier digital subscription hub. Fast delivery, secure payments.">
+  <title>ClearView Store | Crystal Clear Access</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  
+  <style>
+    body { background-color: #020617; }
+    .glass { @apply bg-slate-900/80 backdrop-blur-md border border-slate-800; }
+    .currency-pill { @apply px-4 py-2 rounded-xl text-xs font-bold border border-slate-700 cursor-pointer transition-all hover:bg-slate-800 text-slate-400 text-center; }
+    .currency-active { @apply bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/40; }
+    
+    .logo-3d {
+      background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
+    }
+
+    .whatsapp-float {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 100;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+    #toastContainer {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+    }
+    .toast {
+        @apply glass text-white text-[11px] font-bold px-5 py-3 rounded-2xl border-l-4 shadow-2xl;
+        pointer-events: auto;
+        animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        border-color: #10b981;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(-120%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-fade-out {
+        animation: slideOut 0.5s ease forwards;
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(-120%); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased font-sans">
+
+  <div id="toastContainer"></div>
+
+  <a href="https://wa.me/254781052997" target="_blank" class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border-2 border-white/10">
+    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  </a>
+
+  <header class="glass sticky top-0 z-50 p-4 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
+        <div class="flex justify-between items-center w-full lg:w-auto">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 logo-3d rounded-xl flex items-center justify-center font-black text-white text-xl">C</div>
+                <h1 class="text-2xl font-black text-white tracking-tighter">ClearView <span class="text-blue-500">Store</span></h1>
+            </div>
+            
+            <button id="menuToggle" class="lg:hidden text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="currencySelector" class="hidden lg:flex flex-col lg:flex-row flex-wrap justify-center gap-2 w-full lg:w-auto mt-4 lg:mt-0">
+            <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">USD</span>
+            <span onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">KES</span>
+            <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</span>
+            <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</span>
+            <span onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">ZAR</span>
+        </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <section class="text-center py-16">
+      <h2 class="text-5xl md:text-7xl font-black mb-6 text-white tracking-tight leading-none uppercase">Crystal Clear <span class="text-blue-500">Access.</span></h2>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto uppercase tracking-widest text-[10px] font-bold">Premium Digital Subscriptions Delivered Instantly</p>
+    </section>
+
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></section>
+
+    <!-- TRUST SECTION -->
+    <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
+        <div class="flex flex-col items-center mb-16 text-center">
+            <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 shadow-lg shadow-blue-900/20 animate-pulse">
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
+            </div>
+            <h3 class="text-4xl font-black text-white mt-8 uppercase tracking-tighter">Trusted by <span class="text-blue-500">Thousands</span></h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 text-center">
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
+                <div class="flex justify-center text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"Instant delivery! Got my Spotify premium in minutes."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Brian O.</p>
+            </div>
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
+                <div class="flex justify-center text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"The IPTV quality is amazing. Best streaming service."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
+            </div>
+            <div class="glass p-8 rounded-[2rem] border-slate-800/50">
+                <div class="flex justify-center text-yellow-500 mb-4 text-[10px]">★★★★★</div>
+                <p class="text-sm italic text-slate-300 leading-relaxed">"Very reliable. Support helped me set up my DSTV."</p>
+                <p class="text-xs font-bold mt-6 text-blue-500 uppercase tracking-widest">— David K.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION (Restored) -->
+    <section class="max-w-3xl mx-auto mb-32">
+        <h3 class="text-3xl font-black text-white text-center mb-12 uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
+        <div class="space-y-4">
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">How do I receive my order?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are delivered instantly to your screen and the email address you provide during checkout.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">Are the accounts shared or private?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">We provide high-quality, stable accounts. Specific details are provided with your purchase instructions.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border-slate-800/50">
+                <h4 class="font-bold text-blue-400 mb-2">What if I have trouble setting up?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Our support team is available via the WhatsApp button at the bottom of the screen to guide you through activation.</p>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-950 p-12 text-center border-t border-slate-900">
+    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
+    let currentCurrency = 'USD';
+    let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
+
+    const products = [
+      { id: 0, name: 'Standard IPTV', priceUSD: 6.00, image: 'assets/iptvsub.jpg', dl: 'https://wa.me/254781052997' },
+      { id: 1, name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', dl: 'https://www.mediafire.com/file/8ptjhvtggutidv8/release_%25283%2529.apk/file' },
+      { id: 2, name: 'Spotify Pro', priceUSD: 4.00, image: 'assets/spotify.jpg', dl: 'https://www.mediafire.com/file/q8rg8hdlvs79phx/Spotify_v9.1.40.1486_%2528Premium%2529.apk/file' },
+      { id: 3, name: 'CapCut Pro', priceUSD: 5.00, image: 'assets/capcut.jpg', dl: 'https://www.mediafire.com/folder/54cosytqm2fpz/Capcut+Pro' },
+      { id: 4, name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', dl: 'https://wa.me/254781052997' },
+      { id: 5, name: 'Movies, Series & Live Tv', priceUSD: 9.00, image: 'assets/sports.jpg', dl: 'https://www.mediafire.com/file/0jr9hcjqkhlashe/release_%25283%2529.apk/file' },
+      { id: 6, name: 'Startimes Combo', priceUSD: 8.00, image: 'assets/startimes.jpg', dl: 'https://www.mediafire.com/file/yz4eyn9zlu1i6q0/Startimes_by_Androidtechvilla_2.apk/file' },
+      { id: 7, name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', dl: 'https://www.mediafire.com/folder/o74v02daaelkv/Netflix+Pro' }
+    ];
+
+    const locations = ["Nairobi", "Mombasa", "Lagos", "Accra", "Johannesburg", "Eldoret", "Nakuru", "Abuja", "Kisumu", "Kumasi", "Pretoria"];
+
+    const menuToggle = document.getElementById('menuToggle');
+    const currencySelector = document.getElementById('currencySelector');
+    const menuIcon = document.getElementById('menuIcon');
+
+    menuToggle.addEventListener('click', () => {
+        const isHidden = currencySelector.classList.contains('hidden');
+        if (isHidden) {
+            currencySelector.classList.remove('hidden');
+            currencySelector.classList.add('flex');
+            menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        } else {
+            currencySelector.classList.add('hidden');
+            currencySelector.classList.remove('flex');
+            menuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+        }
+    });
+
+    function showSocialToast(message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast-fade-out');
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
+    }
+
+    function startSocialProof() {
+        const trigger = () => {
+            const randomLoc = locations[Math.floor(Math.random() * locations.length)];
+            const randomProd = products[Math.floor(Math.random() * products.length)].name;
+            showSocialToast(`🔥 Someone in ${randomLoc} just purchased ${randomProd}!`);
+            setTimeout(trigger, Math.random() * (45000 - 20000) + 20000);
+        };
+        setTimeout(trigger, 8000);
+    }
+
+    async function initialize() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+        if(data.rates) exchangeRates = data.rates;
+      } catch (e) { console.warn("Exchange rate fetch failed. Fallbacks used."); }
+      renderProducts();
+      startSocialProof();
+    }
+
+    function setCurrency(cur) {
+      currentCurrency = cur;
+      document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
+      document.getElementById(`btn-${cur}`).classList.add('currency-active');
+      
+      if (window.innerWidth < 1024) {
+          currencySelector.classList.add('hidden');
+          currencySelector.classList.remove('flex');
+          menuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+      }
+      renderProducts();
+    }
+
+    function handlePayment(index) {
+        const product = products[index];
+        const email = document.getElementById(`email-${index}`).value;
+        const btn = document.getElementById(`pay-btn-${index}`);
+        
+        if (!email || !email.includes('@')) return alert("Please enter a valid email for delivery.");
+
+        btn.innerText = "Connecting...";
+        btn.disabled = true;
+
+        const handler = PaystackPop.setup({
+            key: PAYSTACK_PUBLIC_KEY,
+            email: email,
+            amount: Math.floor(product.priceUSD * exchangeRates[currentCurrency] * 100),
+            currency: currentCurrency,
+            callback: (res) => {
+                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&dl=${encodeURIComponent(product.dl)}&ref=${res.reference}`;
+            },
+            onClose: () => { 
+                btn.innerText = "Instant Access"; 
+                btn.disabled = false; 
+            }
+        });
+        handler.openIframe();
+    }
+
+    function renderProducts() {
+      document.getElementById('products').innerHTML = products.map((p, i) => {
+        const localPrice = (p.priceUSD * exchangeRates[currentCurrency]).toLocaleString(undefined, { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
+        
+        return `
+        <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 relative group">
+          <div class="relative h-44 overflow-hidden">
+            <img src="${p.image}" class="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-all duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+          </div>
+          <div class="p-6 -mt-8 relative z-10">
+            <h3 class="text-xl font-black text-white mb-1 uppercase tracking-tight">${p.name}</h3>
+            <p class="text-2xl font-black text-blue-500 mb-4">${localPrice}</p>
+            <input type="email" id="email-${i}" placeholder="Delivery Email" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-[11px] text-white mb-3 focus:outline-none focus:border-blue-500">
+            <button id="pay-btn-${i}" onclick="handlePayment(${i})" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl transition-all uppercase text-[10px]">Instant Access</button>
+          </div>
+        </div>
+      `}).join('');
+    }
+    window.addEventListener('DOMContentLoaded', initialize);
+  </script>
+</body>
+</html>
