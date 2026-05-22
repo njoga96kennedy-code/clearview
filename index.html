@@ -1,0 +1,71 @@
+const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
+let currentCurrency = 'USD';
+let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
+
+const products = [
+  { id: 0, name: 'Standard IPTV', priceUSD: 6.00, image: 'assets/iptvsub.jpg', dl: 'https://wa.me/254781052997' },
+  { id: 1, name: 'IPTV Unlocked', priceUSD: 7.00, image: 'assets/iptv.jpg', dl: 'https://www.mediafire.com/file/8ptjhvtggutidv8/release_%25283%2529.apk/file' },
+  { id: 2, name: 'Spotify Pro', priceUSD: 4.00, image: 'assets/spotify.jpg', dl: 'https://www.mediafire.com/file/q8rg8hdlvs79phx/Spotify_v9.1.40.1486_%2528Premium%2529.apk/file' },
+  { id: 3, name: 'CapCut Pro', priceUSD: 5.00, image: 'assets/capcut.jpg', dl: 'https://www.mediafire.com/folder/54cosytqm2fpz/Capcut+Pro' },
+  { id: 4, name: 'DSTV Stream', priceUSD: 6.00, image: 'assets/dstv.jpg', dl: 'https://wa.me/254781052997' },
+  { id: 5, name: 'Movies, Series & Live Tv', priceUSD: 9.00, image: 'assets/sports.jpg', dl: 'https://www.mediafire.com/file/0jr9hcjqkhlashe/release_%25283%2529.apk/file' },
+  { id: 6, name: 'Startimes Combo', priceUSD: 8.00, image: 'assets/startimes.jpg', dl: 'https://www.mediafire.com/file/yz4eyn9zlu1i6q0/Startimes_by_Androidtechvilla_2.apk/file' },
+  { id: 7, name: 'Netflix Pro', priceUSD: 5.00, image: 'assets/movies.jpg', dl: 'https://www.mediafire.com/folder/o74v02daaelkv/Netflix+Pro' }
+];
+
+const locations = ["Nairobi", "Mombasa", "Lagos", "Accra", "Johannesburg", "Eldoret", "Nakuru", "Abuja", "Kisumu", "Kumasi", "Pretoria"];
+
+// Pre-render the core layout wrapper structures once on load
+function renderProductsInitial() {
+  document.getElementById('products').innerHTML = products.map((p, i) => `
+    <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-800 transition-all hover:border-blue-500/40 relative group">
+      <div class="relative h-44 overflow-hidden">
+        <img src="${p.image}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500';" class="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-all duration-700" alt="${p.name}">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+      </div>
+      <div class="p-6 -mt-8 relative z-10">
+        <h3 class="text-xl font-black text-white mb-1 uppercase tracking-tight">${p.name}</h3>
+        <p id="price-display-${i}" class="text-2xl font-black text-blue-500 mb-4"></p>
+        <input type="email" id="email-${i}" placeholder="Delivery Email" aria-label="Delivery Email" name="email" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-[11px] text-white mb-3 focus:outline-none focus:border-blue-500">
+        <button id="pay-btn-${i}" onclick="handlePayment(${i})" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl transition-all uppercase text-[10px]">Instant Access</button>
+      </div>
+    </div>
+  `).join('');
+  updateDisplayedPrices();
+}
+
+// Only swap out the pricing nodes when toggling currencies
+function updateDisplayedPrices() {
+  products.forEach((p, i) => {
+    const calculatedPrice = p.priceUSD * exchangeRates[currentCurrency];
+    const formattingOptions = currentCurrency === 'USD' ? { style: 'currency', currency: currentCurrency } : { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 };
+    document.getElementById(`price-display-${i}`).innerText = calculatedPrice.toLocaleString(undefined, formattingOptions);
+  });
+}
+
+function setCurrency(cur) {
+  currentCurrency = cur;
+  document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
+  document.getElementById(`btn-${cur}`).classList.add('currency-active');
+  
+  if (window.innerWidth < 1024) {
+      currencySelector.classList.add('hidden');
+      currencySelector.classList.remove('flex');
+      menuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+  }
+  updateDisplayedPrices();
+}
+
+async function initialize() {
+  renderProductsInitial();
+  try {
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    const data = await res.json();
+    if(data.rates) {
+        exchangeRates = data.rates;
+        updateDisplayedPrices();
+    }
+  } catch (e) { console.warn("Exchange rate fetch failed. Fallbacks used."); }
+  startSocialProof();
+}
+window.addEventListener('DOMContentLoaded', initialize);
