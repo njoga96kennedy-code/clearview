@@ -53,7 +53,7 @@
         animation: slideOut 0.5s ease forwards;
     }
     @keyframes slideOut {
-        from { transform: translateX(0); opacity: 0; }
+        from { transform: translateX(0); opacity: 1; }
         to { transform: translateX(-120%); opacity: 0; }
     }
   </style>
@@ -67,6 +67,39 @@
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
   </a>
+
+  <div id="cryptoModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+    <div class="glass max-w-md w-full rounded-[2.5rem] p-8 border-slate-800 shadow-2xl relative text-center">
+        <button onclick="closeCryptoModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-all text-xl font-bold p-2">&times;</button>
+        
+        <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-amber-500/30">
+            <svg class="w-7 h-7 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm1-15h2v2h-2v2h3v2h-3v2h2v2h-2v2h-2v-2H9v-2h2v-2H8v-2h3V9H9V7h2V5h2v2z"/>
+            </svg>
+        </div>
+
+        <h3 id="cryptoModalTitle" class="text-xl font-black text-white uppercase tracking-tight mb-1">Pay with Crypto</h3>
+        <p id="cryptoModalPrice" class="text-2xl font-black text-blue-500 mb-6">0.00 USDT</p>
+        
+        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl text-left mb-6">
+            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-2">Network Chain Required</label>
+            <p class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-4">Binance Smart Chain (BEP20) / TRON (TRC20)</p>
+            
+            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-1">Store Multi-Wallet Deposit Address</label>
+            <div class="flex items-center gap-2 mt-1.5">
+                <input id="cryptoWalletAddress" type="text" readonly value="0x71C7656EC7ab88b098defB751B7401B5f6d1476B" class="w-full bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-[11px] font-mono text-slate-300 focus:outline-none">
+                <button id="copyCryptoAddressBtn" onclick="copyCryptoAddress()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all whitespace-nowrap">Copy</button>
+            </div>
+        </div>
+
+        <div class="bg-slate-950/50 border border-slate-900 rounded-2xl p-4 text-xs text-slate-400 text-left space-y-2 mb-6">
+            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">1.</span> Send the exact token amount listed above to the copied wallet address.</p>
+            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">2.</span> After broadcasting, click the button below to send your Hash ID code to verify delivery.</p>
+        </div>
+
+        <button onclick="verifyCryptoPaymentOnWhatsapp()" class="w-full bg-[#25D366] hover:bg-[#22c35e] text-white font-black py-4 rounded-xl transition-all uppercase text-[11px] tracking-wider shadow-lg shadow-green-900/20">Verify payment on WhatsApp</button>
+    </div>
+  </div>
 
   <header class="glass sticky top-0 z-50 p-4 border-b border-slate-800">
     <div class="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
@@ -137,8 +170,8 @@
                 <p class="text-xs text-slate-400 leading-relaxed">All credentials and activation links are delivered instantly to your screen and the email address you provide during checkout.</p>
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
-                <h4 class="font-bold text-blue-400 mb-2">Are the accounts shared or private?</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">We provide high-quality, stable accounts. Specific details are provided with your purchase instructions.</p>
+                <h4 class="font-bold text-blue-400 mb-2">Are crypto payments accepted?</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Yes! We accept stable digital crypto coins like USDT (on BEP20 or TRC20 networks) for instant cross-border activation workflows safely.</p>
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
                 <h4 class="font-bold text-blue-400 mb-2">What if I have trouble setting up?</h4>
@@ -156,6 +189,8 @@
     const PAYSTACK_PUBLIC_KEY = 'pk_live_ef7d34cf55b8a86c1da377997b0705b622c9d0ae';
     let currentCurrency = 'USD';
     let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
+    let activeCryptoProduct = null;
+    let activeCryptoEmail = "";
 
     // CATALOG PRODUCTS OBJECTS LIST
     const products = [
@@ -233,15 +268,13 @@
       renderProducts();
     }
 
-    // CHECKOUT HANDLER WITH OVERLAY EMAIL PROMPT
+    // INTERACTION PAYMENT METHOD ROUTER
     function handlePayment(index) {
         const product = products[index];
         const btn = document.getElementById(`pay-btn-${index}`);
         
-        // Modal window overlay prompt triggering natively
+        // Modal window email validation prompt capture
         const email = prompt(`Where should we send your ${product.name} activation details?\n\nPlease enter your delivery email address:`);
-        
-        // Exit if user cancels or submits empty response
         if (email === null) return; 
         
         const cleanEmail = email.trim();
@@ -250,16 +283,29 @@
             return;
         }
 
+        // Method choosing prompt validation routing
+        const choice = prompt(`Select your payment channel option code:\n\n[1] Card, Bank Transfer, or Mobile Money (Paystack)\n[2] Crypto Stablecoins (USDT Digital Wallet Transfer)\n\nEnter choice number (1 or 2):`);
+        if (choice === null) return;
+
+        if (choice.trim() === '2') {
+            launchCryptoPayment(product, cleanEmail);
+        } else {
+            launchPaystackPayment(product, cleanEmail, btn);
+        }
+    }
+
+    // CHANNEL 1: FIAT DIRECT GATEWAY EXECUTION
+    function launchPaystackPayment(product, email, btn) {
         btn.innerText = "Connecting...";
         btn.disabled = true;
 
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
-            email: cleanEmail,
+            email: email,
             amount: Math.floor(product.priceUSD * exchangeRates[currentCurrency] * 100),
             currency: currentCurrency,
             callback: (res) => {
-                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(cleanEmail)}&dl=${encodeURIComponent(product.dl)}&ref=${res.reference}`;
+                window.location.href = `thank-you.html?product=${encodeURIComponent(product.name)}&email=${encodeURIComponent(email)}&dl=${encodeURIComponent(product.dl)}&ref=${res.reference}`;
             },
             onClose: () => { 
                 btn.innerText = "Instant Access"; 
@@ -269,7 +315,56 @@
         handler.openIframe();
     }
 
-    // RENDER CLEAN GRID WITHOUT PER-CARD INPUT LAYOUTS
+    // CHANNEL 2: WEB3 STANDALONE OVERLAY COMPONENT EXECUTION
+    function launchCryptoPayment(product, email) {
+        activeCryptoProduct = product;
+        activeCryptoEmail = email;
+        
+        document.getElementById('cryptoModalTitle').innerText = `Pay for ${product.name}`;
+        // Cryptocoin stable conversion calculations pegged to underlying USD asset base
+        document.getElementById('cryptoModalPrice').innerText = `${product.priceUSD.toFixed(2)} USDT`;
+        
+        const modal = document.getElementById('cryptoModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeCryptoModal() {
+        const modal = document.getElementById('cryptoModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        activeCryptoProduct = null;
+        activeCryptoEmail = "";
+    }
+
+    // UTILITY CLIPBOARD HANDLER
+    function copyCryptoAddress() {
+        const copyText = document.getElementById("cryptoWalletAddress");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // Mobile compatibility focus
+        navigator.clipboard.writeText(copyText.value);
+        
+        const btn = document.getElementById('copyCryptoAddressBtn');
+        btn.innerText = "✓ Copied!";
+        btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+        
+        setTimeout(() => {
+            btn.innerText = "Copy";
+            btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+        }, 3000);
+    }
+
+    // CRYPTO WHATSAPP DISPATCH VERIFICATION ROUTER
+    function verifyCryptoPaymentOnWhatsapp() {
+        if (!activeCryptoProduct) return;
+        
+        const message = `Hello ClearView Store Support, I have sent a Crypto Payment for validation.\n\nProduct: ${activeCryptoProduct.name}\nAmount: ${activeCryptoProduct.priceUSD.toFixed(2)} USDT\nDelivery Email: ${activeCryptoEmail}\n\nHere is my Transaction Hash ID (TxID) to complete fulfillment: `;
+        const whatsappUrl = `https://wa.me/254781052997?text=${encodeURIComponent(message)}`;
+        
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // RENDER CATALOG INTERFACE GRID MATRIX
     function renderProducts() {
       document.getElementById('products').innerHTML = products.map((p, i) => {
         const localPrice = (p.priceUSD * exchangeRates[currentCurrency]).toLocaleString(undefined, { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
