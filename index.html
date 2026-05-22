@@ -27,6 +27,10 @@
         z-index: 100;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    /* Shift float up slightly on mobile layout to avoid overlapping with bottom dock */
+    @media (max-width: 1023px) {
+        .whatsapp-float { bottom: 95px; right: 20px; }
+    }
     .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
 
     #toastContainer {
@@ -38,6 +42,9 @@
         flex-direction: column;
         gap: 10px;
         pointer-events: none;
+    }
+    @media (max-width: 1023px) {
+        #toastContainer { bottom: 100px; left: 16px; right: 16px; }
     }
     .toast {
         @apply glass text-white text-[11px] font-bold px-5 py-3 rounded-2xl border-l-4 shadow-2xl;
@@ -53,14 +60,27 @@
         animation: slideOut 0.5s ease forwards;
     }
     @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
+        from { transform: translateX(0); opacity: 0; }
         to { transform: translateX(-120%); opacity: 0; }
     }
   </style>
 </head>
-<body class="text-slate-200 antialiased font-sans">
+<body class="text-slate-200 antialiased font-sans pb-24 lg:pb-0">
 
   <div id="toastContainer"></div>
+
+  <div class="fixed bottom-0 inset-x-0 glass border-t border-slate-800/80 z-[150] lg:hidden p-3 shadow-2xl shadow-black">
+      <div class="max-w-md mx-auto flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 flex-1 bg-slate-950/60 p-1 rounded-2xl border border-slate-800/50">
+              <span onclick="setCurrency('USD')" class="flex-1 py-2 text-center text-[10px] font-black tracking-wider rounded-xl cursor-pointer transition-all text-slate-500" id="dock-USD">USD</span>
+              <span onclick="setCurrency('KES')" class="flex-1 py-2 text-center text-[10px] font-black tracking-wider rounded-xl cursor-pointer transition-all text-slate-500" id="dock-KES">KES</span>
+              <span onclick="setCurrency('NGN')" class="flex-1 py-2 text-center text-[10px] font-black tracking-wider rounded-xl cursor-pointer transition-all text-slate-500" id="dock-NGN">NGN</span>
+          </div>
+          <a href="https://wa.me/254781052997" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white font-black px-4 py-3 rounded-2xl text-[10px] tracking-widest uppercase flex items-center gap-2 shadow-lg shadow-blue-900/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Chat Support
+          </a>
+      </div>
+  </div>
 
   <a href="https://wa.me/254781052997" target="_blank" class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border-2 border-white/10">
     <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -141,7 +161,7 @@
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
         <div class="flex flex-col items-center mb-16 text-center">
             <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 shadow-lg shadow-blue-900/20 animate-pulse">
-                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 01-2.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
                 <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
             </div>
             <h3 class="text-4xl font-black text-white mt-8 uppercase tracking-tighter">Trusted by <span class="text-blue-500">Thousands</span></h3>
@@ -263,13 +283,13 @@
         if(data.rates) exchangeRates = data.rates;
       } catch (e) { console.warn("Exchange rate fetch failed. Fallbacks used."); }
       renderProducts();
+      updateCurrencyVisualStates();
       startSocialProof();
     }
 
     function setCurrency(cur) {
       currentCurrency = cur;
-      document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
-      document.getElementById(`btn-${cur}`).classList.add('currency-active');
+      updateCurrencyVisualStates();
       
       if (window.innerWidth < 1024) {
           currencySelector.classList.add('hidden');
@@ -277,6 +297,26 @@
           menuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
       }
       renderProducts();
+    }
+
+    // UPDATE BOTH BAR SELECTIONS SIMULTANEOUSLY
+    function updateCurrencyVisualStates() {
+      // Header pills
+      document.querySelectorAll('.currency-pill').forEach(el => el.classList.remove('currency-active'));
+      const activeHeaderBtn = document.getElementById(`btn-${currentCurrency}`);
+      if (activeHeaderBtn) activeHeaderBtn.classList.add('currency-active');
+
+      // Sticky dock items
+      ['USD', 'KES', 'NGN'].forEach(c => {
+          const dockEl = document.getElementById(`dock-${c}`);
+          if (dockEl) {
+              if (c === currentCurrency) {
+                  dockEl.className = "flex-1 py-2 text-center text-[10px] font-black tracking-wider rounded-xl cursor-pointer transition-all bg-blue-600 text-white shadow-md shadow-blue-900/40";
+              } else {
+                  dockEl.className = "flex-1 py-2 text-center text-[10px] font-black tracking-wider rounded-xl cursor-pointer transition-all text-slate-400 hover:bg-slate-900/50";
+              }
+          }
+      });
     }
 
     // INTERACTION PAYMENT METHOD ROUTER
@@ -334,7 +374,6 @@
         document.getElementById('cryptoModalTitle').innerText = `Pay for ${product.name}`;
         document.getElementById('cryptoModalPrice').innerText = `${product.priceUSD.toFixed(2)} USDT`;
         
-        // Reset selector dropdown state back to TRC20 default initialization index
         document.getElementById('cryptoNetworkSelect').value = 'TRC20';
         onCryptoNetworkChange();
         
@@ -342,6 +381,12 @@
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
+
+    document.getElementById('cryptoModal').addEventListener('click', (e) => {
+        if(e.target === document.getElementById('cryptoModal')) {
+            closeCryptoModal();
+        }
+    });
 
     function closeCryptoModal() {
         const modal = document.getElementById('cryptoModal');
@@ -362,7 +407,7 @@
     function copyCryptoAddress() {
         const copyText = document.getElementById("cryptoWalletAddress");
         copyText.select();
-        copyText.setSelectionRange(0, 99999); // Mobile focus handling fallback
+        copyText.setSelectionRange(0, 99999); 
         navigator.clipboard.writeText(copyText.value);
         
         const btn = document.getElementById('copyCryptoAddressBtn');
