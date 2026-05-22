@@ -68,7 +68,7 @@
     </svg>
   </a>
 
-  <div id="cryptoModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
+  <div id="cryptoModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[200] hidden items-center justify-center p-4">
     <div class="glass max-w-md w-full rounded-[2.5rem] p-8 border-slate-800 shadow-2xl relative text-center">
         <button onclick="closeCryptoModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-all text-xl font-bold p-2">&times;</button>
         
@@ -81,20 +81,24 @@
         <h3 id="cryptoModalTitle" class="text-xl font-black text-white uppercase tracking-tight mb-1">Pay with Crypto</h3>
         <p id="cryptoModalPrice" class="text-2xl font-black text-blue-500 mb-6">0.00 USDT</p>
         
-        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl text-left mb-6">
-            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-2">Network Chain Required</label>
-            <p class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-4">Binance Smart Chain (BEP20) / TRON (TRC20)</p>
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl text-left mb-6">
+            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-2">1. Choose Blockchain Network</label>
+            <select id="cryptoNetworkSelect" onchange="onCryptoNetworkChange()" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500 font-bold tracking-wide transition-all mb-4 cursor-pointer">
+                <option value="TRC20">USDT — TRON Network (TRC20)</option>
+                <option value="BEP20">USDT — Binance Smart Chain (BEP20)</option>
+                <option value="POLYGON">USDT — Polygon Network (POLYGON)</option>
+            </select>
             
-            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-1">Store Multi-Wallet Deposit Address</label>
+            <label class="block text-[9px] font-black tracking-widest text-slate-500 uppercase mb-1">2. Secure Destination Deposit Address</label>
             <div class="flex items-center gap-2 mt-1.5">
-                <input id="cryptoWalletAddress" type="text" readonly value="0x71C7656EC7ab88b098defB751B7401B5f6d1476B" class="w-full bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-[11px] font-mono text-slate-300 focus:outline-none">
-                <button id="copyCryptoAddressBtn" onclick="copyCryptoAddress()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all whitespace-nowrap">Copy</button>
+                <input id="cryptoWalletAddress" type="text" readonly value="" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-[11px] font-mono text-amber-500 focus:outline-none select-all">
+                <button id="copyCryptoAddressBtn" onclick="copyCryptoAddress()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all whitespace-nowrap">Copy</button>
             </div>
         </div>
 
         <div class="bg-slate-950/50 border border-slate-900 rounded-2xl p-4 text-xs text-slate-400 text-left space-y-2 mb-6">
-            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">1.</span> Send the exact token amount listed above to the copied wallet address.</p>
-            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">2.</span> After broadcasting, click the button below to send your Hash ID code to verify delivery.</p>
+            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">•</span> Ensure you send exact <span class="text-white font-bold">USDT</span> stablecoins on the chosen blockchain infrastructure.</p>
+            <p class="flex items-start gap-2"><span class="text-amber-500 font-bold">•</span> After network confirmation, click verify below to share payment screenshot / hash references.</p>
         </div>
 
         <button onclick="verifyCryptoPaymentOnWhatsapp()" class="w-full bg-[#25D366] hover:bg-[#22c35e] text-white font-black py-4 rounded-xl transition-all uppercase text-[11px] tracking-wider shadow-lg shadow-green-900/20">Verify payment on WhatsApp</button>
@@ -137,7 +141,7 @@
     <section class="mt-24 max-w-5xl mx-auto border-t border-slate-900 pt-16">
         <div class="flex flex-col items-center mb-16 text-center">
             <div class="glass px-6 py-2.5 rounded-full border-blue-500/50 flex items-center gap-3 shadow-lg shadow-blue-900/20 animate-pulse">
-                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
+                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 01-2.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
                 <span class="text-[10px] font-black tracking-[0.2em] text-blue-400 uppercase">Verified Digital Merchant 2026</span>
             </div>
             <h3 class="text-4xl font-black text-white mt-8 uppercase tracking-tighter">Trusted by <span class="text-blue-500">Thousands</span></h3>
@@ -171,7 +175,7 @@
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
                 <h4 class="font-bold text-blue-400 mb-2">Are crypto payments accepted?</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">Yes! We accept stable digital crypto coins like USDT (on BEP20 or TRC20 networks) for instant cross-border activation workflows safely.</p>
+                <p class="text-xs text-slate-400 leading-relaxed">Yes! We accept stable digital crypto coins like USDT across TRC20, BEP20, and Polygon networks for secure payment processing.</p>
             </div>
             <div class="glass p-6 rounded-2xl border-slate-800/50">
                 <h4 class="font-bold text-blue-400 mb-2">What if I have trouble setting up?</h4>
@@ -191,6 +195,13 @@
     let exchangeRates = { USD: 1, KES: 132.5, NGN: 1450, GHS: 14.8, ZAR: 18.4 };
     let activeCryptoProduct = null;
     let activeCryptoEmail = "";
+
+    // CRYPTO WALLET CONFIGURATION MATRIX
+    const cryptoWallets = {
+        TRC20: 'TRKZzgtmSzfGycN1rwnMJnrtckitYj9wqu',
+        BEP20: '0x8c3006f5ba1afd0edab365f8dd3f65f80bc21e9b',
+        POLYGON: '0x81d6b22b92dbb75ff3b696e4d066c5e5af0dd9a3'
+    };
 
     // CATALOG PRODUCTS OBJECTS LIST
     const products = [
@@ -321,8 +332,11 @@
         activeCryptoEmail = email;
         
         document.getElementById('cryptoModalTitle').innerText = `Pay for ${product.name}`;
-        // Cryptocoin stable conversion calculations pegged to underlying USD asset base
         document.getElementById('cryptoModalPrice').innerText = `${product.priceUSD.toFixed(2)} USDT`;
+        
+        // Reset selector dropdown state back to TRC20 default initialization index
+        document.getElementById('cryptoNetworkSelect').value = 'TRC20';
+        onCryptoNetworkChange();
         
         const modal = document.getElementById('cryptoModal');
         modal.classList.remove('hidden');
@@ -337,11 +351,18 @@
         activeCryptoEmail = "";
     }
 
+    // DYNAMIC CRYPTO MATRIX SELECTION SWAPPER
+    function onCryptoNetworkChange() {
+        const selectedNetwork = document.getElementById('cryptoNetworkSelect').value;
+        const targetAddress = cryptoWallets[selectedNetwork];
+        document.getElementById('cryptoWalletAddress').value = targetAddress;
+    }
+
     // UTILITY CLIPBOARD HANDLER
     function copyCryptoAddress() {
         const copyText = document.getElementById("cryptoWalletAddress");
         copyText.select();
-        copyText.setSelectionRange(0, 99999); // Mobile compatibility focus
+        copyText.setSelectionRange(0, 99999); // Mobile focus handling fallback
         navigator.clipboard.writeText(copyText.value);
         
         const btn = document.getElementById('copyCryptoAddressBtn');
@@ -357,8 +378,9 @@
     // CRYPTO WHATSAPP DISPATCH VERIFICATION ROUTER
     function verifyCryptoPaymentOnWhatsapp() {
         if (!activeCryptoProduct) return;
+        const selectedNetwork = document.getElementById('cryptoNetworkSelect').value;
         
-        const message = `Hello ClearView Store Support, I have sent a Crypto Payment for validation.\n\nProduct: ${activeCryptoProduct.name}\nAmount: ${activeCryptoProduct.priceUSD.toFixed(2)} USDT\nDelivery Email: ${activeCryptoEmail}\n\nHere is my Transaction Hash ID (TxID) to complete fulfillment: `;
+        const message = `Hello ClearView Store Support, I have sent a Crypto Payment for validation.\n\nProduct: ${activeCryptoProduct.name}\nAmount: ${activeCryptoProduct.priceUSD.toFixed(2)} USDT\nNetwork Protocol: ${selectedNetwork}\nDelivery Email: ${activeCryptoEmail}\n\nHere is my Transaction Hash ID (TxID) or Payment Screenshot to complete fulfillment: `;
         const whatsappUrl = `https://wa.me/254781052997?text=${encodeURIComponent(message)}`;
         
         window.open(whatsappUrl, '_blank');
