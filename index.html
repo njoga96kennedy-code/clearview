@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="ClearView Store - Africa's premier digital subscription hub. Fast delivery, secure payments.">
+  <title>ClearView Store | Crystal Clear Access</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body { background-color: #020617; font-family: 'DM Sans', sans-serif; }
+    h1, h2, h3, h4, .font-display { font-family: 'Syne', sans-serif; }
+
+    /* Glass card */
+    .glass { background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border: 1px solid rgba(51,65,85,0.6); }
+
+    /* Currency pills */
+    .currency-pill {
+      padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 700;
+      border: 1px solid #334155; cursor: pointer; transition: all 0.2s;
+      color: #94a3b8; text-align: center; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .currency-pill:hover { background: #1e293b; color: #e2e8f0; }
+    .currency-active { background: #2563eb !important; border-color: #3b82f6 !important; color: #fff !important; box-shadow: 0 4px 20px rgba(37,99,235,0.35); }
+
+    /* Logo */
+    .logo-3d {
+      background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+      box-shadow: 0 4px 15px rgba(59,130,246,0.4), inset 0 -3px 6px rgba(0,0,0,0.2);
+    }
+
+    /* WhatsApp float */
+    .whatsapp-float {
+      position: fixed; bottom: 28px; right: 24px; z-index: 100;
+      transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed; bottom: 24px; left: 16px; z-index: 1000;
+      display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+      max-width: calc(100vw - 32px);
+    }
+    .toast {
+      background: rgba(15,23,42,0.95); border: 1px solid #1e293b;
+      color: #fff; font-size: 11px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+      padding: 12px 18px; border-radius: 14px; border-left: 3px solid #10b981;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4); pointer-events: auto;
+      animation: slideIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+    }
+    @keyframes slideIn { from { transform: translateX(-110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .toast-fade-out { animation: slideOut 0.4s ease forwards; }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-110%); opacity: 0; } }
+
+    /* Product card */
+    .product-card {
+      background: #0f172a; border-radius: 24px; overflow: hidden;
+      border: 1px solid #1e293b; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover { border-color: rgba(59,130,246,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(37,99,235,0.15); }
+    .product-card img { width: 100%; height: 180px; object-fit: cover; opacity: 0.6; transition: opacity 0.4s, transform 0.6s; display: block; }
+    .product-card:hover img { opacity: 0.8; transform: scale(1.05); }
+
+    /* Buy button */
+    .btn-buy {
+      width: 100%; background: #2563eb; color: #fff; font-weight: 800;
+      padding: 13px; border-radius: 12px; font-size: 11px; letter-spacing: 0.08em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      font-family: 'Syne', sans-serif;
+    }
+    .btn-buy:hover { background: #3b82f6; box-shadow: 0 6px 24px rgba(37,99,235,0.4); transform: translateY(-1px); }
+    .btn-buy:active { transform: translateY(0); }
+
+    /* Hero text */
+    .hero-title { font-size: clamp(2.8rem, 8vw, 5.5rem); line-height: 1; font-weight: 900; font-family: 'Syne', sans-serif; }
+
+    /* Mobile nav */
+    #mobileNav { display: none; }
+    #mobileNav.open { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-top: 1px solid #1e293b; }
+
+    /* Badge */
+    .verified-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 100px; border: 1px solid rgba(59,130,246,0.4); background: rgba(37,99,235,0.1); }
+
+    /* Selar notice banner */
+    .selar-info { background: rgba(37,99,235,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 14px; padding: 14px 18px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+
+    /* Responsive grid */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    @media (max-width: 640px) {
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .product-card img { height: 130px; }
+      .product-card .card-body { padding: 14px; }
+      .whatsapp-float { bottom: 20px; right: 16px; }
+      .whatsapp-float svg { width: 26px; height: 26px; }
+      .whatsapp-float { padding: 12px; }
+    }
+    @media (max-width: 380px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; } 
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <div id="toastContainer"></div>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/254781052997" target="_blank" rel="noopener"
+     class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border border-white/10"
+     aria-label="Chat on WhatsApp">
+    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.938 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <!-- HEADER -->
+  <header class="glass sticky top-0 z-50 border-b border-slate-800/60">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="w-9 h-9 logo-3d rounded-xl flex items-center justify-center font-black text-white text-lg font-display">C</div>
+          <h1 class="text-xl font-black text-white tracking-tighter font-display">ClearView <span class="text-blue-500">Store</span></h1>
+        </div>
+
+        <!-- Desktop currency pills -->
+        <div id="desktopCurrency" class="hidden lg:flex items-center gap-2 flex-wrap justify-end">
+          <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">USD</span>
+          <span onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">KES</span>
+          <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</span>
+          <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</span>
+          <span onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">ZAR</span>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button id="menuToggle" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors" aria-label="Toggle currency menu" aria-expanded="false">
+          <svg id="iconMenu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="iconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Mobile currency drawer -->
+      <div id="mobileNav" role="navigation" aria-label="Currency selector">
+        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 px-1">Select Currency</p>
+        <div class="flex flex-wrap gap-2">
+          <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="mob-btn-USD">USD</span>
+          <span onclick="setCurrency('KES')" class="currency-pill" id="mob-btn-KES">KES</span>
+          <span onclick="setCurrency('NGN')" class="currency-pill" id="mob-btn-NGN">NGN</span>
+          <span onclick="setCurrency('GHS')" class="currency-pill" id="mob-btn-GHS">GHS</span>
+          <span onclick="setCurrency('ZAR')" class="currency-pill" id="mob-btn-ZAR">ZAR</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6">
+
+    <!-- HERO -->
+    <section class="text-center py-16 sm:py-20">
+      <div class="hero-title text-white mb-4 uppercase tracking-tight">
+        Crystal Clear <span class="text-blue-500">Access.</span>
+      </div>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm tracking-widest uppercase font-semibold">
+        Premium Digital Subscriptions · Instant Delivery · Secure Checkout
+      </p>
+    </section>
+
+    <!-- Selar info notice -->
+    <div class="selar-info mb-8">
+      <svg class="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+      <p class="text-xs text-slate-300 font-medium">Checkout is powered by <strong class="text-white">Selar</strong> — card, M-Pesa, bank transfer & mobile money accepted. You'll be taken to a secure checkout page.</p>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <section id="products" class="products-grid"></section>
+
+    <!-- TRUST SECTION -->
+    <section class="mt-24 border-t border-slate-900 pt-16">
+      <div class="text-center mb-12">
+        <div class="verified-badge mx-auto mb-6 w-fit">
+          <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 01-2.812 2.812c.051.64.304 1.24.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <span class="text-[10px] font-black tracking-widest text-blue-400 uppercase">Verified Digital Merchant 2026</span>
+        </div>
+        <h3 class="text-4xl font-black text-white font-display uppercase tracking-tighter">Trusted by <span class="text-blue-500">Thousands</span></h3>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-20">
+        <div class="glass p-7 rounded-2xl">
+          <div class="text-yellow-400 text-xs mb-3">★★★★★</div>
+          <p class="text-sm italic text-slate-300 leading-relaxed">"Instant delivery! Got my Spotify premium in minutes."</p>
+          <p class="text-[10px] font-black mt-5 text-blue-500 uppercase tracking-widest">— Brian O.</p>
+        </div>
+        <div class="glass p-7 rounded-2xl">
+          <div class="text-yellow-400 text-xs mb-3">★★★★★</div>
+          <p class="text-sm italic text-slate-300 leading-relaxed">"The IPTV quality is amazing. Best streaming service."</p>
+          <p class="text-[10px] font-black mt-5 text-blue-500 uppercase tracking-widest">— Sarah M.</p>
+        </div>
+        <div class="glass p-7 rounded-2xl">
+          <div class="text-yellow-400 text-xs mb-3">★★★★★</div>
+          <p class="text-sm italic text-slate-300 leading-relaxed">"Very reliable. Support helped me set up my DSTV."</p>
+          <p class="text-[10px] font-black mt-5 text-blue-500 uppercase tracking-widest">— David K.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="max-w-3xl mx-auto mb-24">
+      <h3 class="text-3xl font-black text-white text-center mb-10 font-display uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
+      <div class="space-y-3" id="faqList">
+        <div class="faq-item glass rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4" aria-expanded="false">
+            <span class="font-bold text-blue-400 text-sm">How do I receive my order?</span>
+            <svg class="faq-arrow w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-xs text-slate-400 leading-relaxed">After checkout on Selar, your credentials and activation links are delivered instantly to your email address. Check your inbox (and spam folder) right after payment.</p>
+          </div>
+        </div>
+        <div class="faq-item glass rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4" aria-expanded="false">
+            <span class="font-bold text-blue-400 text-sm">What payment methods are accepted?</span>
+            <svg class="faq-arrow w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-xs text-slate-400 leading-relaxed">We use Selar for secure checkout. Selar accepts card payments, M-Pesa, bank transfers, and mobile money across Kenya, Nigeria, Ghana and more.</p>
+          </div>
+        </div>
+        <div class="faq-item glass rounded-xl overflow-hidden">
+          <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4" aria-expanded="false">
+            <span class="font-bold text-blue-400 text-sm">What if I have trouble setting up?</span>
+            <svg class="faq-arrow w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-xs text-slate-400 leading-relaxed">Our support team is available 24/7 via WhatsApp. Hit the green button at the bottom-right corner of the screen and we'll guide you through activation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-950 px-6 py-10 text-center border-t border-slate-900">
+    <p class="text-[10px] text-slate-700 font-bold uppercase tracking-widest">&copy; 2026 ClearView Store. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // ─── CONFIG ─────────────────────────────────────────────────────────────
+    // IMPORTANT: Replace each selarUrl with your actual Selar product links
+    // e.g. "https://selar.com/yourstore/standard-iptv"
+    // Use ?add_to_cart=1 appended to skip the product page and go straight to checkout
+    const products = [
+      { id: 0, name: 'Standard IPTV',          priceUSD: 6,  image: 'assets/iptvsub.jpg',   selarUrl: 'https://selar.com/YOUR_STORE/standard-iptv' },
+      { id: 1, name: 'IPTV Unlocked',           priceUSD: 7,  image: 'assets/iptv.jpg',      selarUrl: 'https://selar.com/YOUR_STORE/iptv-unlocked' },
+      { id: 2, name: 'Spotify Pro',             priceUSD: 4,  image: 'assets/spotify.jpg',   selarUrl: 'https://selar.com/YOUR_STORE/spotify-pro' },
+      { id: 3, name: 'CapCut Pro',              priceUSD: 5,  image: 'assets/capcut.jpg',    selarUrl: 'https://selar.com/YOUR_STORE/capcut-pro' },
+      { id: 4, name: 'DSTV Stream',             priceUSD: 6,  image: 'assets/dstv.jpg',      selarUrl: 'https://selar.com/YOUR_STORE/dstv-stream' },
+      { id: 5, name: 'Movies, Series & Live TV',priceUSD: 9,  image: 'assets/sports.jpg',    selarUrl: 'https://selar.com/YOUR_STORE/movies-series' },
+      { id: 6, name: 'Startimes Combo',         priceUSD: 8,  image: 'assets/startimes.jpg', selarUrl: 'https://selar.com/YOUR_STORE/startimes-combo' },
+      { id: 7, name: 'Netflix Pro',             priceUSD: 5,  image: 'assets/movies.jpg',    selarUrl: 'https://selar.com/YOUR_STORE/netflix-pro' },
+    ];
+
+    const CURRENCIES = ['USD','KES','NGN','GHS','ZAR'];
+    const FALLBACK_RATES = { USD:1, KES:132.5, NGN:1450, GHS:14.8, ZAR:18.4 };
+    const locations = ["Nairobi","Mombasa","Lagos","Accra","Johannesburg","Eldoret","Nakuru","Abuja","Kisumu","Kumasi","Pretoria"];
+
+    let currentCurrency = 'USD';
+    let exchangeRates = { ...FALLBACK_RATES };
+
+    // ─── CURRENCY ────────────────────────────────────────────────────────────
+    function setCurrency(cur) {
+      currentCurrency = cur;
+      // Update all pill buttons (desktop + mobile)
+      CURRENCIES.forEach(c => {
+        const d = document.getElementById(`btn-${c}`);
+        const m = document.getElementById(`mob-btn-${c}`);
+        if(d) d.classList.toggle('currency-active', c === cur);
+        if(m) m.classList.toggle('currency-active', c === cur);
+      });
+      closeMobileNav();
+      renderProducts();
+    }
+
+    function formatPrice(usd) {
+      const amount = usd * (exchangeRates[currentCurrency] || 1);
+      try {
+        return new Intl.NumberFormat('en', { style:'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(amount);
+      } catch(e) {
+        return `${currentCurrency} ${Math.round(amount).toLocaleString()}`;
+      }
+    }
+
+    // ─── MOBILE NAV ──────────────────────────────────────────────────────────
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav  = document.getElementById('mobileNav');
+    const iconMenu   = document.getElementById('iconMenu');
+    const iconClose  = document.getElementById('iconClose');
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      iconMenu.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      menuToggle.setAttribute('aria-expanded','false');
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.contains('open');
+      if(isOpen) { closeMobileNav(); }
+      else {
+        mobileNav.classList.add('open');
+        iconMenu.classList.add('hidden');
+        iconClose.classList.remove('hidden');
+        menuToggle.setAttribute('aria-expanded','true');
+      }
+    });
+
+    // Close nav when clicking outside
+    document.addEventListener('click', e => {
+      if(!menuToggle.contains(e.target) && !mobileNav.contains(e.target)) closeMobileNav();
+    });
+
+    // ─── SELAR PAYMENT ───────────────────────────────────────────────────────
+    function handlePayment(index) {
+      const p = products[index];
+      // Redirect to Selar product page with add_to_cart for direct checkout
+      window.open(p.selarUrl + '?add_to_cart=1', '_blank', 'noopener,noreferrer');
+    }
+
+    // ─── RENDER PRODUCTS ─────────────────────────────────────────────────────
+    function renderProducts() {
+      document.getElementById('products').innerHTML = products.map((p,i) => `
+        <div class="product-card">
+          <div class="relative overflow-hidden" style="line-height:0">
+            <img src="${p.image}" alt="${p.name}" loading="lazy">
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,#0f172a 20%,transparent 100%)"></div>
+          </div>
+          <div class="card-body p-5 flex flex-col gap-3 flex-1">
+            <div>
+              <h3 class="text-base font-black text-white tracking-tight font-display uppercase leading-tight">${p.name}</h3>
+              <p class="text-2xl font-black text-blue-400 mt-1 font-display">${formatPrice(p.priceUSD)}</p>
+            </div>
+            <button onclick="handlePayment(${i})" class="btn-buy mt-auto" aria-label="Buy ${p.name}">
+              Instant Access →
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── TOAST / SOCIAL PROOF ────────────────────────────────────────────────
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.classList.add('toast-fade-out');
+        setTimeout(() => el.remove(), 450);
+      }, 5000);
+    }
+
+    function startSocialProof() {
+      const fire = () => {
+        const loc  = locations[Math.floor(Math.random()*locations.length)];
+        const prod = products[Math.floor(Math.random()*products.length)].name;
+        showToast(`🔥 Someone in ${loc} just purchased ${prod}!`);
+        setTimeout(fire, Math.random()*(45000-20000)+20000);
+      };
+      setTimeout(fire, 9000);
+    }
+
+    // ─── FAQ ACCORDION ───────────────────────────────────────────────────────
+    document.querySelectorAll('.faq-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item   = btn.closest('.faq-item');
+        const body   = item.querySelector('.faq-body');
+        const arrow  = btn.querySelector('.faq-arrow');
+        const isOpen = !body.classList.contains('hidden');
+        // Close all
+        document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
+        document.querySelectorAll('.faq-arrow').forEach(a => a.style.transform = '');
+        document.querySelectorAll('.faq-trigger').forEach(b => b.setAttribute('aria-expanded','false'));
+        // Open clicked (unless it was already open)
+        if(!isOpen) {
+          body.classList.remove('hidden');
+          arrow.style.transform = 'rotate(180deg)';
+          btn.setAttribute('aria-expanded','true');
+        }
+      });
+    });
+
+    // ─── INIT ────────────────────────────────────────────────────────────────
+    async function initialize() {
+      try {
+        const res  = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+        if(data.rates) exchangeRates = data.rates;
+      } catch(e) {
+        console.warn('Exchange rate fetch failed — using fallback rates.');
+      }
+      renderProducts();
+      startSocialProof();
+    }
+
+    window.addEventListener('DOMContentLoaded', initialize);
+  </script>
+</body>
+</html>
