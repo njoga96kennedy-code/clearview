@@ -8,7 +8,7 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght=700;800;900&family=DM+Sans:wght=400;500;600&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
@@ -23,7 +23,7 @@
       padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 700;
       border: 1px solid #334155; cursor: pointer; transition: all 0.2s;
       color: #94a3b8; text-align: center; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em;
-      white-space: nowrap;
+      white-space: nowrap; background: transparent;
     }
     .currency-pill:hover { background: #1e293b; color: #e2e8f0; }
     .currency-active { background: #2563eb !important; border-color: #3b82f6 !important; color: #fff !important; box-shadow: 0 4px 20px rgba(37,99,235,0.35); }
@@ -56,7 +56,7 @@
     }
     @keyframes slideIn { from { transform: translateX(-110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .toast-fade-out { animation: slideOut 0.4s ease forwards; }
-    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-110%); opacity: 0; } }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 0; } to { transform: translateX(-110%); opacity: 0; } }
 
     /* Product card */
     .product-card {
@@ -95,15 +95,12 @@
     /* Responsive grid */
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
     @media (max-width: 640px) {
-      .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .product-card img { height: 130px; }
-      .product-card .card-body { padding: 14px; }
+      .products-grid { grid-template-columns: 1fr; gap: 16px; }
+      .product-card img { height: 160px; }
+      .product-card .card-body { padding: 18px; }
       .whatsapp-float { bottom: 20px; right: 16px; }
       .whatsapp-float svg { width: 26px; height: 26px; }
       .whatsapp-float { padding: 12px; }
-    }
-    @media (max-width: 380px) {
-      .products-grid { grid-template-columns: 1fr; }
     }
 
     /* Scrollbar */
@@ -116,7 +113,6 @@
 
   <div id="toastContainer"></div>
 
-  <!-- WhatsApp Float -->
   <a href="https://wa.me/254781052997" target="_blank" rel="noopener"
      class="whatsapp-float bg-[#25D366] p-4 rounded-2xl shadow-2xl flex items-center justify-center border border-white/10"
      aria-label="Chat on WhatsApp">
@@ -125,41 +121,36 @@
     </svg>
   </a>
 
-  <!-- HEADER -->
   <header class="glass sticky top-0 z-50 border-b border-slate-800/60">
     <div class="max-w-6xl mx-auto px-4 py-3">
       <div class="flex items-center justify-between gap-4">
-        <!-- Logo -->
         <div class="flex items-center gap-3 shrink-0">
           <div class="w-9 h-9 logo-3d rounded-xl flex items-center justify-center font-black text-white text-lg font-display">C</div>
           <h1 class="text-xl font-black text-white tracking-tighter font-display">ClearView <span class="text-blue-500">Store</span></h1>
         </div>
 
-        <!-- Desktop currency pills -->
         <div id="desktopCurrency" class="hidden lg:flex items-center gap-2 flex-wrap justify-end">
-          <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">USD</span>
-          <span onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">KES</span>
-          <span onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</span>
-          <span onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</span>
-          <span onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">ZAR</span>
+          <button type="button" onclick="setCurrency('USD')" class="currency-pill currency-active" id="btn-USD">USD</button>
+          <button type="button" onclick="setCurrency('KES')" class="currency-pill" id="btn-KES">KES</button>
+          <button type="button" onclick="setCurrency('NGN')" class="currency-pill" id="btn-NGN">NGN</button>
+          <button type="button" onclick="setCurrency('GHS')" class="currency-pill" id="btn-GHS">GHS</button>
+          <button type="button" onclick="setCurrency('ZAR')" class="currency-pill" id="btn-ZAR">ZAR</button>
         </div>
 
-        <!-- Mobile hamburger -->
         <button id="menuToggle" class="lg:hidden p-2 text-slate-400 hover:text-white transition-colors" aria-label="Toggle currency menu" aria-expanded="false">
           <svg id="iconMenu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
           <svg id="iconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <!-- Mobile currency drawer -->
       <div id="mobileNav" role="navigation" aria-label="Currency selector">
         <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 px-1">Select Currency</p>
         <div class="flex flex-wrap gap-2">
-          <span onclick="setCurrency('USD')" class="currency-pill currency-active" id="mob-btn-USD">USD</span>
-          <span onclick="setCurrency('KES')" class="currency-pill" id="mob-btn-KES">KES</span>
-          <span onclick="setCurrency('NGN')" class="currency-pill" id="mob-btn-NGN">NGN</span>
-          <span onclick="setCurrency('GHS')" class="currency-pill" id="mob-btn-GHS">GHS</span>
-          <span onclick="setCurrency('ZAR')" class="currency-pill" id="mob-btn-ZAR">ZAR</span>
+          <button type="button" onclick="setCurrency('USD')" class="currency-pill currency-active" id="mob-btn-USD">USD</button>
+          <button type="button" onclick="setCurrency('KES')" class="currency-pill" id="mob-btn-KES">KES</button>
+          <button type="button" onclick="setCurrency('NGN')" class="currency-pill" id="mob-btn-NGN">NGN</button>
+          <button type="button" onclick="setCurrency('GHS')" class="currency-pill" id="mob-btn-GHS">GHS</button>
+          <button type="button" onclick="setCurrency('ZAR')" class="currency-pill" id="mob-btn-ZAR">ZAR</button>
         </div>
       </div>
     </div>
@@ -167,7 +158,6 @@
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6">
 
-    <!-- HERO -->
     <section class="text-center py-16 sm:py-20">
       <div class="hero-title text-white mb-4 uppercase tracking-tight">
         Crystal Clear <span class="text-blue-500">Access.</span>
@@ -177,16 +167,13 @@
       </p>
     </section>
 
-    <!-- Selar info notice -->
     <div class="selar-info mb-8">
       <svg class="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
       <p class="text-xs text-slate-300 font-medium">Checkout is powered by <strong class="text-white">Selar</strong> — card, M-Pesa, bank transfer & mobile money accepted. You'll be taken to a secure checkout page.</p>
     </div>
 
-    <!-- PRODUCTS GRID -->
     <section id="products" class="products-grid"></section>
 
-    <!-- TRUST SECTION -->
     <section class="mt-24 border-t border-slate-900 pt-16">
       <div class="text-center mb-12">
         <div class="verified-badge mx-auto mb-6 w-fit">
@@ -215,7 +202,6 @@
       </div>
     </section>
 
-    <!-- FAQ -->
     <section class="max-w-3xl mx-auto mb-24">
       <h3 class="text-3xl font-black text-white text-center mb-10 font-display uppercase tracking-tighter">Got <span class="text-blue-500">Questions?</span></h3>
       <div class="space-y-3" id="faqList">
@@ -256,9 +242,6 @@
 
   <script>
     // ─── CONFIG ─────────────────────────────────────────────────────────────
-    // IMPORTANT: Replace each selarUrl with your actual Selar product links
-    // e.g. "https://selar.com/yourstore/standard-iptv"
-    // Use ?add_to_cart=1 appended to skip the product page and go straight to checkout
     const products = [
       { id: 0, name: 'Standard IPTV',          priceUSD: 6,  image: 'assets/iptvsub.jpg',   selarUrl: 'https://selar.com/51757461of' },
       { id: 1, name: 'IPTV Unlocked',           priceUSD: 7,  image: 'assets/iptv.jpg',      selarUrl: 'https://selar.com/7l21k60x51' },
@@ -278,9 +261,20 @@
     let exchangeRates = { ...FALLBACK_RATES };
 
     // ─── CURRENCY ────────────────────────────────────────────────────────────
+    function detectLocalCurrency() {
+      try {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (zone.includes('Nairobi') || zone.includes('Africa/Harare')) currentCurrency = 'KES';
+        else if (zone.includes('Lagos')) currentCurrency = 'NGN';
+        else if (zone.includes('Accra')) currentCurrency = 'GHS';
+        else if (zone.includes('Johannesburg')) currentCurrency = 'ZAR';
+      } catch (e) {
+        console.warn('Could not identify local timezone. Defaulting to USD.');
+      }
+    }
+
     function setCurrency(cur) {
       currentCurrency = cur;
-      // Update all pill buttons (desktop + mobile)
       CURRENCIES.forEach(c => {
         const d = document.getElementById(`btn-${c}`);
         const m = document.getElementById(`mob-btn-${c}`);
@@ -292,7 +286,7 @@
     }
 
     function formatPrice(usd) {
-      const amount = usd * (exchangeRates[currentCurrency] || 1);
+      const amount = usd * (exchangeRates[currentCurrency] || FALLBACK_RATES[currentCurrency] || 1);
       try {
         return new Intl.NumberFormat('en', { style:'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(amount);
       } catch(e) {
@@ -317,6 +311,7 @@
       const isOpen = mobileNav.classList.contains('open');
       if(isOpen) { closeMobileNav(); }
       else {
+        mobileNav.add('open');
         mobileNav.classList.add('open');
         iconMenu.classList.add('hidden');
         iconClose.classList.remove('hidden');
@@ -324,7 +319,6 @@
       }
     });
 
-    // Close nav when clicking outside
     document.addEventListener('click', e => {
       if(!menuToggle.contains(e.target) && !mobileNav.contains(e.target)) closeMobileNav();
     });
@@ -332,20 +326,23 @@
     // ─── SELAR PAYMENT ───────────────────────────────────────────────────────
     function handlePayment(index) {
       const p = products[index];
-      // Redirect to Selar product page with add_to_cart for direct checkout
-      window.open(p.selarUrl + '?add_to_cart=1', '_blank', 'noopener,noreferrer');
+      let checkoutUrl = p.selarUrl + '?add_to_cart=1';
+      if (currentCurrency !== 'USD') {
+        checkoutUrl += `&currency=${currentCurrency}`;
+      }
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
     }
 
     // ─── RENDER PRODUCTS ─────────────────────────────────────────────────────
     function renderProducts() {
       document.getElementById('products').innerHTML = products.map((p,i) => `
         <div class="product-card">
-          <div class="relative overflow-hidden" style="line-height:0">
+          <div onclick="handlePayment(${i})" class="relative overflow-hidden cursor-pointer" style="line-height:0">
             <img src="${p.image}" alt="${p.name}" loading="lazy">
             <div style="position:absolute;inset:0;background:linear-gradient(to top,#0f172a 20%,transparent 100%)"></div>
           </div>
           <div class="card-body p-5 flex flex-col gap-3 flex-1">
-            <div>
+            <div onclick="handlePayment(${i})" class="cursor-pointer">
               <h3 class="text-base font-black text-white tracking-tight font-display uppercase leading-tight">${p.name}</h3>
               <p class="text-2xl font-black text-blue-400 mt-1 font-display">${formatPrice(p.priceUSD)}</p>
             </div>
@@ -387,11 +384,11 @@
         const body   = item.querySelector('.faq-body');
         const arrow  = btn.querySelector('.faq-arrow');
         const isOpen = !body.classList.contains('hidden');
-        // Close all
+        
         document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
         document.querySelectorAll('.faq-arrow').forEach(a => a.style.transform = '');
         document.querySelectorAll('.faq-trigger').forEach(b => b.setAttribute('aria-expanded','false'));
-        // Open clicked (unless it was already open)
+        
         if(!isOpen) {
           body.classList.remove('hidden');
           arrow.style.transform = 'rotate(180deg)';
@@ -402,14 +399,18 @@
 
     // ─── INIT ────────────────────────────────────────────────────────────────
     async function initialize() {
+      detectLocalCurrency();
       try {
         const res  = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        if(data.rates) exchangeRates = data.rates;
+        if(data && data.rates) {
+          exchangeRates = { ...FALLBACK_RATES, ...data.rates };
+        }
       } catch(e) {
         console.warn('Exchange rate fetch failed — using fallback rates.');
+        exchangeRates = { ...FALLBACK_RATES };
       }
-      renderProducts();
+      setCurrency(currentCurrency);
       startSocialProof();
     }
 
